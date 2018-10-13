@@ -1,0 +1,70 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".ios.js",
+          ".android.js"
+        ]
+      }
+    }
+  },
+  "env": {
+    "node": true,
+    "es6": true,
+    "commonjs": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "arrow-body-style": 0,
+    "comma-dangle": 0,
+    "dot-notation": 0,
+    "import/no-unresolved": 0,
+    "import/prefer-default-export": "off",
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "max-len": [
+      2,
+      200
+    ],
+    "no-alert": 0,
+    "no-shadow": 0,
+    "no-throw-literal": 0,
+    "no-underscore-dangle": 0,
+    "no-use-before-define": 0,
+    "padded-blocks": 0,
+    "react/forbid-prop-types": [
+      0,
+      {}
+    ],
+    "react/jsx-boolean-value": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/sort-comp": 0,
+    "semi": [
+      2,
+      "never"
+    ],
+    "strict": 0
+  },
+  "globals": {
+    "alert": true,
+    "__DEV__": true,
+    "fetch": true,
+    "FormData": true
+  }
+}

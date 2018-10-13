@@ -1,0 +1,6 @@
+export const SHOW_AUTH_LOADING = 'show_auth_loading'
+export const HIDE_AUTH_LOADING = 'hide_auth_loading'
+export const REGISTER_SUCCESS = 'register_success'
+export const REGISTER_FAILED = 'register_failed'
+export const HIDE_ALERT = 'hide_alert'
+export const VERIFY_EMPLOYEE_PHOTO_FAILED = 'verify_employee_photo_failed'

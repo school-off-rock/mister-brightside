@@ -19,7 +19,7 @@ class HomeScreenContainer extends Component {
       const { registerEmployee } = this.props
       const options = { quality: 0.5, base64: true, forceUpOrientation: true }
       const data = await this.camera.takePictureAsync(options)
-      registerEmployee(902802, data.base64)
+      registerEmployee('', data.base64)
     }
   };
 

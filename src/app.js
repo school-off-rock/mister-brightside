@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { Text, InteractionManager } from 'react-native'
+import { InteractionManager } from 'react-native'
 import { shape, func } from 'prop-types'
 import { Provider } from 'react-redux'
 import { Navigator } from './navigation'

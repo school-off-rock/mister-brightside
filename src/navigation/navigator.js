@@ -15,7 +15,6 @@ export const Stack = Navigator({
   home: { screen: HomeScreen },
   history: { screen: HistoryScreen },
 }, {
-  headerMode: 'none',
   initialRouteName,
 })
 

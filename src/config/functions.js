@@ -1,5 +1,8 @@
+import React from 'react'
 import { AsyncStorage } from 'react-native'
 import _ from 'lodash'
+import { Values } from '../constants/values'
+import { NavBarLogo } from '../modules/shared/components/NavBarLogo'
 
 export async function verifyResponse(response) {
   if (response.status !== 200 && response.status !== 201) {
@@ -53,4 +56,14 @@ export function mapClockHistory(historyList) {
     })
   }
   return newArray
+}
+
+export function generateStandardNavBar(navigation, onTitlePress) {
+  const standardNavBar = {
+    headerLeft: (
+      <NavBarLogo onPress={onTitlePress} />
+    ),
+    headerStyle: Values.NAV_BAR_STYLES.primary.headerStyle
+  }
+  return standardNavBar
 }

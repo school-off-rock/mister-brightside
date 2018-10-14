@@ -3,8 +3,8 @@ import { Platform } from 'react-native'
 const SNAP_BUTTON = 64
 
 const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 0 : 24
-// const navBarDataHeight = Platform.OS === 'ios' ? 44 : 56
-// const navBarHeight = statusBarHeight + navBarDataHeight
+const navBarDataHeight = Platform.OS === 'ios' ? 44 : 56
+const NAV_BAR_HEIGHT = STATUS_BAR_HEIGHT + navBarDataHeight
 
 const SPINNER_HEIGHT = {
   small: 20
@@ -23,6 +23,7 @@ export const METRICS = {
   SNAP_BUTTON,
   SNAP_RADIUS: SNAP_BUTTON / 2,
   STATUS_BAR_HEIGHT,
+  NAV_BAR_HEIGHT,
   SPINNER_HEIGHT,
   LOADING_CONTAINER_HEIGHT: SPINNER_HEIGHT.small + 16,
   BORDER_WIDTH: 1,

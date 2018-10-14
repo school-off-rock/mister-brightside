@@ -6,7 +6,10 @@ import { Touchable } from '../../shared/components/Touchable'
 export const DatePickerLabel = (props) => {
   const { onPress, label } = props
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{
+      flex: 1, justifyContent: 'center', alignItems: 'center'
+    }}
+    >
       <Touchable borderless onPress={onPress}><Text>{label}</Text></Touchable>
     </View>
   )
@@ -14,10 +17,10 @@ export const DatePickerLabel = (props) => {
 
 DatePickerLabel.propTypes = {
   onPress: func,
-  label: string
+  label: string,
 }
 
 DatePickerLabel.defaultProps = {
   onPress: () => {},
-  label: 'large'
+  label: 'até'
 }

@@ -122,11 +122,17 @@ static propTypes ={
       displayEndDate
     } = this.state
     return (
-      <View style={{ padding: METRICS.BIT, backgroundColor: COLORS.WHITE }}>
+      <View style={{ padding: METRICS.BIT, backgroundColor: COLORS.WHITE, marginTop: METRICS.NANO / 2 }}>
         <View style={{ flexDirection: 'row' }}>
-          <DatePickerLabel onPress={this.showInitialPicker} label={displayInitialDate} />
-          <DatePickerLabel label="a" />
-          <DatePickerLabel onPress={this.showEndPicker} label={displayEndDate} />
+          <DatePickerLabel
+            onPress={this.showInitialPicker}
+            label={displayInitialDate}
+          />
+          <DatePickerLabel label="até" />
+          <DatePickerLabel
+            onPress={this.showEndPicker}
+            label={displayEndDate}
+          />
         </View>
         <DateTimePickerIOS
           date={selectedInitialDate}

@@ -1,0 +1,11 @@
+export const COLORS = {
+  PRIMARY: '#ED323D',
+  ALERT: '#FF9F1C',
+  SUCCESS: '#256EFF',
+
+  SCREEN: '#F3F5F7',
+  SURFACE: '#FFFFFF',
+  LIGHT_OVERLAY: '#FAFAFA80',
+
+  DARK: '#261C15',
+}

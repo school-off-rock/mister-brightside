@@ -17,12 +17,12 @@ export function registerEmployeeEntryAction(registration) {
 }
 
 
-export function fetchEmployeeEntriesAction(registration, initDate, endDate) {
+export function fetchEmployeeEntriesAction(initDate, endDate) {
   return async (dispatch) => {
     try {
       dispatch(loadingClockEntries(true))
-      await verifyIpAddress()
-      const clockEntries = await getEmployeeClockEntries(registration, initDate, endDate)
+      // await verifyIpAddress()
+      const clockEntries = await getEmployeeClockEntries(initDate, endDate)
       dispatch(saveClockEntries(clockEntries))
     } catch (error) {
       dispatch(loadingClockEntries(false))

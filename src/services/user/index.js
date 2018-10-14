@@ -5,7 +5,7 @@ import {
   TRAIN_EMPLOYEE_PHOTO
 } from '../../constants/routes'
 import { Values } from '../../constants/values'
-import { verifyResponse } from '../../config/functions'
+import { verifyResponse, getUserRegistration, mapClockHistory } from '../../config/functions'
 import { ClockEntry } from '../../domain/ClockEntry'
 
 const {
@@ -31,7 +31,8 @@ export const registerEmployeeEntry = async (registration) => {
     })
 }
 
-export const getEmployeeClockEntries = async (registration, initDate, endDate) => {
+export const getEmployeeClockEntries = async (initDate, endDate) => {
+  const { registration = 902802 } = await getUserRegistration()
   return fetch(GET_EMPLOYEE_CLOCK_ENTRIES(registration, initDate, endDate), {
     method: 'GET',
     headers: {
@@ -39,9 +40,10 @@ export const getEmployeeClockEntries = async (registration, initDate, endDate) =
       'Content-Type': 'application/json',
     },
   }).then(resp => verifyResponse(resp))
-    .then((response) => {
+    .then(async (response) => {
       const clockEntries = response.map(item => new ClockEntry(item))
-      return clockEntries
+      const clockEntriesSections = await mapClockHistory(clockEntries)
+      return clockEntriesSections
     })
     .catch((error) => {
       throw error

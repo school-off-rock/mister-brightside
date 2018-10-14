@@ -114,6 +114,8 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        renderscriptTargetApi 23
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {
@@ -145,6 +147,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-blur')
     implementation project(':react-native-config')
     implementation project(':react-native-camera')
     implementation fileTree(dir: "libs", include: ["*.jar"])

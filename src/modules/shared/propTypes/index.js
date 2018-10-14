@@ -1,0 +1,2 @@
+export { textPropTypes } from './textPropTypes'
+export { viewPropTypes } from './viewPropTypes'

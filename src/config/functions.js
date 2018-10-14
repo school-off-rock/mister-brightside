@@ -1,4 +1,8 @@
+import React from 'react'
 import { AsyncStorage } from 'react-native'
+import _ from 'lodash'
+import { Values } from '../constants/values'
+import { NavBarLogo } from '../modules/shared/components/NavBarLogo'
 
 export async function verifyResponse(response) {
   if (response.status !== 200 && response.status !== 201) {
@@ -30,4 +34,36 @@ export async function getUserRegistration() {
     })
 
   return userJson
+}
+
+export const isFunctionEmpty = f => /^function[^{]+\{\s*\}/m.test(f.toString())
+export const hasText = prop => (typeof prop === 'string' && prop !== '')
+
+export function mapClockHistory(historyList) {
+  const obj = _.groupBy(historyList, 'date')
+  const keys = Object.keys(obj)
+  const size = Object.keys(obj).length
+  const history = []
+  for (let i = 0; i < size; i += 1) {
+    history[keys[size - (i + 1)]] = obj[keys[size - (i + 1)]]
+    history[keys[size - (i + 1)]] = history[keys[size - (i + 1)]]
+  }
+  const newArray = []
+  for (let i = 0; i < size; i += 1) {
+    newArray.push({
+      data: history[keys[size - (i + 1)]],
+      title: keys[size - (i + 1)]
+    })
+  }
+  return newArray
+}
+
+export function generateStandardNavBar(navigation, onTitlePress) {
+  const standardNavBar = {
+    headerLeft: (
+      <NavBarLogo onPress={onTitlePress} />
+    ),
+    headerStyle: Values.NAV_BAR_STYLES.primary.headerStyle
+  }
+  return standardNavBar
 }

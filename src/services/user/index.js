@@ -9,7 +9,7 @@ import { verifyResponse } from '../../config/functions'
 import { ClockEntry } from '../../domain/ClockEntry'
 
 const {
-  KAIROS_SCHOOL_GALERY_NAME,
+  KAIROS_SCHOOL_GALLERY_NAME,
   KAIROS_API_ID,
   KAIROS_API_KEY
 } = Values
@@ -59,7 +59,7 @@ export const verifyEmployeePhoto = async (image) => {
     },
     body: JSON.stringify({
       image,
-      galery_name: KAIROS_SCHOOL_GALERY_NAME
+      galery_name: KAIROS_SCHOOL_GALLERY_NAME
     })
   }).then(resp => verifyResponse(resp))
     .then((response) => {
@@ -81,7 +81,7 @@ export const trainEmployeePhoto = async (image) => {
     },
     body: JSON.stringify({
       image,
-      galery_name: KAIROS_SCHOOL_GALERY_NAME
+      galery_name: KAIROS_SCHOOL_GALLERY_NAME
     })
   }).then(resp => verifyResponse(resp))
     .then((response) => {

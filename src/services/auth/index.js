@@ -8,7 +8,7 @@ import { Values } from '../../constants/values'
 import { getIpAddress } from '../shared'
 
 const {
-  KAIROS_SCHOOL_GALERY_NAME,
+  KAIROS_SCHOOL_GALLERY_NAME,
   KAIROS_API_ID,
   KAIROS_API_KEY
 } = Values
@@ -42,7 +42,7 @@ export const registerEmployeePhoto = async (registration, image) => {
     body: JSON.stringify({
       subject_id: registration,
       image,
-      galery_name: KAIROS_SCHOOL_GALERY_NAME
+      galery_name: KAIROS_SCHOOL_GALLERY_NAME
     })
   }).then(resp => verifyResponse(resp))
     .then((response) => {

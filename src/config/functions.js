@@ -31,3 +31,6 @@ export async function getUserRegistration() {
 
   return userJson
 }
+
+export const isFunctionEmpty = f => /^function[^{]+\{\s*\}/m.test(f.toString())
+export const hasText = prop => (typeof prop === 'string' && prop !== '')

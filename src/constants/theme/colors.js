@@ -8,4 +8,12 @@ export const COLORS = {
   LIGHT_OVERLAY: '#FAFAFA80',
 
   DARK: '#261C15',
+  BLACK_SECONDARY_ALT: '#00000089',
+  DARK_OVERLAY: 'rgba(0, 0, 0, 0.80)',
+
+  WHITE_SECONDARY: '#ffffffB2',
+
+  DARK_DIVIDER: 'rgba(0, 0, 0, 0.14)',
+
+  ANDROID_STATUS_BAR: 'rgba(0, 0, 0, 0.12)',
 }

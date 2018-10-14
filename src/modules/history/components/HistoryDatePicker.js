@@ -3,12 +3,12 @@ import {
   View,
   Platform,
   DatePickerAndroid,
-  TouchableHighlight,
-  Text
 } from 'react-native'
 import { func } from 'prop-types'
 import moment from 'moment'
 import { DateTimePickerIOS } from '../../shared/components/modals/dateTimePickerIOS'
+import { DatePickerLabel } from './DatePickerLabel'
+import { METRICS, COLORS } from '../../../constants/theme'
 
 export class HistoryDatePicker extends Component {
 static propTypes ={
@@ -122,9 +122,12 @@ static propTypes ={
       displayEndDate
     } = this.state
     return (
-      <View>
-        <TouchableHighlight onPress={this.showInitialPicker}><View><Text>{displayInitialDate}</Text></View></TouchableHighlight>
-        <TouchableHighlight onPress={this.showEndPicker}><View><Text>{displayEndDate}</Text></View></TouchableHighlight>
+      <View style={{ padding: METRICS.BIT, backgroundColor: COLORS.WHITE }}>
+        <View style={{ flexDirection: 'row' }}>
+          <DatePickerLabel onPress={this.showInitialPicker} label={displayInitialDate} />
+          <DatePickerLabel label="a" />
+          <DatePickerLabel onPress={this.showEndPicker} label={displayEndDate} />
+        </View>
         <DateTimePickerIOS
           date={selectedInitialDate}
           dismissButtonText="Cancelar"

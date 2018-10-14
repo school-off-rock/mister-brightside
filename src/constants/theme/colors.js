@@ -9,8 +9,10 @@ export const COLORS = {
 
   DARK: '#261C15',
   BLACK_SECONDARY_ALT: '#00000089',
+  BLACK_SECONDARY: '#757575',
   DARK_OVERLAY: 'rgba(0, 0, 0, 0.80)',
 
+  WHITE: '#ffffff',
   WHITE_SECONDARY: '#ffffffB2',
 
   DARK_DIVIDER: 'rgba(0, 0, 0, 0.14)',

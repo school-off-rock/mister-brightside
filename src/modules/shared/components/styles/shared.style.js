@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { METRICS, COLORS } from '../../../../constants/theme'
 
 const {
@@ -14,5 +14,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingTop: STATUS_BAR_HEIGHT,
     backgroundColor: SCREEN
+  },
+  card: {
+    ...Platform.select({
+      android: {
+        marginTop: METRICS.BYTE / 2,
+      },
+    }),
   },
 })

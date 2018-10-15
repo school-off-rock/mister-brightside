@@ -9,7 +9,7 @@ export const navMiddleware = createReactNavigationReduxMiddleware(
   state => state.nav,
 )
 
-export const initialRouteName = 'history'
+export const initialRouteName = 'home'
 
 export const Stack = Navigator({
   home: { screen: HomeScreen },

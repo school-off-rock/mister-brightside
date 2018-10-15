@@ -3,22 +3,35 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Text,
 } from 'react-native'
 import { func } from 'prop-types'
-
 import { RNCamera } from 'react-native-camera'
 
+import { OptionsModal } from './OptionsModal'
+import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
+import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
 import { styles } from '../styles/styles.home'
 import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE } from '../../../constants/strings'
+
+const Container = ScreenContainerHOC(View)
 
 export class Home extends Component {
   static propTypes = {
     registerEmployee: func.isRequired,
+    onHistoryPress: func.isRequired,
   }
 
   state = {
     imageSnap: undefined,
+    modalVisible: false,
+  }
+
+  hideModal = () => this.setState({ modalVisible: false, imageSnap: undefined })
+
+  navigateToHistory = () => {
+    const { onHistoryPress } = this.props
+    this.setState({ modalVisible: false, imageSnap: undefined })
+    onHistoryPress()
   }
 
   takePicture = async () => {
@@ -32,16 +45,17 @@ export class Home extends Component {
         mirrorImage: true,
       }
       const data = await this.camera.takePictureAsync(options)
-      this.setState({ imageSnap: data.uri })
+      this.setState({ imageSnap: data.uri, modalVisible: true })
       return registerEmployee('', data.base64)
     }
     return this.setState({ imageSnap: undefined })
   }
 
   render() {
-    const { imageSnap } = this.state
+    const { imageSnap, modalVisible } = this.state
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
+        <StatusBarStandard />
         {imageSnap
           ? <Image source={{ uri: imageSnap }} style={styles.preview} />
           : (
@@ -52,18 +66,7 @@ export class Home extends Component {
               flashMode={RNCamera.Constants.FlashMode.on}
               permissionDialogTitle={CAMERA_PERMISSION_TITLE}
               permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
-            >
-              {({ camera, status }) => {
-                { /* if (status !== 'READY') return <PendingView /> */ }
-                return (
-                  <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
-                      <Text style={{ fontSize: 14 }}> SNAP </Text>
-                    </TouchableOpacity>
-                  </View>
-                )
-              }}
-            </RNCamera>
+            />
           )
         }
         <View style={styles.bottomOverlay}>
@@ -71,7 +74,12 @@ export class Home extends Component {
             <TouchableOpacity style={styles.capture} onPress={this.takePicture} />
           </View>
         </View>
-      </View>
+        <OptionsModal
+          isVisible={modalVisible}
+          onCancel={this.hideModal}
+          onHistoryPress={this.navigateToHistory}
+        />
+      </Container>
     )
   }
 }

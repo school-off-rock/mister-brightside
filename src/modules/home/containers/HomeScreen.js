@@ -1,17 +1,30 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { func } from 'prop-types'
+import { func, shape } from 'prop-types'
 
 import { registerEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
 import { Home } from '../components/Home'
+import { generateStandardNavBar } from '../../../config/functions'
 
 class HomeScreenContainer extends Component {
+  static navigationOptions = ({ navigation }) => generateStandardNavBar(navigation)
+
   static propTypes = {
     registerEmployee: func.isRequired,
+    navigation: shape({ navigate: func })
+  }
+
+  static defaultProps = {
+    navigation: { navigate: () => {} }
   }
 
   state = {}
+
+  navigateToHistory = () => {
+    const { navigation } = this.props
+    navigation.navigate('history')
+  }
 
   takePicture = async () => {
     if (this.camera) {
@@ -27,6 +40,7 @@ class HomeScreenContainer extends Component {
     return (
       <Home
         registerEmployee={registerEmployee}
+        onHistoryPress={this.navigateToHistory}
       />
     )
   }

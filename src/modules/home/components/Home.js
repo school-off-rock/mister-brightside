@@ -5,13 +5,17 @@ import {
   Image,
 } from 'react-native'
 import { func } from 'prop-types'
+
 import { RNCamera } from 'react-native-camera'
 
 import { OptionsModal } from './OptionsModal'
 import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
 import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
-import { styles } from '../styles/styles.home'
+import { PendingAuthView } from './PendingAuthView'
+
 import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE } from '../../../constants/strings'
+
+import { styles } from '../styles/styles.home'
 
 const Container = ScreenContainerHOC(View)
 
@@ -34,8 +38,8 @@ export class Home extends Component {
     onHistoryPress()
   }
 
-  takePicture = async () => {
-    if (this.camera) {
+  takePicture = async (camera) => {
+    if (camera) {
       const { registerEmployee } = this.props
       const options = {
         quality: 0.5,
@@ -44,7 +48,7 @@ export class Home extends Component {
         fixOrientation: true,
         mirrorImage: true,
       }
-      const data = await this.camera.takePictureAsync(options)
+      const data = await camera.takePictureAsync(options)
       this.setState({ imageSnap: data.uri, modalVisible: true })
       return registerEmployee('', data.base64)
     }
@@ -60,20 +64,25 @@ export class Home extends Component {
           ? <Image source={{ uri: imageSnap }} style={styles.preview} />
           : (
             <RNCamera
-              ref={(ref) => { this.camera = ref }}
               style={styles.preview}
               type={RNCamera.Constants.Type.front}
               flashMode={RNCamera.Constants.FlashMode.on}
               permissionDialogTitle={CAMERA_PERMISSION_TITLE}
               permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
-            />
+            >
+              {({ camera, status }) => {
+                if (status !== 'READY') return <PendingAuthView />
+                return (
+                  <View style={styles.bottomOverlay}>
+                    <View style={styles.captureWrap}>
+                      <TouchableOpacity style={styles.capture} onPress={() => this.takePicture(camera)} />
+                    </View>
+                  </View>
+                )
+              }}
+            </RNCamera>
           )
         }
-        <View style={styles.bottomOverlay}>
-          <View style={styles.captureWrap}>
-            <TouchableOpacity style={styles.capture} onPress={this.takePicture} />
-          </View>
-        </View>
         <OptionsModal
           isVisible={modalVisible}
           onCancel={this.hideModal}

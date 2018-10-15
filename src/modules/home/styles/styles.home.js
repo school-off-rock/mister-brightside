@@ -29,5 +29,16 @@ export const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: METRICS.SNAP_RADIUS,
     margin: METRICS.NANO,
+  },
+  pendingWrap: {
+    alignItems: 'center',
+    backgroundColor: COLORS.SCREEN,
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: METRICS.GIGA,
+  },
+  pendingText: {
+    marginTop: METRICS.KILO,
+    textAlign: 'center',
   }
 })

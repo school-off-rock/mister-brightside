@@ -1,6 +1,5 @@
 import { Platform } from 'react-native'
-// import { COLORS } from './colors'
-// import { METRICS } from './metrics'
+import { COLORS } from './colors'
 
 const type = {
   light: {
@@ -29,7 +28,7 @@ const size = {
   h3: 28,
   h4: 22,
   h5: 20,
-  h6: 19,
+  h6: 17,
   input: (Platform.OS === 'ios') ? 17 : 15,
   regular: 17,
   button: (Platform.OS === 'ios') ? 17 : 14,
@@ -48,12 +47,34 @@ const lineHeight = {
 const style = {
   secondaryButton: {
     ...type.medium,
-    fontSize: size.secondaryButton
+    fontSize: size.secondaryButton,
   },
 }
+
+const standardStyle = {
+  h6: {
+    fontSize: size.h6,
+    color: COLORS.BLACK_PRIMARY_ALT,
+    ...type.medium
+  },
+  p: {
+    fontSize: size.regular,
+    lineHeight: lineHeight.boost,
+    color: COLORS.BLACK_SECONDARY_ALT,
+    ...type.regular
+  },
+  pEmphasis: {
+    fontSize: size.regular,
+    lineHeight: lineHeight.boost,
+    color: COLORS.BLACK_PRIMARY_ALT,
+    ...type.regular
+  },
+}
+
 export const FONTS = {
   lineHeight,
   size,
+  standardStyle,
   style,
   type,
 }

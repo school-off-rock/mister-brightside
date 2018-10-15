@@ -13,6 +13,18 @@ const {
 } = Config
 
 const NAV_BAR_STYLES = {
+  absolute: {
+    headerTransparent: true,
+    headerStyle: {
+      backgroundColor: COLORS.LIGHT_OVERLAY,
+      ...Platform.select({
+        android: {
+          paddingTop: METRICS.STATUS_BAR_HEIGHT,
+          height: METRICS.NAV_BAR_HEIGHT
+        }
+      })
+    },
+  },
   primary: {
     headerTintColor: COLORS.NAV_BAR.tint,
     headerTitleStyle: { color: COLORS.BLACK_PRIMARY_ALT },

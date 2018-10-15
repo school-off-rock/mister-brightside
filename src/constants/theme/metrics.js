@@ -22,11 +22,15 @@ export const METRICS = {
 
   SNAP_BUTTON,
   SNAP_RADIUS: SNAP_BUTTON / 2,
+
   STATUS_BAR_HEIGHT,
   NAV_BAR_HEIGHT,
+
   SPINNER_HEIGHT,
   LOADING_CONTAINER_HEIGHT: SPINNER_HEIGHT.small + 16,
   BORDER_WIDTH: 1,
+  BORDER_RADIUS: 8,
+
   ICONS: {
     tiny: 12,
     small: 18,
@@ -38,6 +42,10 @@ export const METRICS = {
   },
   ICON_TOUCHABLE_AREA_DENSE: 48,
   ICON_TOUCHABLE_AREA: 48,
+
+  BUTTON_HEIGHT_DENSE: 40,
+  BUTTON_HEIGHT_STANDARD: 44,
+
   RATIO: {
     square: 1,
     standard: 4 / 3,

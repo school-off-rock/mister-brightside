@@ -38,8 +38,8 @@ export class Home extends Component {
     onHistoryPress()
   }
 
-  takePicture = async (camera) => {
-    if (camera) {
+  takePicture = async () => {
+    if (this.camera) {
       const { registerEmployee } = this.props
       const options = {
         quality: 0.5,
@@ -48,7 +48,7 @@ export class Home extends Component {
         fixOrientation: true,
         mirrorImage: true,
       }
-      const data = await camera.takePictureAsync(options)
+      const data = await this.camera.takePictureAsync(options)
       this.setState({ imageSnap: data.uri, modalVisible: true })
       return registerEmployee('', data.base64)
     }
@@ -57,36 +57,51 @@ export class Home extends Component {
 
   render() {
     const { imageSnap, modalVisible } = this.state
+    const modalOptions = [
+      {
+        label: 'Bater ponto',
+        iconName: 'map-marker-radius',
+        onPress: () => console.warn('Bater ponto')
+      },
+      {
+        label: 'Ver histórico',
+        iconName: 'clock',
+        onPress: () => console.warn('Ver histórico')
+      },
+      {
+        label: 'Melhorar identificação',
+        iconName: 'creation',
+        onPress: () => console.warn('Melhorar identificação')
+      },
+    ]
     return (
       <Container style={styles.container}>
         <StatusBarStandard />
         {imageSnap
           ? <Image source={{ uri: imageSnap }} style={styles.preview} />
           : (
-            <RNCamera
-              style={styles.preview}
-              type={RNCamera.Constants.Type.front}
-              flashMode={RNCamera.Constants.FlashMode.on}
-              permissionDialogTitle={CAMERA_PERMISSION_TITLE}
-              permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
-            >
-              {({ camera, status }) => {
-                if (status !== 'READY') return <PendingAuthView />
-                return (
-                  <View style={styles.bottomOverlay}>
-                    <View style={styles.captureWrap}>
-                      <TouchableOpacity style={styles.capture} onPress={() => this.takePicture(camera)} />
-                    </View>
-                  </View>
-                )
-              }}
-            </RNCamera>
+            <View style={styles.preview}>
+              <RNCamera
+                ref={(ref) => { this.camera = ref }}
+                style={styles.preview}
+                type={RNCamera.Constants.Type.front}
+                flashMode={RNCamera.Constants.FlashMode.on}
+                permissionDialogTitle={CAMERA_PERMISSION_TITLE}
+                permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
+              />
+              <View style={styles.bottomOverlay}>
+                <View style={styles.captureWrap}>
+                  <TouchableOpacity style={styles.capture} onPress={() => this.takePicture(this.camera)} />
+                </View>
+              </View>
+            </View>
           )
         }
         <OptionsModal
           isVisible={modalVisible}
           onCancel={this.hideModal}
           onHistoryPress={this.navigateToHistory}
+          options={modalOptions}
         />
       </Container>
     )

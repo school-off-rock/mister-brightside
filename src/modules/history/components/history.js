@@ -59,11 +59,12 @@ export class History extends Component {
 
   render() {
     const { loadingEntries, historyList, fetchHistoryList } = this.props
+    const { rendering } = this.state
     return (
       <Container style={styles.container}>
         <StatusBarStandard />
         <HistoryDatePicker fetchHistoryList={fetchHistoryList} />
-        { loadingEntries
+        { (loadingEntries) || (rendering)
           ? <RowLoading isActive={loadingEntries} />
           : (
             <SectionList

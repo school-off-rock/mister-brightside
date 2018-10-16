@@ -65,7 +65,7 @@ export class Home extends Component {
       },
       {
         label: 'Ver histórico',
-        iconName: 'clock',
+        iconName: 'clock-outline',
         onPress: () => console.warn('Ver histórico')
       },
       {

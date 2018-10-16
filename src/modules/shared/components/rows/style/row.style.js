@@ -22,6 +22,10 @@ export const rowStyles = StyleSheet.create({
     ...FONTS.standardStyle.p
   },
 
+  iconWrap: {
+    marginHorizontal: METRICS.BIT,
+  },
+
   centerRow: {
     flexDirection: 'row',
     alignItems: 'center',

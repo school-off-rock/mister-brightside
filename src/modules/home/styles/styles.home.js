@@ -4,7 +4,7 @@ import { COLORS, METRICS } from '../../../constants/theme'
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.DARK,
+    backgroundColor: COLORS.PURE_BLACK,
     flexDirection: 'column'
   },
   preview: {

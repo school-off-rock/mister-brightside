@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { func, shape, bool } from 'prop-types'
+import {
+  func,
+  shape,
+  string,
+  bool
+} from 'prop-types'
 import { SignUp } from '../components/SignUp'
 import { generateStandardNavBar } from '../../../config/functions'
 import { verifyEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
-import { getLoading } from '../../../redux/reducers/auth/selectors'
+import { hideAlert } from '../../../redux/actions/sync/syncAuthActions'
+import { getLoading, getAlert } from '../../../redux/reducers/auth/selectors'
 
 class SignInScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => generateStandardNavBar(navigation)
@@ -13,11 +19,15 @@ class SignInScreenContainer extends Component {
     navigation: shape({ navigate: func }),
     verifyEmployee: func.isRequired,
     isLoading: bool,
+    alert: shape({ message: string, showAlert: bool }),
+    hideErrorAlert: func
   }
 
   static defaultProps = {
     navigation: { navigate: () => {} },
-    isLoading: false
+    isLoading: false,
+    alert: { message: '', showAlert: false },
+    hideErrorAlert: () => {}
   }
 
   state = {}
@@ -28,21 +38,25 @@ class SignInScreenContainer extends Component {
   }
 
   render() {
-    const { isLoading } = this.props
+    const { isLoading, alert, hideErrorAlert } = this.props
     return (
       <SignUp
         onContinuePress={this.navigateSignUpPhotoScreen}
         loading={isLoading}
+        alert={alert}
+        hideAlert={hideErrorAlert}
       />
     )
   }
 }
 const mapStateToProps = state => ({
-  isLoading: getLoading(state)
+  isLoading: getLoading(state),
+  alert: getAlert(state),
 })
 
 const mapDispatchToProps = {
-  verifyEmployee: (registration, navigation) => verifyEmployeeAction(registration, navigation)
+  verifyEmployee: (registration, navigation) => verifyEmployeeAction(registration, navigation),
+  hideErrorAlert: () => hideAlert()
 }
 
 export const SignInScreen = connect(mapStateToProps, mapDispatchToProps)(SignInScreenContainer)

@@ -44,4 +44,5 @@ export const METRICS = {
     wide: 16 / 9,
     wideVertical: 9 / 16,
   },
+  MAX_ERROR_MESSAGE_HEIGHT: 48,
 }

@@ -58,6 +58,10 @@ const style = {
     ...type.medium,
     fontSize: size.secondaryButton
   },
+  footNote: {
+    ...type.regular,
+    fontSize: size.small
+  },
 }
 export const FONTS = {
   lineHeight,

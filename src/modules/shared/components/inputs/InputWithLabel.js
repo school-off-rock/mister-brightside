@@ -30,6 +30,7 @@ export class InputWithLabel extends Component {
           value={value}
           onChangeText={this.setValue}
           tintColor={COLORS.PRIMARY}
+          keyboardType="numeric"
         />
       </View>
     )

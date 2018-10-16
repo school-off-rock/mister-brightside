@@ -6,13 +6,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.SCREEN
   },
-  description: { 
-    textAlign: 'center', 
-    fontSize: FONTS.size.medium, 
-    alignSelf: 'center' 
+  description: {
+    textAlign: 'center',
+    fontSize: FONTS.size.medium,
+    alignSelf: 'center'
   },
-  button: { 
-    justifyContent: 'flex-end', 
-    padding: METRICS.BYTE 
+  button: {
+    justifyContent: 'flex-end',
+    padding: METRICS.BYTE
   },
 })

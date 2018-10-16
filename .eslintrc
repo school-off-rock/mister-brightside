@@ -59,7 +59,8 @@
       2,
       "never"
     ],
-    "strict": 0
+    "strict": 0,
+    "react/destructuring-assignment": [0, "never"]
   },
   "globals": {
     "alert": true,

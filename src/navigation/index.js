@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { BackHandler } from 'react-native'
 import { connect } from 'react-redux'
-import { func, object } from 'prop-types'
-import { NavigationActions } from 'react-navigation'
+import { func, object, bool } from 'prop-types'
+import { NavigationActions, StackActions } from 'react-navigation'
 
 import { StackNavigator } from './navigator'
 
@@ -11,16 +11,31 @@ class Stack extends Component {
   static propTypes = {
     dispatch: func.isRequired,
     nav: object.isRequired,
+    isLogged: bool.isRequired
   };
 
   state = { loaded: true }
 
   componentDidMount = () => {
+    const { isLogged } = this.props
+    if (isLogged === true) {
+      this.resetNavigation('home')
+    }
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress)
   }
 
   componentWillUnmount = () => {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress)
+  }
+
+  resetNavigation = (routeName) => {
+    const { dispatch } = this.props
+    const actionToDispatch = StackActions.reset({
+      index: 0,
+      key: null,
+      actions: [NavigationActions.navigate({ routeName })]
+    })
+    dispatch(actionToDispatch)
   }
 
   onBackPress = () => {

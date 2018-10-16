@@ -45,6 +45,14 @@ const lineHeight = {
 }
 
 const style = {
+  title: {
+    ...type.medium,
+    fontSize: size.medium
+  },
+  primaryButton: {
+    ...type.medium,
+    fontSize: size.medium
+  },
   secondaryButton: {
     ...type.medium,
     fontSize: size.secondaryButton,

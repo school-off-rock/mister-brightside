@@ -22,6 +22,7 @@ export const COLORS = {
 
   WHITE: '#ffffff',
   WHITE_SECONDARY: '#ffffffB2',
+  WHITE_SECONDARY_ALT: '#e8e7e7',
 
   DARK_DIVIDER: 'rgba(0, 0, 0, 0.14)',
 

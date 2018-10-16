@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsyncStorage, Text } from 'react-native'
+import { AsyncStorage } from 'react-native'
 import _ from 'lodash'
 import { Values } from '../constants/values'
 import { NavBarLogo } from '../modules/shared/components/NavBarLogo'
@@ -13,6 +13,10 @@ export async function verifyResponse(response) {
     }
     if (response.status === 403) {
       response.message = 'Erro de autenticação!'
+      throw await response
+    }
+    if (response.status === 404) {
+      response.message = 'Não encontrado!'
       throw await response
     }
     throw await response.json()

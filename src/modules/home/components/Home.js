@@ -46,6 +46,7 @@ export class Home extends Component {
       }
       const data = await this.camera.takePictureAsync(options)
       this.setState({ imageSnap: data.uri, modalVisible: true })
+      console.log(data.base64)
       return registerEmployee('', data.base64)
     }
     return this.setState({ imageSnap: undefined })

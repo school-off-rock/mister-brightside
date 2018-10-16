@@ -1,6 +1,6 @@
 import { StyleSheet, Platform } from 'react-native'
 import {
-  COLORS, METRICS, FONTS
+  METRICS, FONTS
 } from '../../../../constants/theme'
 
 const {
@@ -16,7 +16,10 @@ export const styles = StyleSheet.create({
   },
 
   textSecondaryButton: {
-    ...FONTS.style.secondaryButton,
-    color: COLORS.PRIMARY,
+    ...FONTS.style.primaryButton,
+  },
+  buttonRightIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })

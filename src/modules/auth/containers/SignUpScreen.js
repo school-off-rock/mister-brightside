@@ -1,57 +1,48 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { func, shape } from 'prop-types'
-
-import { registerEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
-import { getLoading } from '../../../redux/reducers/auth/selectors'
-import { SignIn } from '../components/SignUp'
+import { func, shape, bool } from 'prop-types'
+import { SignUp } from '../components/SignUp'
 import { generateStandardNavBar } from '../../../config/functions'
+import { verifyEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
+import { getLoading } from '../../../redux/reducers/auth/selectors'
 
 class SignInScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => generateStandardNavBar(navigation)
 
   static propTypes = {
-    registerEmployee: func.isRequired,
-    navigation: shape({ navigate: func })
+    navigation: shape({ navigate: func }),
+    verifyEmployee: func.isRequired,
+    isLoading: bool,
   }
 
   static defaultProps = {
-    navigation: { navigate: () => {} }
+    navigation: { navigate: () => {} },
+    isLoading: false
   }
 
   state = {}
 
-  navigateToHistory = () => {
-    const { navigation } = this.props
-    navigation.navigate('history')
+  navigateSignUpPhotoScreen = (registration) => {
+    const { navigation, verifyEmployee } = this.props
+    verifyEmployee(registration, navigation)
   }
 
-  takePicture = async () => {
-    if (this.camera) {
-      const { registerEmployee } = this.props
-      const options = { quality: 0.5, base64: true, forceUpOrientation: true }
-      const data = await this.camera.takePictureAsync(options)
-      registerEmployee('', data.base64)
-    }
-  };
-
   render() {
-    const { registerEmployee } = this.props
+    const { isLoading } = this.props
     return (
-      <SignIn
-        registerEmployee={registerEmployee}
-        onHistoryPress={this.navigateToHistory}
+      <SignUp
+        onContinuePress={this.navigateSignUpPhotoScreen}
+        loading={isLoading}
       />
     )
   }
 }
-
 const mapStateToProps = state => ({
   isLoading: getLoading(state)
 })
 
 const mapDispatchToProps = {
-  registerEmployee: (registration, image) => registerEmployeeAction(registration, image)
+  verifyEmployee: (registration, navigation) => verifyEmployeeAction(registration, navigation)
 }
 
 export const SignInScreen = connect(mapStateToProps, mapDispatchToProps)(SignInScreenContainer)

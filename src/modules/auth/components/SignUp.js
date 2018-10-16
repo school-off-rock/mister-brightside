@@ -5,19 +5,21 @@ import {
   Keyboard,
   Text
 } from 'react-native'
+import { func, bool } from 'prop-types'
 import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
 import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
 import { InputWithLabel } from '../../shared/components/inputs/InputWithLabel'
 import { ButtonWithRightIcon } from '../../shared/components/buttons/ButtonWithRightIcon'
-import { styles } from '../../shared/components/styles/shared.style'
-import { METRICS, FONTS } from '../../../constants/theme'
+import { RowLoading } from '../../shared/components/rows/RowLoading'
+import { styles } from '../styles/signUp.style'
+import { METRICS } from '../../../constants/theme'
 import { hasText } from '../../../config/functions'
 
 
 const Container = ScreenContainerHOC(View)
 
-export class SignIn extends Component {
-  static propTypes = {}
+export class SignUp extends Component {
+  static propTypes = { onContinuePress: func.isRequired, loading: bool.isRequired }
 
   state = {
     keyboardHeight: 0,
@@ -78,9 +80,34 @@ export class SignIn extends Component {
     this.setState({ registration })
   }
 
-  render() {
-    const { keyboardHeight, registration } = this.state
+  onSignUpPress = () => {
+    const { onContinuePress } = this.props
+    const { registration } = this.state
+    onContinuePress(registration)
+  }
+
+  renderFooter = () => {
+    const { loading } = this.props
+    const { registration } = this.state
     const buttonDisabled = !hasText(registration)
+    if (loading) {
+      return (<RowLoading />)
+    }
+    return (
+      <ButtonWithRightIcon
+        disabled={buttonDisabled}
+        title="CONTINUAR"
+        onChangeText={this.setRegistration}
+        label="Matrícula"
+        iconName="chevron-right"
+        onPress={this.onSignUpPress}
+        containerStyle={styles.button}
+      />
+    )
+  }
+
+  render() {
+    const { keyboardHeight } = this.state
     const containerStyle = [
       styles.container,
       {
@@ -93,7 +120,7 @@ export class SignIn extends Component {
       <Container style={styles.container}>
         <StatusBarStandard />
         <View style={containerStyle}>
-          <Text style={{ textAlign: 'center', fontSize: FONTS.size.medium, alignSelf: 'center' }}>
+          <Text style={styles.description}>
           Para possibilitar o acesso aos seus dados, precisamos da sua matrícula
           </Text>
           <InputWithLabel
@@ -101,15 +128,7 @@ export class SignIn extends Component {
             label="Matrícula"
           />
         </View>
-        <ButtonWithRightIcon
-          disabled={buttonDisabled}
-          title="CADASTRAR"
-          onChangeText={this.setRegistration}
-          label="Matrícula"
-          iconName="chevron-right"
-          onPress={() => alert('oi')}
-          containerStyle={{ justifyContent: 'flex-end', padding: METRICS.BYTE }}
-        />
+        {this.renderFooter()}
       </Container>
     )
   }

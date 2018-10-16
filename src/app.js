@@ -1,10 +1,10 @@
 
 import React from 'react'
-import { InteractionManager } from 'react-native'
 import { shape, func } from 'prop-types'
 import { Provider } from 'react-redux'
 import { Navigator } from './navigation'
 import { setUpConfigs } from './config'
+import { getUserRegistration } from './config/functions'
 
 export class App extends React.Component {
   static propTypes = {
@@ -28,12 +28,19 @@ export class App extends React.Component {
   constructor(props) {
     super(props)
     // Text.defaultProps.allowFontScaling = false
-    this.state = { loaded: false, user: {} }
+    this.state = { loaded: false, isLogged: false, user: {} }
   }
 
   componentDidMount = () => {
     setUpConfigs()
-    InteractionManager.runAfterInteractions(() => this.setState({ loaded: true }))
+    getUserRegistration().then((user) => {
+      const hasId = ((typeof user.registration !== 'undefined') && (user.registration !== ''))
+      this.setState({
+        user,
+        isLogged: hasId,
+        loaded: true
+      })
+    })
   }
 
   render() {

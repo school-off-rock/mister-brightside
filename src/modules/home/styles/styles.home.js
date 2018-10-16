@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { COLORS, METRICS } from '../../../constants/theme'
 
 export const styles = StyleSheet.create({
@@ -9,6 +9,11 @@ export const styles = StyleSheet.create({
   },
   preview: {
     flex: 1,
+  },
+  absoluteCentered: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...StyleSheet.absoluteFillObject
   },
   bottomOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -21,7 +26,17 @@ export const styles = StyleSheet.create({
     borderWidth: METRICS.NANO,
     borderColor: COLORS.SURFACE,
     borderRadius: METRICS.TERA,
-    margin: METRICS.KILO
+    margin: METRICS.KILO,
+    ...Platform.select({
+      android: {
+        elevation: 2,
+      },
+      ios: {
+        shadowColor: COLORS.DARK_DIVIDER,
+        shadowOffset: { height: 2 },
+        shadowRadius: 2,
+      }
+    }),
   },
   capture: {
     backgroundColor: COLORS.SURFACE,
@@ -29,6 +44,16 @@ export const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: METRICS.SNAP_RADIUS,
     margin: METRICS.NANO,
+    ...Platform.select({
+      android: {
+        elevation: 2,
+      },
+      ios: {
+        shadowColor: COLORS.DARK_DIVIDER,
+        shadowOffset: { height: 2 },
+        shadowRadius: 2,
+      }
+    }),
   },
   pendingWrap: {
     alignItems: 'center',

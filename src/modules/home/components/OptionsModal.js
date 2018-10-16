@@ -8,14 +8,16 @@ import {
 
 import {
   arrayOf,
-  func,
   bool,
-  string,
+  func,
   shape,
+  string,
 } from 'prop-types'
+import { SafeAreaView } from 'react-navigation'
+
+import RowIconText from '../../shared/components/rows/RowIconText'
 
 import { COLORS, METRICS } from '../../../constants/theme'
-import RowIconText from '../../shared/components/rows/RowIconText'
 
 export class OptionsModal extends Component {
   static propTypes = {
@@ -50,28 +52,35 @@ export class OptionsModal extends Component {
     }
   }
 
-  animateTranslate = (isVisible) => {
+  animateTranslate = async (isVisible) => {
     const { translateY } = this.state
     if (isVisible) this.setState({ isVisible })
-    Animated.timing(
+    await Animated.timing(
       translateY,
       {
         toValue: isVisible ? 0 : this.menuCardHeight,
         useNativeDriver: true,
-        duration: 300,
       }
-    ).start(() => { if (!isVisible) this.setState({ isVisible }) })
+    ).start()
+    if (!isVisible) this.setState({ isVisible })
   }
 
   renderOption = ({ label, iconName, onPress }) => (
     <RowIconText
-      iconColor={COLORS.BLACK_PRIMARY_ALT}
       iconName={iconName}
       key={label}
       onPress={onPress}
       text={label}
       textEmphasis
     />
+  )
+
+  setOpacity = () => (
+    this.state.translateY.interpolate({
+      inputRange: [0, this.menuCardHeight * 0.1],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    })
   )
 
   render() {
@@ -88,15 +97,20 @@ export class OptionsModal extends Component {
           <Animated.View
             style={[
               styles.blur,
-              { transform: [{ translateY }, { perspective: 1000 }] }
+              {
+                opacity: this.setOpacity(),
+                transform: [{ translateY }, { perspective: 1000 }],
+              }
             ]}
           >
-            {options.map(this.renderOption)}
-            <RowIconText
-              text="Cancelar"
-              iconName="close"
-              onPress={onCancel}
-            />
+            <SafeAreaView forceInset={{ bottom: 'always' }}>
+              {options.map(this.renderOption)}
+              <RowIconText
+                text="Cancelar"
+                iconName="close"
+                onPress={onCancel}
+              />
+            </SafeAreaView>
           </Animated.View>
         </View>
       </Modal>
@@ -110,9 +124,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   blur: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.SURFACE_OPACITY,
     borderTopRightRadius: METRICS.BORDER_RADIUS,
     borderTopLeftRadius: METRICS.BORDER_RADIUS,
     paddingVertical: METRICS.BIT,
+    elevation: 4,
   },
 })

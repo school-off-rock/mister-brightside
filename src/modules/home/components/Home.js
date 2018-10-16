@@ -8,10 +8,12 @@ import { func } from 'prop-types'
 
 import { RNCamera } from 'react-native-camera'
 
+import { Flash } from '../../shared/components/animations/Flash'
+import { LoadingSpinner } from '../../shared/components/LoadingSpinner'
 import { OptionsModal } from './OptionsModal'
+import { PendingAuthView } from './PendingAuthView'
 import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
 import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
-import { PendingAuthView } from './PendingAuthView'
 
 import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE } from '../../../constants/strings'
 
@@ -27,10 +29,14 @@ export class Home extends Component {
 
   state = {
     imageSnap: undefined,
+    isCameraReady: false,
+    isTakingPicture: false,
     modalVisible: false,
   }
 
   hideModal = () => this.setState({ modalVisible: false, imageSnap: undefined })
+
+  onCameraReady = () => this.setState({ isCameraReady: true })
 
   navigateToHistory = () => {
     const { onHistoryPress } = this.props
@@ -48,15 +54,21 @@ export class Home extends Component {
         fixOrientation: true,
         mirrorImage: true,
       }
+      this.setState({ isTakingPicture: true })
       const data = await this.camera.takePictureAsync(options)
-      this.setState({ imageSnap: data.uri, modalVisible: true })
+      this.setState({ imageSnap: data.uri, modalVisible: true, isTakingPicture: false })
       return registerEmployee('', data.base64)
     }
     return this.setState({ imageSnap: undefined })
   }
 
   render() {
-    const { imageSnap, modalVisible } = this.state
+    const {
+      imageSnap,
+      modalVisible,
+      isTakingPicture,
+      isCameraReady,
+    } = this.state
     const modalOptions = [
       {
         label: 'Bater ponto',
@@ -88,12 +100,27 @@ export class Home extends Component {
                 flashMode={RNCamera.Constants.FlashMode.on}
                 permissionDialogTitle={CAMERA_PERMISSION_TITLE}
                 permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
+                notAuthorizedView={<PendingAuthView />}
+                // pendingAuthorizationView={<PendingAuthView />}
+                onCameraReady={this.onCameraReady}
               />
-              <View style={styles.bottomOverlay}>
-                <View style={styles.captureWrap}>
-                  <TouchableOpacity style={styles.capture} onPress={() => this.takePicture(this.camera)} />
-                </View>
-              </View>
+              {
+                isCameraReady
+                && (
+                  <View style={styles.bottomOverlay}>
+                    <View style={styles.captureWrap}>
+                      <TouchableOpacity
+                        style={styles.capture}
+                        onPress={() => this.takePicture(this.camera)}
+                        disabled={isTakingPicture}
+                      >
+                        {isTakingPicture && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              }
+              <Flash willFlash={isTakingPicture} />
             </View>
           )
         }

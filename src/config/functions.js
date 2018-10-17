@@ -71,7 +71,7 @@ export function generateStandardNavBar(navigation, title, onTitlePress) {
     headerRight: (
       <NavBarRight title={title} />
     ),
-    headerStyle: Values.NAV_BAR_STYLES.primary.headerStyle
+    ...Values.NAV_BAR_STYLES.absolute
   }
   return standardNavBar
 }

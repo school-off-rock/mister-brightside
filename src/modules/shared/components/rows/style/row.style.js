@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { METRICS } from '../../../../../constants/theme/metrics'
+import { FONTS, METRICS } from '../../../../../constants/theme'
 
 export const rowStyles = StyleSheet.create({
   fill: {
@@ -10,5 +10,24 @@ export const rowStyles = StyleSheet.create({
     minHeight: METRICS.LOADING_CONTAINER_HEIGHT,
     justifyContent: 'center',
     paddingVertical: METRICS.BIT,
+  },
+
+  text: {
+    marginVertical: METRICS.BYTE,
+    ...FONTS.standardStyle.pEmphasis
+  },
+
+  textSecondary: {
+    marginVertical: METRICS.BYTE,
+    ...FONTS.standardStyle.p
+  },
+
+  iconWrap: {
+    marginHorizontal: METRICS.BIT,
+  },
+
+  centerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })

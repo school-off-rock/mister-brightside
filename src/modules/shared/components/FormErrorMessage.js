@@ -8,22 +8,22 @@ import { styles } from './styles/formErrorMessage.style'
 export class FormErrorMessage extends PureComponent {
   state = {
     messageOpacity: new Animated.Value(0),
-    isVisible: false,
+    message: ''
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    const { isVisible } = this.state
-    if (isVisible !== nextProps.isVisible) {
-      if (nextProps.isVisible) {
-        this.showMessage()
+  componentDidUpdate = (prevProps) => {
+    const { isVisible, message } = this.props
+    if (isVisible !== prevProps.isVisible) {
+      if (isVisible) {
+        this.showMessage(message)
       } else {
-        this.hideMessage()
+        this.hideMessage(message)
       }
-      this.setState({ isVisible: nextProps.isVisible })
     }
-  }
+  };
 
-  showMessage = () => (
+  showMessage = async (message) => {
+    await this.setState({ message })
     Animated.timing(
       this.state.messageOpacity,
       {
@@ -31,7 +31,7 @@ export class FormErrorMessage extends PureComponent {
         duration: 275,
       }
     ).start()
-  )
+  }
 
   hideMessage = () => (
     Animated.timing(
@@ -40,22 +40,23 @@ export class FormErrorMessage extends PureComponent {
         toValue: 0,
         duration: 275,
       }
-    ).start()
+    ).start(() => this.setState({ message: '' }))
   )
 
   render() {
-    const { message } = this.props
-    const { messageOpacity } = this.state
+    const { messageOpacity, message } = this.state
     return (
       <Animated.Text
         style={[
           styles.errorMessage,
           {
             opacity: messageOpacity,
-            maxHeight: messageOpacity.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, METRICS.MAX_ERROR_MESSAGE_HEIGHT]
-            }),
+            transform: [{
+              translateY: messageOpacity.interpolate({
+                inputRange: [0, 1],
+                outputRange: [-METRICS.NANO, 0]
+              })
+            }],
             paddingVertical: messageOpacity.interpolate({
               inputRange: [0, 1],
               outputRange: [0, METRICS.NANO]

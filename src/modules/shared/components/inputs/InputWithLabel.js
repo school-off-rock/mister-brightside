@@ -4,12 +4,20 @@ import {
 } from 'react-native'
 import { func, string } from 'prop-types'
 import { TextField } from 'react-native-material-textfield'
+
+import { viewPropTypes } from '../../propTypes'
+
 import { COLORS } from '../../../../constants/theme'
 
 export class InputWithLabel extends Component {
   static propTypes = {
     onChangeText: func.isRequired,
-    label: string.isRequired
+    label: string.isRequired,
+    style: viewPropTypes,
+  }
+
+  static defaultProps = {
+    style: {}
   }
 
   state={ value: '' }
@@ -22,9 +30,9 @@ export class InputWithLabel extends Component {
 
   render() {
     const { value } = this.state
-    const { label } = this.props
+    const { label, style } = this.props
     return (
-      <View>
+      <View style={style}>
         <TextField
           label={label}
           value={value}

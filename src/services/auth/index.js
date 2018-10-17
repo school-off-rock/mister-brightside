@@ -8,9 +8,7 @@ import { Values } from '../../constants/values'
 import { getIpAddress } from '../shared'
 
 const {
-  KAIROS_SCHOOL_GALLERY_NAME,
-  KAIROS_API_ID,
-  KAIROS_API_KEY
+  FRAPI_API_KEY
 } = Values
 
 export const verifyEmployee = async (registration) => {
@@ -30,19 +28,17 @@ export const verifyEmployee = async (registration) => {
 }
 
 
-export const registerEmployeePhoto = async (registration, image) => {
+export const registerEmployeePhoto = async (registration, imageB64) => {
   return fetch(REGISTER_EMPLOYEE_PHOTO, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      app_id: KAIROS_API_ID,
-      app_key: KAIROS_API_KEY
+      app_key: FRAPI_API_KEY
     },
     body: JSON.stringify({
-      subject_id: registration,
-      image,
-      galery_name: KAIROS_SCHOOL_GALLERY_NAME
+      label: registration,
+      imageB64,
     })
   }).then(resp => verifyResponse(resp))
     .then((response) => {

@@ -8,6 +8,6 @@ case $1 in
     exit
     ;;
   * )
-    ./emulator -avd Phone -dns-server 8.8.4.4
+    ./emulator -avd Nexus_5X_API_26 -dns-server 8.8.4.4
     exit
 esac

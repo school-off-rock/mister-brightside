@@ -1,4 +1,7 @@
-import { AsyncStorage, Alert } from 'react-native'
+import {
+  AsyncStorage,
+  // Alert
+} from 'react-native'
 import {
   verifyEmployee,
   registerEmployeePhoto,
@@ -13,7 +16,7 @@ import {
 } from '../sync/syncAuthActions'
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 
-const showAlert = (title, text) => Alert.alert(title, text, [{ text: 'OK', onPress: () => { } }], { cancelable: true })
+// const showAlert = (title, text) => Alert.alert(title, text, [{ text: 'OK', onPress: () => { } }], { cancelable: true })
 
 export function verifyEmployeeAction(registration, navigation) {
   return async (dispatch) => {
@@ -24,7 +27,6 @@ export function verifyEmployeeAction(registration, navigation) {
       dispatch(hideLoading())
       navigation.navigate('home', { registration })
     } catch (err) {
-      showAlert('Atenção', err.message)
       dispatch(registerFailed(err.message))
     }
   }

@@ -1,86 +1,54 @@
 import React, { Component } from 'react'
 import {
   View,
-  Platform,
-  Keyboard,
-  Text
+  Text,
 } from 'react-native'
 
 import { func, bool } from 'prop-types'
 
 import { ButtonWithRightIcon } from '../../shared/components/buttons/ButtonWithRightIcon'
+import { FormErrorMessage } from '../../shared/components/FormErrorMessage'
 import { InputWithLabel } from '../../shared/components/inputs/InputWithLabel'
 import { RowLoading } from '../../shared/components/rows/RowLoading'
 import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
 import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
+import { ViewHandlingKeyboard } from '../../shared/components/ViewHandlingKeyboard'
 
+import { hasText, openPhonePad } from '../../../config/functions'
 import { METRICS } from '../../../constants/theme'
-import { hasText } from '../../../config/functions'
 
 import { styles } from '../styles/signUp.style'
 
-const Container = ScreenContainerHOC(View)
+const Container = ScreenContainerHOC(ViewHandlingKeyboard)
 
 export class SignUp extends Component {
-  static propTypes = { onContinuePress: func.isRequired, loading: bool.isRequired }
+  static propTypes = { onContinuePress: func.isRequired, loading: bool.isRequired, hideAlert: func.isRequired }
 
   state = {
-    keyboardHeight: 0,
+    alert: { message: '', showAlert: false }
   }
 
-  componentDidMount = () => {
-    if (Platform.OS === 'ios') {
-      this.keyboardWillShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow)
-      this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide)
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    if (nextProps.alert.showAlert !== prevState.alert.showAlert) {
+      return {
+        alert: nextProps.alert
+      }
     }
-    if (Platform.OS === 'android') {
-      this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
-      this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
-    }
+    return null
   }
 
-  componentWillUnmount = () => {
-    if (Platform.OS === 'ios') {
-      this.keyboardWillShowListener.remove()
-      this.keyboardWillHideListener.remove()
-    }
-    if (Platform.OS === 'android') {
-      this.keyboardDidShowListener.remove()
-      this.keyboardDidHideListener.remove()
-    }
-  }
-
-  keyboardWillShow = (event) => {
-    if (Platform.OS === 'ios') { this.setKeyboard(event) }
-  }
-
-  keyboardDidShow = (event) => {
-    if (Platform.OS === 'android') { this.setKeyboard(event) }
-  }
-
-  setKeyboard = (event) => {
-    const keyboardHeight = event.endCoordinates.height
-    this.setState({
-      keyboardHeight: Platform.OS === 'ios' ? keyboardHeight : 0,
-    })
-  }
-
-  keyboardWillHide = () => {
-    if (Platform.OS === 'ios') { this.unsetKeyboard() }
-  }
-
-  keyboardDidHide = () => {
-    if (Platform.OS === 'android') { this.unsetKeyboard() }
-  }
-
-  unsetKeyboard = () => {
-    this.setState({
-      keyboardHeight: 0,
-    })
-  }
+  setAlert = (showAlert, message) => { this.setState({ alert: { showAlert, message } }) }
 
   setRegistration = (registration) => {
-    this.setState({ registration })
+    const { alert } = this.state
+    const { showAlert } = alert
+    const { hideAlert } = this.props
+    if (showAlert === true) {
+      hideAlert()
+      this.setState({ alert: { showAlert: false, message: '', registration } })
+    } else {
+      this.setState({ registration })
+    }
   }
 
   onSignUpPress = () => {
@@ -109,30 +77,46 @@ export class SignUp extends Component {
     )
   }
 
-  render() {
-    const { keyboardHeight } = this.state
-    const containerStyle = [
-      styles.container,
-      {
-        paddingBottom: keyboardHeight,
-        paddingTop: METRICS.KILO,
-        paddingHorizontal: METRICS.KILO,
-      }
-    ]
-    return (
-      <Container style={styles.container}>
-        <StatusBarStandard />
-        <View style={containerStyle}>
-          <Text style={styles.description}>
+openNumber = () => openPhonePad('40035159')
+
+render() {
+  const { alert } = this.state
+  const containerStyle = [
+    styles.container,
+    {
+      paddingTop: METRICS.KILO,
+      paddingHorizontal: METRICS.KILO,
+    }
+  ]
+  return (
+    <Container style={styles.container}>
+      <StatusBarStandard />
+      <View style={containerStyle}>
+        <Text style={styles.description}>
           Para possibilitar o acesso aos seus dados, precisamos da sua matrícula
-          </Text>
-          <InputWithLabel
-            onChangeText={this.setRegistration}
-            label="Matrícula"
-          />
-        </View>
-        {this.renderFooter()}
-      </Container>
-    )
-  }
+        </Text>
+        <InputWithLabel
+          onChangeText={this.setRegistration}
+          label="Matrícula"
+        />
+        <FormErrorMessage
+          message={alert.message}
+          isVisible={alert.showAlert}
+        />
+      </View>
+      {this.renderFooter()}
+      {/* <ModalWithIcon
+        onCancel={() => {}}
+        onClose={() => {}}
+        onAction={this.openNumber}
+        isVisible={false}
+        iconName="phone-in-talk"
+        title="Precisa de ajuda?"
+        description="Ligue para 4003-5159 que iremos te ajudar"
+        closeButtonLabel="Fechar"
+        actionButtonLabel="Ligar"
+      /> */}
+    </Container>
+  )
+}
 }

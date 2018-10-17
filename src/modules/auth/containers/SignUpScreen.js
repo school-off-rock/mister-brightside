@@ -17,7 +17,7 @@ import { NavBarLarge } from '../../shared/components/NavBarLarge'
 class SignInScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     return ({
-      header: <NavBarLarge navigation={navigation} />
+      header: <NavBarLarge navigation={navigation} title="Bem vindo" />
     })
   }
 

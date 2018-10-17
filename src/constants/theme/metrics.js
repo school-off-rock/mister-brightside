@@ -5,7 +5,7 @@ const SNAP_BUTTON = 64
 const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 0 : 24
 const NAV_BAR_DATA_HEIGHT = Platform.OS === 'ios' ? 44 : 56
 const NAV_BAR_HEIGHT = STATUS_BAR_HEIGHT + NAV_BAR_DATA_HEIGHT
-const TITLE_ROW = 40
+const TITLE_ROW = 56
 const NAV_BAR_HEIGHT_LARGE = NAV_BAR_HEIGHT + TITLE_ROW
 
 

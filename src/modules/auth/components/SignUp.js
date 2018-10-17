@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import {
-  View,
-  Text,
-} from 'react-native'
+import { View } from 'react-native'
 
 import { func, bool } from 'prop-types'
 
@@ -11,11 +8,10 @@ import { FormErrorMessage } from '../../shared/components/FormErrorMessage'
 import { InputWithLabel } from '../../shared/components/inputs/InputWithLabel'
 import { RowLoading } from '../../shared/components/rows/RowLoading'
 import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
-import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
 import { ViewHandlingKeyboard } from '../../shared/components/ViewHandlingKeyboard'
+import { Paragraph } from '../../shared/components/text'
 
 import { hasText, openPhonePad } from '../../../config/functions'
-import { METRICS } from '../../../constants/theme'
 
 import { styles } from '../styles/signUp.style'
 
@@ -81,21 +77,14 @@ openNumber = () => openPhonePad('40035159')
 
 render() {
   const { alert } = this.state
-  const containerStyle = [
-    styles.container,
-    {
-      paddingTop: METRICS.KILO,
-      paddingHorizontal: METRICS.KILO,
-    }
-  ]
   return (
     <Container style={styles.container}>
-      <StatusBarStandard />
-      <View style={containerStyle}>
-        <Text style={styles.description}>
+      <View style={styles.fluid}>
+        <Paragraph style={styles.description}>
           Para possibilitar o acesso aos seus dados, precisamos da sua matrícula
-        </Text>
+        </Paragraph>
         <InputWithLabel
+          style={styles.input}
           onChangeText={this.setRegistration}
           label="Matrícula"
         />

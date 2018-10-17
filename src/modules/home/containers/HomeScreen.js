@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { func, shape } from 'prop-types'
+import {
+  bool,
+  func,
+  shape,
+  string,
+  oneOf,
+} from 'prop-types'
 
-import { registerEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
+import { getModalState } from '../../../redux/reducers/modal/selectors'
+import { registerEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
+import { setModalAction } from '../../../redux/actions/sync/syncModalAction'
 
 import { Home } from '../components/Home'
 import { NavBarLarge } from '../../shared/components/NavBarLarge'
@@ -24,7 +32,18 @@ class HomeScreenContainer extends Component {
 
   static propTypes = {
     registerEmployee: func.isRequired,
-    navigation: shape({ navigate: func })
+    navigation: shape({ navigate: func }),
+    modalAlert: shape({
+      isVisible: bool,
+      theme: oneOf(['PRIMARY', 'SUCCESS', 'ALERT']).isRequired,
+      title: string,
+      description: string,
+      iconName: string,
+    })
+  }
+
+  static defaultProps = {
+    modalAlert: { isVisible: false }
   }
 
   static defaultProps = {
@@ -48,22 +67,25 @@ class HomeScreenContainer extends Component {
   };
 
   render() {
-    const { registerEmployee } = this.props
+    const { registerEmployee, modalAlert } = this.props
     return (
       <Home
         registerEmployee={registerEmployee}
         onHistoryPress={this.navigateToHistory}
+        modalAlert={modalAlert}
       />
     )
   }
 }
 
 const mapStateToProps = state => ({
-  isLoading: getLoading(state)
+  isLoading: getLoading(state),
+  modalAlert: getModalState(state),
 })
 
 const mapDispatchToProps = {
-  registerEmployee: (registration, image) => registerEmployeeAction(registration, image)
+  registerEmployee: (registration, image) => registerEmployeeAction(registration, image),
+  setModal: (isVisible, theme, title, description, iconName) => setModalAction(isVisible, theme, title, description, iconName)
 }
 
 export const HomeScreen = connect(mapStateToProps, mapDispatchToProps)(HomeScreenContainer)

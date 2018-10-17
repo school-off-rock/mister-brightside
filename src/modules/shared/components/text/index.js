@@ -1,3 +1,5 @@
 export { H2 } from './h2'
 export { H6 } from './h6'
 export { Paragraph } from './Paragraph'
+export { Description } from './Description'
+export { Caption } from './Caption'

@@ -2,16 +2,23 @@ import React, { Component } from 'react'
 import {
   InteractionManager,
 } from 'react-native'
+
 import { connect } from 'react-redux'
 import { func, bool, array } from 'prop-types'
 import moment from 'moment'
+
 import { fetchEmployeeEntriesAction } from '../../../redux/actions/async/asyncClockEntryActions'
 import { getLoadingEntries, getClockEntries } from '../../../redux/reducers/clockEntry/selectors'
+
 import { History } from '../components/History'
-import { generateStandardNavBar } from '../../../config/functions'
+import { NavBar } from '../../shared/containers/NavBar'
 
 class HistoryScreenContainer extends Component {
-  static navigationOptions = ({ navigation }) => generateStandardNavBar(navigation)
+  static navigationOptions = ({ navigation }) => {
+    return ({
+      header: <NavBar navigation={navigation} title="Histórico" />
+    })
+  }
 
   static propTypes = {
     fetchHistory: func.isRequired,

@@ -7,15 +7,13 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { bool, func, array } from 'prop-types'
-import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
-import { RowLoading } from '../../shared/components/rows/RowLoading'
 import { HistoryDatePicker } from './HistoryDatePicker'
 import { HistoryItem } from './HistoryItem'
-import { styles } from '../../shared/components/styles/shared.style'
+import { RowLoading } from '../../shared/components/rows/RowLoading'
+import { ViewAvoidNavBar } from '../../shared/containers/ViewAvoidNavBar'
+
 import { METRICS, COLORS } from '../../../constants/theme'
-
-
-const Container = ScreenContainerHOC(View)
+import { styles } from '../../shared/components/styles/shared.style'
 
 export class History extends Component {
   static propTypes = {
@@ -60,7 +58,7 @@ export class History extends Component {
     const { loadingEntries, historyList, fetchHistoryList } = this.props
     const { rendering } = this.state
     return (
-      <Container style={styles.container}>
+      <ViewAvoidNavBar style={styles.container}>
         <HistoryDatePicker fetchHistoryList={fetchHistoryList} />
         { (loadingEntries) || (rendering)
           ? <RowLoading isActive={loadingEntries} />
@@ -74,7 +72,7 @@ export class History extends Component {
             />
           )
         }
-      </Container>
+      </ViewAvoidNavBar>
     )
   }
 }

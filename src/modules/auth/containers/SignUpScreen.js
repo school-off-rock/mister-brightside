@@ -2,13 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { func, shape, bool } from 'prop-types'
 import { SignUp } from '../components/SignUp'
-// import { generateStandardNavBar } from '../../../config/functions'
 import { verifyEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
 import { NavBarLarge } from '../../shared/components/NavBarLarge'
 
 class SignInScreenContainer extends Component {
-  // static navigationOptions = ({ navigation }) => generateStandardNavBar(navigation)
   static navigationOptions = ({ navigation }) => {
     return ({
       header: <NavBarLarge navigation={navigation} />

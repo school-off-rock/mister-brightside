@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
   bottomOverlay: {
     ...StyleSheet.absoluteFillObject,
     top: null,
-    // backgroundColor: COLORS.LIGHT_OVERLAY,
     flexDirection: 'row',
     justifyContent: 'center',
   },

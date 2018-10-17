@@ -24,7 +24,7 @@ const type = {
 
 const size = {
   h1: 42,
-  h2: 36,
+  h2: 34,
   h3: 28,
   h4: 22,
   h5: 20,
@@ -60,6 +60,11 @@ const style = {
 }
 
 const standardStyle = {
+  h2: {
+    fontSize: size.h2,
+    color: COLORS.BLACK_PRIMARY_ALT,
+    ...type.medium
+  },
   h6: {
     fontSize: size.h6,
     color: COLORS.BLACK_PRIMARY_ALT,

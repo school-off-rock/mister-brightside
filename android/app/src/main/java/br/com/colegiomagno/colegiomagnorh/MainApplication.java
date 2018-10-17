@@ -1,17 +1,18 @@
-package com.magnoapp;
+package br.com.colegiomagno.colegiomagnorh;
 
 import android.app.Application;
 
+import com.cmcewen.blurview.BlurViewPackage;
 import com.facebook.react.ReactApplication;
-import com.cmcewen.blurview.BlurViewPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.cmcewen.blurview.BlurViewPackage;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
-import org.reactnative.camera.RNCameraPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
+import br.com.colegiomagno.colegiomagnorh.BuildConfig;
+import com.oblador.vectoricons.VectorIconsPackage;
+
+import org.reactnative.camera.RNCameraPackage;
 
 import java.util.Arrays;
 import java.util.List;

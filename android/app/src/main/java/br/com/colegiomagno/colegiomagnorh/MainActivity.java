@@ -1,4 +1,4 @@
-package com.magnoapp;
+package br.com.colegiomagno.colegiomagnorh;
 
 import com.facebook.react.ReactActivity;
 

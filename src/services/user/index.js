@@ -12,7 +12,8 @@ const {
   FRAPI_API_KEY
 } = Values
 
-export const registerEmployeeEntry = async (registration) => {
+export const registerEmployeeEntry = async () => {
+  const { registration = 902802 } = await getUserRegistration()
   const formData = new FormData()
   formData.append('matricula', registration)
   return fetch(REGISTER_EMPLOYEE_ENTRY, {

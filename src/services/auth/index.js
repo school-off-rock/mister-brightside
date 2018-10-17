@@ -6,6 +6,7 @@ import {
 } from '../../constants/routes'
 import { Values } from '../../constants/values'
 import { getIpAddress } from '../shared'
+import { Employee } from '../../domain/Employee'
 
 const {
   FRAPI_API_KEY
@@ -20,7 +21,8 @@ export const verifyEmployee = async (registration) => {
     },
   }).then(resp => verifyResponse(resp))
     .then((response) => {
-      return response
+      const employeeVerified = new Employee(response)
+      return employeeVerified
     })
     .catch((error) => {
       throw error
@@ -28,7 +30,7 @@ export const verifyEmployee = async (registration) => {
 }
 
 
-export const registerEmployeePhoto = async (registration, imageB64) => {
+export const registerEmployeePhoto = async ({ registration }, imageB64) => {
   return fetch(REGISTER_EMPLOYEE_PHOTO, {
     method: 'POST',
     headers: {

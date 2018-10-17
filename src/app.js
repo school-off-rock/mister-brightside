@@ -4,6 +4,7 @@ import { shape, func } from 'prop-types'
 import { Provider } from 'react-redux'
 import { Navigator } from './navigation'
 import { setUpConfigs } from './config'
+import { saveUser } from './redux/actions/sync/syncAuthActions'
 import { getUserRegistration } from './config/functions'
 
 export class App extends React.Component {
@@ -40,6 +41,7 @@ export class App extends React.Component {
         isLogged: hasId,
         loaded: true
       })
+      this.props.store.dispatch(saveUser(user))
     })
   }
 

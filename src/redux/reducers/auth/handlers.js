@@ -6,3 +6,4 @@ export const registerSuccess = (state, { registration }) => ({ ...state, registr
 export const registerFailed = (state, { message }) => ({ ...state, alert: { showAlert: true, message }, isLoading: false })
 export const hideAlert = state => ({ ...state, alert: NO_ALERTS })
 export const verifyEmployeePhotoFailed = (state, { message }) => ({ ...state, alert: { showAlert: true, message }, isLoading: false })
+export const saveUser = (state, { user }) => ({ ...state, user })

@@ -9,9 +9,7 @@ import { verifyResponse, getUserRegistration, mapClockHistory } from '../../conf
 import { ClockEntry } from '../../domain/ClockEntry'
 
 const {
-  KAIROS_SCHOOL_GALLERY_NAME,
-  KAIROS_API_ID,
-  KAIROS_API_KEY
+  FRAPI_API_KEY
 } = Values
 
 export const registerEmployeeEntry = async (registration) => {
@@ -50,40 +48,45 @@ export const getEmployeeClockEntries = async (initDate, endDate) => {
     })
 }
 
-export const verifyEmployeePhoto = async (image) => {
+export const verifyEmployeePhoto = async (imageB64) => {
+  const { registration = 902802 } = await getUserRegistration()
   return fetch(VERIFY_EMPLOYEE_PHOTO, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      app_id: KAIROS_API_ID,
-      app_key: KAIROS_API_KEY
+      app_key: FRAPI_API_KEY
     },
     body: JSON.stringify({
-      image,
-      galery_name: KAIROS_SCHOOL_GALLERY_NAME
+      imageB64,
+      label: registration
     })
   }).then(resp => verifyResponse(resp))
-    .then((response) => {
-      return response
+    .then(({ person }) => {
+      const [personData] = person
+      const { recognition: confidence } = personData
+      if (confidence >= 60) {
+        return personData
+      }
+      throw { message: 'Rosto não reconhecido', status: 404 }
     })
     .catch((err) => {
       throw err
     })
 }
 
-export const trainEmployeePhoto = async (image) => {
+export const trainEmployeePhoto = async (imageB64) => {
+  const { registration = 902802 } = await getUserRegistration()
   return fetch(TRAIN_EMPLOYEE_PHOTO, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      app_id: KAIROS_API_ID,
-      app_key: KAIROS_API_KEY
+      app_key: FRAPI_API_KEY
     },
     body: JSON.stringify({
-      image,
-      galery_name: KAIROS_SCHOOL_GALLERY_NAME
+      imageB64,
+      label: registration
     })
   }).then(resp => verifyResponse(resp))
     .then((response) => {

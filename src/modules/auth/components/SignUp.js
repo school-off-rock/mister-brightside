@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   View,
-  Text
+  Text,
 } from 'react-native'
 import { func, bool } from 'prop-types'
 import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
@@ -13,7 +13,9 @@ import { RowLoading } from '../../shared/components/rows/RowLoading'
 import { FormErrorMessage } from '../../shared/components/FormErrorMessage'
 import { styles } from '../styles/signUp.style'
 import { METRICS } from '../../../constants/theme'
-import { hasText } from '../../../config/functions'
+import { hasText, openPhonePad } from '../../../config/functions'
+
+// import { ModalWithIcon } from '../../shared/components/modals/ModalWithIcon'
 
 
 const Container = ScreenContainerHOC(ViewHandlingKeyboard)
@@ -74,33 +76,46 @@ export class SignUp extends Component {
     )
   }
 
-  render() {
-    const { alert } = this.state
-    const containerStyle = [
-      styles.container,
-      {
-        paddingTop: METRICS.KILO,
-        paddingHorizontal: METRICS.KILO,
-      }
-    ]
-    return (
-      <Container style={styles.container}>
-        <StatusBarStandard />
-        <View style={containerStyle}>
-          <Text style={styles.description}>
+openNumber = () => openPhonePad('40035159')
+
+render() {
+  const { alert } = this.state
+  const containerStyle = [
+    styles.container,
+    {
+      paddingTop: METRICS.KILO,
+      paddingHorizontal: METRICS.KILO,
+    }
+  ]
+  return (
+    <Container style={styles.container}>
+      <StatusBarStandard />
+      <View style={containerStyle}>
+        <Text style={styles.description}>
           Para possibilitar o acesso aos seus dados, precisamos da sua matrícula
-          </Text>
-          <InputWithLabel
-            onChangeText={this.setRegistration}
-            label="Matrícula"
-          />
-          <FormErrorMessage
-            message={alert.message}
-            isVisible={alert.showAlert}
-          />
-        </View>
-        {this.renderFooter()}
-      </Container>
-    )
-  }
+        </Text>
+        <InputWithLabel
+          onChangeText={this.setRegistration}
+          label="Matrícula"
+        />
+        <FormErrorMessage
+          message={alert.message}
+          isVisible={alert.showAlert}
+        />
+      </View>
+      {this.renderFooter()}
+      {/* <ModalWithIcon
+        onCancel={() => {}}
+        onClose={() => {}}
+        onAction={this.openNumber}
+        isVisible={false}
+        iconName="phone-in-talk"
+        title="Precisa de ajuda?"
+        description="Ligue para 4003-5159 que iremos te ajudar"
+        closeButtonLabel="Fechar"
+        actionButtonLabel="Ligar"
+      /> */}
+    </Container>
+  )
+}
 }

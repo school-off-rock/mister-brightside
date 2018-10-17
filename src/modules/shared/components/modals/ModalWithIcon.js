@@ -17,21 +17,25 @@ export class ModalWithIcon extends Component {
   state ={}
 
   static propTypes = {
+    onAction: func,
     onCancel: func.isRequired,
     onClose: func.isRequired,
     isVisible: bool,
     title: string,
     description: string,
-    buttonLabel: string,
+    actionButtonLabel: string,
+    closeButtonLabel: string,
     primaryColor: string,
     iconName: string,
   }
 
   static defaultProps = {
+    onAction: () => {},
     isVisible: false,
     title: '',
     description: '',
-    buttonLabel: '',
+    actionButtonLabel: undefined,
+    closeButtonLabel: '',
     primaryColor: COLORS.PRIMARY,
     iconName: 'help'
   }
@@ -39,11 +43,13 @@ export class ModalWithIcon extends Component {
   render() {
     const {
       isVisible,
+      onAction,
       onCancel,
       onClose,
       title,
       description,
-      buttonLabel,
+      actionButtonLabel,
+      closeButtonLabel,
       primaryColor,
       iconName
     } = this.props
@@ -58,9 +64,18 @@ export class ModalWithIcon extends Component {
             <View style={styles.buttonContainer}>
               <ButtonText
                 onPress={onClose}
-                contentStyle={[{ color: primaryColor }, styles.buttonContainer]}
-                title={buttonLabel}
+                contentStyle={[{ color: primaryColor }, styles.button]}
+                title={closeButtonLabel}
               />
+              { hasText(actionButtonLabel)
+                && (
+                <ButtonText
+                  onPress={onAction}
+                  contentStyle={[{ color: primaryColor }, styles.button]}
+                  title={actionButtonLabel}
+                />
+                )
+                }
             </View>
           </View>
         </Card>

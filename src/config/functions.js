@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, Linking, Platform } from 'react-native'
 import _ from 'lodash'
 import { Values } from '../constants/values'
 import { NavBarLogo } from '../modules/shared/components/NavBarLogo'
@@ -74,4 +74,23 @@ export function generateStandardNavBar(navigation, title, onTitlePress) {
     headerStyle: Values.NAV_BAR_STYLES.primary.headerStyle
   }
   return standardNavBar
+}
+
+export const openPhonePad = (number) => {
+  const args = {
+    number
+  }
+  const settings = Object.assign({
+    prompt: true
+  }, args)
+
+  const url = `${Platform.OS === 'ios' && settings.prompt ? 'telprompt:' : 'tel:'}${settings.number}`
+
+  return Linking.canOpenURL(url).then((canOpen) => {
+    if (!canOpen) {
+      console.log(canOpen)
+      // return createError(`invalid URL provided: ${url}`)
+    }
+    return Linking.openURL(url).catch(err => Promise.reject(err))
+  })
 }

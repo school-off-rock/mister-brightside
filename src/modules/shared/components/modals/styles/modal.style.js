@@ -31,7 +31,12 @@ export const styles = StyleSheet.create({
   icon: {
     paddingVertical: METRICS.BIT,
   },
+  button: {
+    paddingVertical: METRICS.BIT,
+    marginHorizontal: METRICS.GIGA
+  },
   buttonContainer: {
     paddingVertical: METRICS.BIT,
+    flexDirection: 'row',
   }
 })

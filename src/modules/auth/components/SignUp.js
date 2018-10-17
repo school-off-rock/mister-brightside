@@ -94,17 +94,6 @@ render() {
         />
       </View>
       {this.renderFooter()}
-      {/* <ModalWithIcon
-        onCancel={() => {}}
-        onClose={() => {}}
-        onAction={this.openNumber}
-        isVisible={false}
-        iconName="phone-in-talk"
-        title="Precisa de ajuda?"
-        description="Ligue para 4003-5159 que iremos te ajudar"
-        closeButtonLabel="Fechar"
-        actionButtonLabel="Ligar"
-      /> */}
     </Container>
   )
 }

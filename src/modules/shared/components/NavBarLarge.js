@@ -17,9 +17,10 @@ import { H2 } from './text'
 import { Icon } from './Icon'
 import { NavBarLogo } from './NavBarLogo'
 import { ViewBlurIOS } from './ViewBlurIOS'
+import { ModalWithIcon } from './modals/ModalWithIcon'
 
 import { COLORS, METRICS } from '../../../constants/theme'
-import { hasText, isFunctionEmpty } from '../../../config/functions'
+import { hasText, isFunctionEmpty, openPhonePad } from '../../../config/functions'
 
 export class NavBarLarge extends Component {
   static propTypes = {
@@ -38,6 +39,16 @@ export class NavBarLarge extends Component {
     rightButtons: [],
     title: undefined,
   }
+
+  state = {
+    isModalVisible: false
+  }
+
+  showModal = () => this.setState({ isModalVisible: true })
+
+  hideModal = () => this.setState({ isModalVisible: false })
+
+  openNumber = () => openPhonePad(40035159)
 
   _onLayout = ({ nativeEvent: { layout: { height } } }) => {
     const { actualHeight, onHeightUpdate } = this.props
@@ -62,6 +73,7 @@ export class NavBarLarge extends Component {
       title,
       rightButtons,
     } = this.props
+    const { isModalVisible } = this.state
     const { state } = navigation.dangerouslyGetParent()
     const hasBackButton = state && state.index > 0
     return (
@@ -87,7 +99,7 @@ export class NavBarLarge extends Component {
                 <Icon
                   name="help-circle-outline"
                   color={COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('signIn')}
+                  onPress={this.showModal}
                 />
                 )}
               </View>
@@ -96,6 +108,17 @@ export class NavBarLarge extends Component {
             { hasText(title) && <H2 numberOfLines={1} style={s.pageTitle}>{title}</H2> }
           </SafeAreaView>
         </View>
+        <ModalWithIcon
+          onCancel={this.hideModal}
+          onClose={this.hideModal}
+          onAction={this.openNumber}
+          isVisible={isModalVisible}
+          iconName="phone-in-talk"
+          title="Precisa de ajuda?"
+          description="Ligue para 4003-5159 que iremos te ajudar"
+          closeButtonLabel="Fechar"
+          actionButtonLabel="Ligar"
+        />
       </ViewBlurIOS>
     )
   }

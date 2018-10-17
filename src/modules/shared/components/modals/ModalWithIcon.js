@@ -7,10 +7,13 @@ import {
 
 import { func, bool, string } from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { hasText } from '../../../../config/functions'
-import { Card } from '../Card'
+
 import { ButtonText } from '../buttons/ButtonText'
+import { ViewBlurDark } from '../ViewBlurDark'
+
+import { hasText } from '../../../../config/functions'
 import { COLORS, METRICS } from '../../../../constants/theme'
+
 import { styles } from './styles/modal.style'
 
 export class ModalWithIcon extends Component {
@@ -55,8 +58,8 @@ export class ModalWithIcon extends Component {
     } = this.props
 
     return (
-      <Modal onRequestClose={onCancel} animationType="slide" transparent={true} visible={isVisible}>
-        <Card style={styles.container}>
+      <Modal onRequestClose={onCancel} animationType="fade" transparent={true} visible={isVisible}>
+        <ViewBlurDark style={styles.container}>
           <View style={styles.blur}>
             <Icon name={iconName} style={styles.icon} color={primaryColor} size={METRICS.ICONS.xl} />
             { hasText(title) && <Text style={styles.title}>{title}</Text> }
@@ -75,10 +78,10 @@ export class ModalWithIcon extends Component {
                   title={actionButtonLabel}
                 />
                 )
-                }
+              }
             </View>
           </View>
-        </Card>
+        </ViewBlurDark>
       </Modal>
     )
   }

@@ -6,14 +6,20 @@ import {
   string,
   bool
 } from 'prop-types'
-import { SignUp } from '../components/SignUp'
-import { generateStandardNavBar } from '../../../config/functions'
+
 import { verifyEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
 import { hideAlert } from '../../../redux/actions/sync/syncAuthActions'
 import { getLoading, getAlert } from '../../../redux/reducers/auth/selectors'
 
+import { SignUp } from '../components/SignUp'
+import { NavBarLarge } from '../../shared/components/NavBarLarge'
+
 class SignInScreenContainer extends Component {
-  static navigationOptions = ({ navigation }) => generateStandardNavBar(navigation)
+  static navigationOptions = ({ navigation }) => {
+    return ({
+      header: <NavBarLarge navigation={navigation} />
+    })
+  }
 
   static propTypes = {
     navigation: shape({ navigate: func }),

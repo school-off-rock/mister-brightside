@@ -2,12 +2,20 @@ import React, { PureComponent } from 'react'
 import {
   Animated, StyleSheet, View, Platform
 } from 'react-native'
-import { bool, string, shape } from 'prop-types'
+import {
+  bool,
+  string,
+  shape,
+  func
+} from 'prop-types'
 
 import CustomIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import { Touchable } from './Touchable'
+
 import { METRICS, COLORS } from '../../../constants/theme'
 import { viewPropTypes } from '../propTypes'
+
 // import { animationTiming } from './animations'
 
 const MIN_SCALE_VALUE = Platform.OS === 'android' ? 0.01 : 0
@@ -17,7 +25,8 @@ export class Icon extends PureComponent {
     containerStyle: {},
     dense: false,
     hasBadge: false,
-    badge: { name: 'check', color: COLORS.PRIMARY }
+    badge: { name: 'check', color: COLORS.PRIMARY },
+    onPress: () => {},
   }
 
   static propTypes = {
@@ -25,7 +34,8 @@ export class Icon extends PureComponent {
     containerStyle: viewPropTypes,
     dense: bool,
     hasBadge: bool,
-    badge: shape({ name: string, color: string })
+    badge: shape({ name: string, color: string }),
+    onPress: func,
   }
 
   state = {
@@ -89,17 +99,18 @@ export class Icon extends PureComponent {
     const {
       color,
       hasBadge,
+      onPress,
       ...props
     } = this.props
     return (
-      <View style={this.setWrapStyle()}>
+      <Touchable style={this.setWrapStyle()} onPress={onPress} borderless>
         <CustomIcon
           size={this.setIconSize()}
           color={color || COLORS.BLACK_SECONDARY_ALT}
           {...props}
         />
         {this.renderBadge()}
-      </View>
+      </Touchable>
     )
   }
 }

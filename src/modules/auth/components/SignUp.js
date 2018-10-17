@@ -3,20 +3,21 @@ import {
   View,
   Text,
 } from 'react-native'
+
 import { func, bool } from 'prop-types'
-import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
-import { ViewHandlingKeyboard } from '../../shared/components/ViewHandlingKeyboard'
-import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
-import { InputWithLabel } from '../../shared/components/inputs/InputWithLabel'
+
 import { ButtonWithRightIcon } from '../../shared/components/buttons/ButtonWithRightIcon'
-import { RowLoading } from '../../shared/components/rows/RowLoading'
 import { FormErrorMessage } from '../../shared/components/FormErrorMessage'
-import { styles } from '../styles/signUp.style'
-import { METRICS } from '../../../constants/theme'
+import { InputWithLabel } from '../../shared/components/inputs/InputWithLabel'
+import { RowLoading } from '../../shared/components/rows/RowLoading'
+import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
+import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
+import { ViewHandlingKeyboard } from '../../shared/components/ViewHandlingKeyboard'
+
 import { hasText, openPhonePad } from '../../../config/functions'
+import { METRICS } from '../../../constants/theme'
 
-// import { ModalWithIcon } from '../../shared/components/modals/ModalWithIcon'
-
+import { styles } from '../styles/signUp.style'
 
 const Container = ScreenContainerHOC(ViewHandlingKeyboard)
 

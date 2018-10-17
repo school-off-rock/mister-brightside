@@ -1,2 +1,2 @@
-export const CAMERA_PERMISSION_TITLE = 'Permissão para utilizar a câmera'
-export const CAMERA_PERMISSION_MESSAGE = 'We need your permission to use your camera phone'
+export const CAMERA_PERMISSION_TITLE = 'O acesso à camera é necessário'
+export const CAMERA_PERMISSION_MESSAGE = 'Você precisa conceder acesso à camera para poder bater ponto'

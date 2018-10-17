@@ -23,12 +23,8 @@ NavBarLogo.defaultProps = { onPress: () => { } }
 const s = StyleSheet.create({
   image: {
     height: 32,
-    aspectRatio: 4,
+    aspectRatio: 2.5,
     resizeMode: 'contain',
-    ...Platform.select({
-      android: {
-        marginLeft: METRICS.BIT,
-      }
-    })
+    marginLeft: METRICS.KILO,
   }
 })

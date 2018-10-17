@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   bottomOverlay: {
     ...StyleSheet.absoluteFillObject,
     top: null,
-    backgroundColor: COLORS.LIGHT_OVERLAY,
+    // backgroundColor: COLORS.LIGHT_OVERLAY,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     borderWidth: METRICS.NANO,
     borderColor: COLORS.SURFACE,
     borderRadius: METRICS.TERA,
-    margin: METRICS.KILO,
+    margin: METRICS.MEGA,
     ...Platform.select({
       android: {
         elevation: 2,

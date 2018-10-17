@@ -4,11 +4,23 @@ import { func, shape } from 'prop-types'
 
 import { registerEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
+
 import { Home } from '../components/Home'
-import { generateStandardNavBar } from '../../../config/functions'
+import { NavBarLarge } from '../../shared/components/NavBarLarge'
+
+import { hasText } from '../../../config/functions'
 
 class HomeScreenContainer extends Component {
-  static navigationOptions = ({ navigation }) => generateStandardNavBar(navigation)
+  static navigationOptions = ({ navigation }) => {
+    const userName = navigation.getParam('userName', '')
+    return ({
+      header: <NavBarLarge
+        navigation={navigation}
+        title={hasText(userName) ? `Olá, ${userName}` : ''}
+        rightButtons={[{ name: 'account-plus', onPress: () => navigation.navigate('signIn') }]}
+      />
+    })
+  }
 
   static propTypes = {
     registerEmployee: func.isRequired,

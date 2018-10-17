@@ -12,14 +12,11 @@ import { Flash } from '../../shared/components/animations/Flash'
 import { LoadingSpinner } from '../../shared/components/LoadingSpinner'
 import { OptionsModal } from './OptionsModal'
 import { PendingAuthView } from './PendingAuthView'
-import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
 import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
 
 import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE } from '../../../constants/strings'
 
 import { styles } from '../styles/styles.home'
-
-const Container = ScreenContainerHOC(View)
 
 export class Home extends Component {
   static propTypes = {
@@ -87,10 +84,10 @@ export class Home extends Component {
       },
     ]
     return (
-      <Container style={styles.container}>
+      <View style={styles.container}>
         <StatusBarStandard />
         {imageSnap
-          ? <Image source={{ uri: imageSnap }} style={styles.preview} />
+          ? <Image source={{ uri: imageSnap }} style={styles.preview} fadeDuration={0} />
           : (
             <View style={styles.preview}>
               <RNCamera
@@ -130,7 +127,7 @@ export class Home extends Component {
           onHistoryPress={this.navigateToHistory}
           options={modalOptions}
         />
-      </Container>
+      </View>
     )
   }
 }

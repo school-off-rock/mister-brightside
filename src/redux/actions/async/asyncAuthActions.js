@@ -12,7 +12,8 @@ import {
   registerSuccess,
   registerFailed,
   verifyEmployeePhotoFailed,
-  hideLoading
+  hideLoading,
+  saveUser
 } from '../sync/syncAuthActions'
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 
@@ -32,13 +33,13 @@ export function verifyEmployeeAction(registration, navigation) {
   }
 }
 
-export function registerEmployeeAction(registration, image) {
+export function registerEmployeeAction(employee, image) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
       await verifyIpAddress()
-      await registerEmployeePhoto(registration, image)
-      await AsyncStorage.setItem('employee', JSON.stringify({ registration })).then(() => { })
+      await registerEmployeePhoto(employee, image)
+      await AsyncStorage.setItem('employee', JSON.stringify({ employee })).then(() => { })
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       dispatch(registerSuccess())
     } catch (err) {
@@ -73,6 +74,19 @@ export function trainEmployeePhotoAction(image) {
     } catch (err) {
       dispatch(hideLoading())
       dispatch(verifyEmployeePhotoFailed(err.message))
+    }
+  }
+}
+
+export function fetchEmployeeAction(registration) {
+  return async (dispatch) => {
+    try {
+      await verifyIpAddress()
+      const employee = await verifyEmployee(registration)
+      await AsyncStorage.setItem('employee', JSON.stringify({ employee })).then(() => { })
+      dispatch(saveUser(employee))
+    } catch (err) {
+      throw err
     }
   }
 }

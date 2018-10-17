@@ -28,7 +28,7 @@ export const verifyEmployee = async (registration) => {
 }
 
 
-export const registerEmployeePhoto = async (registration, imageB64) => {
+export const registerEmployeePhoto = async ({ registration }, imageB64) => {
   return fetch(REGISTER_EMPLOYEE_PHOTO, {
     method: 'POST',
     headers: {

@@ -2,12 +2,12 @@ import { registerEmployeeEntry, getEmployeeClockEntries } from '../../../service
 import { loadingEmployee, loadingClockEntries, saveClockEntries } from '../sync/syncClockEntryActions'
 import { verifyIpAddress } from '../../../services/auth'
 
-export function registerEmployeeEntryAction(registration) {
+export function registerEmployeeEntryAction() {
   return async (dispatch) => {
     try {
       dispatch(loadingEmployee(true))
       await verifyIpAddress()
-      await registerEmployeeEntry(registration)
+      await registerEmployeeEntry()
       dispatch(loadingEmployee(false))
     } catch (error) {
       dispatch(loadingEmployee(false))

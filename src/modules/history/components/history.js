@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import {
-  View,
   InteractionManager,
   SectionList,
-  Text,
 } from 'react-native'
 import moment from 'moment'
 import { bool, func, array } from 'prop-types'
@@ -11,9 +9,10 @@ import { HistoryDatePicker } from './HistoryDatePicker'
 import { HistoryItem } from './HistoryItem'
 import { RowLoading } from '../../shared/components/rows/RowLoading'
 import { ViewAvoidNavBar } from '../../shared/containers/ViewAvoidNavBar'
+import { Caption } from '../../shared/components/text'
 
-import { METRICS, COLORS } from '../../../constants/theme'
 import { styles } from '../../shared/components/styles/shared.style'
+import { styles as historyStyles } from '../styles/history.styles'
 
 export class History extends Component {
   static propTypes = {
@@ -46,9 +45,7 @@ export class History extends Component {
     if (section.title) {
       const title = moment(section.title).format('D [de] MMMM [de] YYYY')
       return (
-        <View style={{ flex: 1, padding: METRICS.BIT, backgroundColor: COLORS.SCREEN }}>
-          <Text style={{ color: COLORS.BLACK_SECONDARY }}>{title}</Text>
-        </View>
+        <Caption style={historyStyles.sectionTitle}>{title.toUpperCase()}</Caption>
       )
     }
     return null

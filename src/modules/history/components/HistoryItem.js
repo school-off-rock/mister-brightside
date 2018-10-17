@@ -1,23 +1,34 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
+
 import { string } from 'prop-types'
-import { hasText } from '../../../config/functions'
+
 import { Card } from '../../shared/components/Card'
 import { Icon } from '../../shared/components/Icon'
+import { Description } from '../../shared/components/text'
+
+import { hasText } from '../../../config/functions'
 import { COLORS, METRICS } from '../../../constants/theme'
+
 import { styles } from '../../shared/components/styles/shared.style'
 
-const itemIcon = (text, icon) => (
+const itemIcon = (text, isEntrance) => (
   <Card style={styles.card}>
     <View style={{
       flexDirection: 'row', alignItems: 'center'
     }}
     >
-      <Text style={{ flex: 1, paddingLeft: METRICS.BYTE }}>{text}</Text>
+      <Description emphasis style={{ flex: 1, paddingLeft: METRICS.KILO }}>{text}</Description>
       <Icon
-        color={COLORS.BLACK_SECONDARY}
+        color={isEntrance
+          ? COLORS.SUCCESS
+          : COLORS.BLACK_SECONDARY_ALT
+        }
         dense
-        name={icon}
+        name={isEntrance
+          ? 'arrow-bottom-right-thick'
+          : 'arrow-top-left-thick'
+        }
       />
     </View>
   </Card>
@@ -27,8 +38,8 @@ export const HistoryItem = (props) => {
   const { clockIn, clockOut } = props
   return (
     <View>
-      { hasText(clockIn) && itemIcon(clockIn, 'arrow-top-left-bold-outline')}
-      { hasText(clockOut) && itemIcon(clockOut, 'arrow-bottom-right-bold-outline')}
+      { hasText(clockIn) && itemIcon(clockIn, true)}
+      { hasText(clockOut) && itemIcon(clockOut, false)}
     </View>
   )
 }

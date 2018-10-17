@@ -26,8 +26,6 @@ class HistoryScreenContainer extends Component {
     historyList: array.isRequired
   }
 
-  state = {}
-
   componentDidMount = () => {
     InteractionManager.runAfterInteractions(() => {
       const { fetchHistory } = this.props

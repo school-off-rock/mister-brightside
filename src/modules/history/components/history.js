@@ -8,7 +8,6 @@ import {
 import moment from 'moment'
 import { bool, func, array } from 'prop-types'
 import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
-import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
 import { RowLoading } from '../../shared/components/rows/RowLoading'
 import { HistoryDatePicker } from './HistoryDatePicker'
 import { HistoryItem } from './HistoryItem'
@@ -62,7 +61,6 @@ export class History extends Component {
     const { rendering } = this.state
     return (
       <Container style={styles.container}>
-        <StatusBarStandard />
         <HistoryDatePicker fetchHistoryList={fetchHistoryList} />
         { (loadingEntries) || (rendering)
           ? <RowLoading isActive={loadingEntries} />

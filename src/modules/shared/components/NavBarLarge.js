@@ -22,7 +22,6 @@ import { hasText } from '../../../config/functions'
 
 export class NavBarLarge extends Component {
   static propTypes = {
-    hasBackButton: bool,
     hasHelp: bool,
     navigation: shape({ goBack: func }).isRequired,
     rightButtons: arrayOf(shape({ name: string, onPress: func })),
@@ -30,13 +29,10 @@ export class NavBarLarge extends Component {
   }
 
   static defaultProps = {
-    hasBackButton: true,
     hasHelp: true,
     rightButtons: [],
     title: undefined,
   }
-
-  state = { itsAClass: true }
 
   renderRightIcons = ({ name, onPress }) => (
     <Icon

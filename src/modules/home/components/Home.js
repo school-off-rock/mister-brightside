@@ -12,7 +12,7 @@ import { Flash } from '../../shared/components/animations/Flash'
 import { LoadingSpinner } from '../../shared/components/LoadingSpinner'
 import { OptionsModal } from './OptionsModal'
 import { PendingAuthView } from './PendingAuthView'
-import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
+import { StatusBarLight } from '../../shared/components/StatusBarLight'
 
 import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE } from '../../../constants/strings'
 
@@ -85,7 +85,7 @@ export class Home extends Component {
     ]
     return (
       <View style={styles.container}>
-        <StatusBarStandard />
+        <StatusBarLight />
         {imageSnap
           ? <Image source={{ uri: imageSnap }} style={styles.preview} fadeDuration={0} />
           : (

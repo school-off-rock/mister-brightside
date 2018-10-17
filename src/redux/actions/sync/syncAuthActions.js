@@ -4,7 +4,8 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   HIDE_ALERT,
-  VERIFY_EMPLOYEE_PHOTO_FAILED
+  VERIFY_EMPLOYEE_PHOTO_FAILED,
+  SAVE_USER
 } from '../../types/authTypes'
 
 export const showLoading = () => ({ type: SHOW_AUTH_LOADING })
@@ -13,3 +14,4 @@ export const registerSuccess = registration => ({ type: REGISTER_SUCCESS, regist
 export const registerFailed = message => ({ type: REGISTER_FAILED, message })
 export const hideAlert = () => ({ type: HIDE_ALERT })
 export const verifyEmployeePhotoFailed = message => ({ type: VERIFY_EMPLOYEE_PHOTO_FAILED, message })
+export const saveUser = user => ({ type: SAVE_USER, user })

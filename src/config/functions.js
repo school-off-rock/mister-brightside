@@ -27,7 +27,7 @@ export async function verifyResponse(response) {
 
 export async function getUserRegistration() {
   let userJson
-  await AsyncStorage.getItem('registration')
+  await AsyncStorage.getItem('employee')
     .then((profile) => {
       if (profile) {
         userJson = JSON.parse(profile)

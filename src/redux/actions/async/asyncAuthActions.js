@@ -23,9 +23,9 @@ export function verifyEmployeeAction(registration, navigation) {
     try {
       dispatch(showLoading())
       await verifyIpAddress()
-      await verifyEmployee(registration)
+      const employee = await verifyEmployee(registration)
       dispatch(hideLoading())
-      navigation.navigate('home', { registration })
+      navigation.navigate('home', { employee })
     } catch (err) {
       dispatch(registerFailed(err.message))
     }
@@ -38,7 +38,7 @@ export function registerEmployeeAction(registration, image) {
       dispatch(showLoading())
       await verifyIpAddress()
       await registerEmployeePhoto(registration, image)
-      await AsyncStorage.setItem('registration', JSON.stringify({ registration })).then(() => { })
+      await AsyncStorage.setItem('employee', JSON.stringify({ registration })).then(() => { })
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       dispatch(registerSuccess())
     } catch (err) {

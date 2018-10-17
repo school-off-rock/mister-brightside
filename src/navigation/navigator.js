@@ -10,7 +10,7 @@ export const navMiddleware = createReactNavigationReduxMiddleware(
   state => state.nav,
 )
 
-export const initialRouteName = 'signIn'
+export const initialRouteName = 'home'
 
 export const Stack = Navigator({
   signIn: { screen: SignInScreen },

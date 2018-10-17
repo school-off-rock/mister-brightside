@@ -13,11 +13,16 @@ import { hasText } from '../../../config/functions'
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     const userName = navigation.getParam('userName', '')
+    const signUp = navigation.getParam('signUp', '')
+    const welcomeText = hasText(userName) ? `Olá, ${userName}` : ''
+    const title = signUp ? 'Enviar foto' : welcomeText
+    const rightButton = [{ name: 'account-plus', onPress: () => navigation.navigate('signIn') }]
+    const rightButtons = signUp ? [] : rightButton
     return ({
       header: <NavBarLarge
         navigation={navigation}
-        title={hasText(userName) ? `Olá, ${userName}` : ''}
-        rightButtons={[{ name: 'account-plus', onPress: () => navigation.navigate('signIn') }]}
+        title={title}
+        rightButtons={rightButtons}
       />
     })
   }

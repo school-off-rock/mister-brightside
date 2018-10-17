@@ -13,7 +13,7 @@ import { COLORS, METRICS } from '../../../constants/theme'
 import { styles } from '../../shared/components/styles/shared.style'
 
 const itemIcon = (text, isEntrance) => (
-  <Card style={styles.card}>
+  <View style={styles.cardFlat}>
     <View style={{
       flexDirection: 'row', alignItems: 'center'
     }}
@@ -31,7 +31,7 @@ const itemIcon = (text, isEntrance) => (
         }
       />
     </View>
-  </Card>
+  </View>
 )
 
 export const HistoryItem = (props) => {

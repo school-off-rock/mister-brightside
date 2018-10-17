@@ -147,6 +147,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-blur')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-blur')
     implementation project(':react-native-config')

@@ -9,6 +9,7 @@ export const COLORS = {
 
   SCREEN: '#F3F5F7',
   SURFACE: '#FFFFFF',
+  ON_SUCCESS: '#FFFFFF',
   SURFACE_OPACITY: 'rgba(255, 255, 255, 0.9)',
   LIGHT_OVERLAY: 'rgba(255, 255, 255, 0.4)',
 

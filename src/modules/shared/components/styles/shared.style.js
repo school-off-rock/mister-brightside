@@ -17,4 +17,9 @@ export const styles = StyleSheet.create({
       },
     }),
   },
+  cardFlat: {
+    backgroundColor: COLORS.SURFACE,
+    borderBottomColor: COLORS.DARK_DIVIDER,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  }
 })

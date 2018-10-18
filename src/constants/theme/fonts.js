@@ -86,6 +86,30 @@ const standardStyle = {
     color: COLORS.BLACK_PRIMARY_ALT,
     ...type.regular
   },
+  description: {
+    fontSize: size.medium,
+    lineHeight: lineHeight.regular,
+    color: COLORS.BLACK_SECONDARY_ALT,
+    ...type.regular
+  },
+  descriptionEmphasis: {
+    fontSize: size.medium,
+    lineHeight: lineHeight.regular,
+    color: COLORS.BLACK_PRIMARY_ALT,
+    ...type.regular
+  },
+  caption: {
+    fontSize: size.small,
+    lineHeight: lineHeight.small,
+    color: COLORS.BLACK_SECONDARY_ALT,
+    ...type.regular
+  },
+  captionEmphasis: {
+    fontSize: size.small,
+    lineHeight: lineHeight.small,
+    color: COLORS.BLACK_PRIMARY_ALT,
+    ...type.regular
+  },
 }
 
 export const FONTS = {

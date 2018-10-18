@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { InteractionManager } from 'react-native'
 import {
   func,
   shape,
+  bool,
 } from 'prop-types'
 
 import {
@@ -12,23 +14,25 @@ import {
 } from '../../../redux/actions/async/asyncAuthActions'
 import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
+import { getLoadingClockIn } from '../../../redux/reducers/clockEntry/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
 
 import { Home } from '../components/Home'
-import { NavBarLarge } from '../../shared/components/NavBarLarge'
+import { NavBar } from '../../shared/containers/NavBar'
 
-import { hasText } from '../../../config/functions'
+import { hasText, getUserRegistration } from '../../../config/functions'
 
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     const userName = navigation.getParam('userName', '')
     const signUp = navigation.getParam('signUp', '')
-    const welcomeText = hasText(userName) ? `Olá, ${userName}` : ''
+    const firstName = hasText(userName) ? `${userName.charAt(0)}${userName.slice(1, userName.length).toLowerCase()}` : ''
+    const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
     const title = signUp ? 'Tirar foto' : welcomeText
-    const rightButton = [{ name: 'account-plus', onPress: () => navigation.navigate('signIn') }]
+    const rightButton = [{ name: 'autorenew', onPress: () => navigation.navigate('signIn') }]
     const rightButtons = signUp ? [] : rightButton
     return ({
-      header: <NavBarLarge
+      header: <NavBar
         navigation={navigation}
         title={title}
         rightButtons={rightButtons}
@@ -41,13 +45,24 @@ class HomeScreenContainer extends Component {
     registerEmployee: func.isRequired,
     registerEmployeeEntry: func.isRequired,
     trainEmployeePhoto: func.isRequired,
-    navigation: shape({ navigate: func })
+    navigation: shape({ navigate: func }),
+    isLoading: bool,
+    isLoadingClockIn: bool,
   }
 
   static defaultProps = {
-    navigation: { navigate: () => {} }
+    navigation: { navigate: () => {} },
+    isLoading: false,
+    isLoadingClockIn: false,
   }
 
+  componentDidMount = () => {
+    InteractionManager.runAfterInteractions(async () => {
+      const { navigation } = this.props
+      const user = await getUserRegistration()
+      navigation.setParams({ userName: user.firstName })
+    })
+  };
 
   navigateToHistory = () => {
     const { navigation } = this.props
@@ -65,9 +80,12 @@ class HomeScreenContainer extends Component {
       navigation,
       verifyEmployeePhoto,
       registerEmployeeEntry,
-      trainEmployeePhoto
+      trainEmployeePhoto,
+      isLoading,
+      isLoadingClockIn
     } = this.props
     const signUp = navigation.getParam('signUp', '') || false
+    const isLoadingPhoto = isLoading || isLoadingClockIn
     return (
       <Home
         registerEmployee={this.onRegisterEmployee}
@@ -76,6 +94,7 @@ class HomeScreenContainer extends Component {
         onRegisterEmployeeEntryPress={registerEmployeeEntry}
         onTrainEmployeePhotoPress={trainEmployeePhoto}
         isSignUp={signUp}
+        isLoading={isLoadingPhoto}
       />
     )
   }
@@ -83,6 +102,7 @@ class HomeScreenContainer extends Component {
 
 const mapStateToProps = state => ({
   isLoading: getLoading(state),
+  isLoadingClockIn: getLoadingClockIn(state),
   modalAlert: getModalState(state),
 })
 

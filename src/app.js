@@ -28,7 +28,6 @@ export class App extends React.Component {
 
   constructor(props) {
     super(props)
-    // Text.defaultProps.allowFontScaling = false
     this.state = { loaded: false, isLogged: false, user: {} }
   }
 

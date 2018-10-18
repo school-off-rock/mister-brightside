@@ -1,3 +1,8 @@
+
+const getFirstName = (name) => {
+  const [firtstName] = name.split(' ')
+  return firtstName
+}
 export class Employee {
   constructor({
     id,
@@ -7,6 +12,7 @@ export class Employee {
   }) {
     this.id = id
     this.nome = nome
+    this.firstName = getFirstName(nome)
     this.registration = matricula
     this.function = funcao
   }

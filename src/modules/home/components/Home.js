@@ -24,11 +24,13 @@ export class Home extends Component {
     onHistoryPress: func.isRequired,
     onRegisterEmployeeEntryPress: func.isRequired,
     onTrainEmployeePhotoPress: func.isRequired,
-    isSignUp: bool
+    isSignUp: bool,
+    isLoading: bool,
   }
 
   static defaultProps = {
-    isSignUp: false
+    isSignUp: false,
+    isLoading: false,
   }
 
   state = {
@@ -54,11 +56,11 @@ export class Home extends Component {
     onRegisterEmployeeEntryPress()
   }
 
-  trainEmployeePhoto = () => {
+  trainEmployeePhoto = async () => {
     const { onTrainEmployeePhotoPress } = this.props
     const { imageB64 } = this.state
     this.hideModal()
-    onTrainEmployeePhotoPress(imageB64)
+    await onTrainEmployeePhotoPress(imageB64)
   }
 
   showOptionsModal = (image) => {
@@ -75,7 +77,9 @@ export class Home extends Component {
     try {
       await registerEmployee(image.base64)
       this.showOptionsModal(image)
-    } catch (error) {}
+    } catch (error) {
+      this.setState({ isTakingPicture: false })
+    }
   }
 
   takePicture = async () => {
@@ -113,6 +117,7 @@ export class Home extends Component {
       isTakingPicture,
       isCameraReady,
     } = this.state
+    const { isLoading, isLoadingClockIn } = this.props
     const modalOptions = [
       {
         label: 'Bater ponto',
@@ -158,7 +163,7 @@ export class Home extends Component {
                         onPress={() => this.takePicture(this.camera)}
                         disabled={isTakingPicture}
                       >
-                        {isTakingPicture && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
+                        {(isTakingPicture || isLoading) && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
                       </TouchableOpacity>
                     </View>
                   </View>

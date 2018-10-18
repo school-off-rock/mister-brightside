@@ -73,7 +73,7 @@ export class DateTimePickerIOS extends Component {
     } = this.props
 
     return (
-      <Modal animationType="slide" transparent={true} visible={isVisible}>
+      <Modal onRequestClose={onCancel} animationType="slide" transparent={true} visible={isVisible}>
         <TouchableWithoutFeedback onPress={onCancel}>
           <View style={styles.container}>
             <BlurView viewRef={null} blurType="light" style={styles.blur}>

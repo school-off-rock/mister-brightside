@@ -15,7 +15,7 @@ import { getLoading } from '../../../redux/reducers/auth/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
 
 import { Home } from '../components/Home'
-import { NavBarLarge } from '../../shared/components/NavBarLarge'
+import { NavBar } from '../../shared/containers/NavBar'
 
 import { hasText } from '../../../config/functions'
 
@@ -28,7 +28,7 @@ class HomeScreenContainer extends Component {
     const rightButton = [{ name: 'account-plus', onPress: () => navigation.navigate('signIn') }]
     const rightButtons = signUp ? [] : rightButton
     return ({
-      header: <NavBarLarge
+      header: <NavBar
         navigation={navigation}
         title={title}
         rightButtons={rightButtons}

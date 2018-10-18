@@ -15,6 +15,8 @@ import {
   saveUser
 } from '../sync/syncAuthActions'
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
+import { setModalAction } from '../sync/syncModalAction'
+import { MODAL } from '../../../constants/modals'
 
 export function verifyEmployeeAction(registration) {
   return async (dispatch) => {
@@ -43,6 +45,9 @@ export function registerEmployeeAction(employee, image, navigation) {
       dispatch(registerSuccess())
     } catch (err) {
       dispatch(registerFailed(err.message))
+      if (err.ipError === true) {
+        dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      }
       throw err
     }
   }
@@ -59,6 +64,11 @@ export function verifyEmployeePhotoAction(image) {
     } catch (err) {
       dispatch(hideLoading())
       dispatch(verifyEmployeePhotoFailed(err.message))
+      if (err.ipError === true) {
+        dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      } else {
+        dispatch(setModalAction(MODAL.USER_RECOGNITION_FAIL))
+      }
       throw err
     }
   }
@@ -72,9 +82,15 @@ export function trainEmployeePhotoAction(image) {
       await trainEmployeePhoto(image)
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       dispatch(hideLoading())
+      dispatch(setModalAction(MODAL.TRAIN_PHOTO_SUCCESS))
     } catch (err) {
       dispatch(hideLoading())
       dispatch(verifyEmployeePhotoFailed(err.message))
+      if (err.ipError === true) {
+        dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      } else {
+        dispatch(setModalAction(MODAL.USER_RECOGNITION_FAIL))
+      }
       throw err
     }
   }

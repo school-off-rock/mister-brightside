@@ -4,21 +4,27 @@ import {
   Platform,
   DatePickerAndroid,
 } from 'react-native'
+
 import { func } from 'prop-types'
 import moment from 'moment'
-import { DateTimePickerIOS } from '../../shared/components/modals/dateTimePickerIOS'
-import { DatePickerLabel } from './DatePickerLabel'
-import { METRICS, COLORS } from '../../../constants/theme'
 
+import { DatePickerLabel } from './DatePickerLabel'
+import { DateTimePickerIOS } from '../../shared/components/modals/dateTimePickerIOS'
+import { Description } from '../../shared/components/text'
+
+import { ViewBlurIOS } from '../../shared/components/ViewBlurIOS'
+import { styles } from '../styles/history.styles'
+
+const now = new Date()
 export class HistoryDatePicker extends Component {
 static propTypes ={
   fetchHistoryList: func.isRequired
 }
 
   state = {
-    now: new Date(),
-    selectedInitialDate: new Date(),
-    selectedEndDate: new Date(),
+    now,
+    selectedInitialDate: now,
+    selectedEndDate: now,
     displayInitialDate: moment().format('DD/MM/YYYY'),
     displayEndDate: moment().format('DD/MM/YYYY'),
     isIosInitialPickerVisible: false,
@@ -48,7 +54,6 @@ static propTypes ={
       }
     })()
   }
-
 
   hideInitialPicker = () => this.setState({ isIosInitialPickerVisible: false })
 
@@ -110,7 +115,6 @@ static propTypes ={
     if (Platform.OS === 'ios') this.hideEndPicker()
   }
 
-
   render() {
     const {
       selectedInitialDate,
@@ -122,13 +126,13 @@ static propTypes ={
       displayEndDate
     } = this.state
     return (
-      <View style={{ padding: METRICS.BIT, backgroundColor: COLORS.WHITE, marginTop: METRICS.NANO / 2 }}>
-        <View style={{ flexDirection: 'row' }}>
+      <ViewBlurIOS style={styles.underline}>
+        <View style={styles.pickerRowWrap}>
           <DatePickerLabel
             onPress={this.showInitialPicker}
             label={displayInitialDate}
           />
-          <DatePickerLabel label="até" />
+          <Description>até</Description>
           <DatePickerLabel
             onPress={this.showEndPicker}
             label={displayEndDate}
@@ -158,7 +162,7 @@ static propTypes ={
           submitButtonText="Confirmar"
           title="Data final"
         />
-      </View>
+      </ViewBlurIOS>
     )
   }
 }

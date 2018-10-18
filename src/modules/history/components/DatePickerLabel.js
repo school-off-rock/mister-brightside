@@ -1,17 +1,18 @@
 import React from 'react'
-import { View, Text } from 'react-native'
 import { string, func } from 'prop-types'
+
 import { Touchable } from '../../shared/components/Touchable'
+import { Description } from '../../shared/components/text'
+
+
+import { styles } from '../styles/history.styles'
 
 export const DatePickerLabel = (props) => {
   const { onPress, label } = props
   return (
-    <View style={{
-      flex: 1, justifyContent: 'center', alignItems: 'center'
-    }}
-    >
-      <Touchable borderless onPress={onPress}><Text>{label}</Text></Touchable>
-    </View>
+    <Touchable borderless onPress={onPress} style={styles.pickerSelectorLabelWrap}>
+      <Description style={styles.pickerSelectorLabel}>{label}</Description>
+    </Touchable>
   )
 }
 
@@ -22,5 +23,5 @@ DatePickerLabel.propTypes = {
 
 DatePickerLabel.defaultProps = {
   onPress: () => {},
-  label: 'até'
+  label: ''
 }

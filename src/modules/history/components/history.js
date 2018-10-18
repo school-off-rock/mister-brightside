@@ -1,22 +1,18 @@
 import React, { Component } from 'react'
 import {
-  View,
   InteractionManager,
   SectionList,
-  Text,
 } from 'react-native'
 import moment from 'moment'
 import { bool, func, array } from 'prop-types'
-import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
-import { StatusBarStandard } from '../../shared/components/StatusBarStandard'
-import { RowLoading } from '../../shared/components/rows/RowLoading'
 import { HistoryDatePicker } from './HistoryDatePicker'
 import { HistoryItem } from './HistoryItem'
+import { RowLoading } from '../../shared/components/rows/RowLoading'
+import { ViewAvoidNavBar } from '../../shared/containers/ViewAvoidNavBar'
+import { Caption } from '../../shared/components/text'
+
 import { styles } from '../../shared/components/styles/shared.style'
-import { METRICS, COLORS } from '../../../constants/theme'
-
-
-const Container = ScreenContainerHOC(View)
+import { styles as historyStyles } from '../styles/history.styles'
 
 export class History extends Component {
   static propTypes = {
@@ -49,9 +45,7 @@ export class History extends Component {
     if (section.title) {
       const title = moment(section.title).format('D [de] MMMM [de] YYYY')
       return (
-        <View style={{ flex: 1, padding: METRICS.BIT, backgroundColor: COLORS.SCREEN }}>
-          <Text style={{ color: COLORS.BLACK_SECONDARY }}>{title}</Text>
-        </View>
+        <Caption style={historyStyles.sectionTitle}>{title.toUpperCase()}</Caption>
       )
     }
     return null
@@ -61,8 +55,7 @@ export class History extends Component {
     const { loadingEntries, historyList, fetchHistoryList } = this.props
     const { rendering } = this.state
     return (
-      <Container style={styles.container}>
-        <StatusBarStandard />
+      <ViewAvoidNavBar style={styles.container}>
         <HistoryDatePicker fetchHistoryList={fetchHistoryList} />
         { (loadingEntries) || (rendering)
           ? <RowLoading isActive={loadingEntries} />
@@ -76,7 +69,7 @@ export class History extends Component {
             />
           )
         }
-      </Container>
+      </ViewAvoidNavBar>
     )
   }
 }

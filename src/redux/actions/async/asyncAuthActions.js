@@ -1,6 +1,5 @@
 import {
   AsyncStorage,
-  // Alert
 } from 'react-native'
 import {
   verifyEmployee,
@@ -17,48 +16,50 @@ import {
 } from '../sync/syncAuthActions'
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 
-// const showAlert = (title, text) => Alert.alert(title, text, [{ text: 'OK', onPress: () => { } }], { cancelable: true })
-
-export function verifyEmployeeAction(registration, navigation) {
+export function verifyEmployeeAction(registration) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
       await verifyIpAddress()
       const employee = await verifyEmployee(registration)
       dispatch(hideLoading())
-      navigation.navigate('home', { employee })
+      return employee
     } catch (err) {
       dispatch(registerFailed(err.message))
+      throw err
     }
   }
 }
 
-export function registerEmployeeAction(employee, image) {
+export function registerEmployeeAction(employee, image, navigation) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
       await verifyIpAddress()
       await registerEmployeePhoto(employee, image)
-      await AsyncStorage.setItem('employee', JSON.stringify({ employee })).then(() => { })
+      await AsyncStorage.setItem('employee', JSON.stringify(employee)).then(() => { })
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
+      navigation.setParams({ signUp: false })
       dispatch(registerSuccess())
     } catch (err) {
       dispatch(registerFailed(err.message))
+      throw err
     }
   }
 }
 
-export function verifyEmployeePhotoAction(registration, image) {
+export function verifyEmployeePhotoAction(image) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
       await verifyIpAddress()
-      await verifyEmployeePhoto(registration, image)
+      await verifyEmployeePhoto(image)
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       dispatch(hideLoading())
     } catch (err) {
       dispatch(hideLoading())
       dispatch(verifyEmployeePhotoFailed(err.message))
+      throw err
     }
   }
 }
@@ -74,6 +75,7 @@ export function trainEmployeePhotoAction(image) {
     } catch (err) {
       dispatch(hideLoading())
       dispatch(verifyEmployeePhotoFailed(err.message))
+      throw err
     }
   }
 }

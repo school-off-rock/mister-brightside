@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
-import { func } from 'prop-types'
+import { func, bool } from 'prop-types'
 
 import { RNCamera } from 'react-native-camera'
 
@@ -22,6 +22,13 @@ export class Home extends Component {
   static propTypes = {
     registerEmployee: func.isRequired,
     onHistoryPress: func.isRequired,
+    onRegisterEmployeeEntryPress: func.isRequired,
+    onTrainEmployeePhotoPress: func.isRequired,
+    isSignUp: bool
+  }
+
+  static defaultProps = {
+    isSignUp: false
   }
 
   state = {
@@ -37,13 +44,43 @@ export class Home extends Component {
 
   navigateToHistory = () => {
     const { onHistoryPress } = this.props
-    this.setState({ modalVisible: false, imageSnap: undefined })
+    this.hideModal()
     onHistoryPress()
+  }
+
+  registerEmployeeEntry = () => {
+    const { onRegisterEmployeeEntryPress } = this.props
+    this.hideModal()
+    onRegisterEmployeeEntryPress()
+  }
+
+  trainEmployeePhoto = () => {
+    const { onTrainEmployeePhotoPress } = this.props
+    const { imageB64 } = this.state
+    this.hideModal()
+    onTrainEmployeePhotoPress(imageB64)
+  }
+
+  showOptionsModal = (image) => {
+    this.setState({
+      imageB64: image.base64,
+      imageSnap: image.uri,
+      modalVisible: true,
+      isTakingPicture: false
+    })
+  }
+
+  registerEmployee = async (image) => {
+    const { registerEmployee } = this.props
+    try {
+      await registerEmployee(image.base64)
+      this.showOptionsModal(image)
+    } catch (error) {}
   }
 
   takePicture = async () => {
     if (this.camera) {
-      const { registerEmployee } = this.props
+      const { isSignUp, verifyEmployeePhoto } = this.props
       const options = {
         quality: 0.5,
         base64: true,
@@ -51,12 +88,22 @@ export class Home extends Component {
         fixOrientation: true,
         mirrorImage: true,
       }
-      this.setState({ isTakingPicture: true })
-      const data = await this.camera.takePictureAsync(options)
-      this.setState({ imageSnap: data.uri, modalVisible: true, isTakingPicture: false })
-      return registerEmployee('', data.base64)
+      try {
+        this.setState({ isTakingPicture: true })
+        const data = await this.camera.takePictureAsync(options)
+        if (!isSignUp) {
+          await verifyEmployeePhoto(data.base64)
+          this.showOptionsModal(data)
+        } else {
+          this.registerEmployee(data)
+        }
+      } catch (error) {
+        this.setState({ isTakingPicture: false })
+        this.hideModal()
+      }
+    } else {
+      this.setState({ imageSnap: undefined })
     }
-    return this.setState({ imageSnap: undefined })
   }
 
   render() {
@@ -70,17 +117,17 @@ export class Home extends Component {
       {
         label: 'Bater ponto',
         iconName: 'map-marker-radius',
-        onPress: () => console.warn('Bater ponto')
+        onPress: this.registerEmployeeEntry
       },
       {
         label: 'Ver histórico',
         iconName: 'clock-outline',
-        onPress: () => console.warn('Ver histórico')
+        onPress: this.navigateToHistory
       },
       {
         label: 'Melhorar identificação',
         iconName: 'creation',
-        onPress: () => console.warn('Melhorar identificação')
+        onPress: this.trainEmployeePhoto
       },
     ]
     return (

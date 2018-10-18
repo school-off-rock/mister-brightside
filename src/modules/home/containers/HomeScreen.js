@@ -15,7 +15,7 @@ class HomeScreenContainer extends Component {
     const userName = navigation.getParam('userName', '')
     const signUp = navigation.getParam('signUp', '')
     const welcomeText = hasText(userName) ? `Olá, ${userName}` : ''
-    const title = signUp ? 'Enviar foto' : welcomeText
+    const title = signUp ? 'Tirar foto' : welcomeText
     const rightButton = [{ name: 'account-plus', onPress: () => navigation.navigate('signIn') }]
     const rightButtons = signUp ? [] : rightButton
     return ({

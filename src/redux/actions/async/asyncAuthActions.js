@@ -19,16 +19,17 @@ import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 
 // const showAlert = (title, text) => Alert.alert(title, text, [{ text: 'OK', onPress: () => { } }], { cancelable: true })
 
-export function verifyEmployeeAction(registration, navigation) {
+export function verifyEmployeeAction(registration) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
-      await verifyIpAddress()
+      // await verifyIpAddress()
       const employee = await verifyEmployee(registration)
       dispatch(hideLoading())
-      navigation.navigate('home', { employee, signUp: true })
+      return employee
     } catch (err) {
       dispatch(registerFailed(err.message))
+      throw err
     }
   }
 }

@@ -26,21 +26,22 @@ export function verifyEmployeeAction(registration, navigation) {
       await verifyIpAddress()
       const employee = await verifyEmployee(registration)
       dispatch(hideLoading())
-      navigation.navigate('home', { employee })
+      navigation.navigate('home', { employee, signUp: true })
     } catch (err) {
       dispatch(registerFailed(err.message))
     }
   }
 }
 
-export function registerEmployeeAction(employee, image) {
+export function registerEmployeeAction(employee, image, navigation) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
       await verifyIpAddress()
       await registerEmployeePhoto(employee, image)
-      await AsyncStorage.setItem('employee', JSON.stringify({ employee })).then(() => { })
+      await AsyncStorage.setItem('employee', JSON.stringify(employee)).then(() => { })
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
+      navigation.setParams({ signUp: false })
       dispatch(registerSuccess())
     } catch (err) {
       dispatch(registerFailed(err.message))

@@ -2,7 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { func, shape } from 'prop-types'
 
-import { registerEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
+import {
+  registerEmployeeAction,
+  verifyEmployeePhotoAction,
+  trainEmployeePhotoAction
+} from '../../../redux/actions/async/asyncAuthActions'
+import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
 
 import { Home } from '../components/Home'
@@ -15,7 +20,7 @@ class HomeScreenContainer extends Component {
     const userName = navigation.getParam('userName', '')
     const signUp = navigation.getParam('signUp', '')
     const welcomeText = hasText(userName) ? `Olá, ${userName}` : ''
-    const title = signUp ? 'Enviar foto' : welcomeText
+    const title = signUp ? 'Tirar foto' : welcomeText
     const rightButton = [{ name: 'account-plus', onPress: () => navigation.navigate('signIn') }]
     const rightButtons = signUp ? [] : rightButton
     return ({
@@ -28,7 +33,10 @@ class HomeScreenContainer extends Component {
   }
 
   static propTypes = {
+    verifyEmployeePhoto: func.isRequired,
     registerEmployee: func.isRequired,
+    registerEmployeeEntry: func.isRequired,
+    trainEmployeePhoto: func.isRequired,
     navigation: shape({ navigate: func })
   }
 
@@ -49,12 +57,20 @@ class HomeScreenContainer extends Component {
   }
 
   render() {
-    const { navigation } = this.props
+    const {
+      navigation,
+      verifyEmployeePhoto,
+      registerEmployeeEntry,
+      trainEmployeePhoto
+    } = this.props
     const signUp = navigation.getParam('signUp', '') || false
     return (
       <Home
         registerEmployee={this.onRegisterEmployee}
         onHistoryPress={this.navigateToHistory}
+        verifyEmployeePhoto={verifyEmployeePhoto}
+        onRegisterEmployeeEntryPress={registerEmployeeEntry}
+        onTrainEmployeePhotoPress={trainEmployeePhoto}
         isSignUp={signUp}
       />
     )
@@ -66,7 +82,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  registerEmployee: (employee, image, navigation) => registerEmployeeAction(employee, image, navigation)
+  verifyEmployeePhoto: image => verifyEmployeePhotoAction(image),
+  registerEmployee: (employee, image, navigation) => registerEmployeeAction(employee, image, navigation),
+  registerEmployeeEntry: () => registerEmployeeEntryAction(),
+  trainEmployeePhoto: image => trainEmployeePhotoAction(image),
 }
 
 export const HomeScreen = connect(mapStateToProps, mapDispatchToProps)(HomeScreenContainer)

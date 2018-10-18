@@ -13,7 +13,7 @@ const {
 } = Values
 
 export const registerEmployeeEntry = async () => {
-  const { registration = 902802 } = await getUserRegistration()
+  const { registration } = await getUserRegistration()
   const formData = new FormData()
   formData.append('matricula', registration)
   return fetch(REGISTER_EMPLOYEE_ENTRY, {
@@ -31,7 +31,7 @@ export const registerEmployeeEntry = async () => {
 }
 
 export const getEmployeeClockEntries = async (initDate, endDate) => {
-  const { registration = 902802 } = await getUserRegistration()
+  const { registration } = await getUserRegistration()
   return fetch(GET_EMPLOYEE_CLOCK_ENTRIES(registration, initDate, endDate), {
     method: 'GET',
     headers: {
@@ -50,7 +50,7 @@ export const getEmployeeClockEntries = async (initDate, endDate) => {
 }
 
 export const verifyEmployeePhoto = async (imageB64) => {
-  const { registration = 902802 } = await getUserRegistration()
+  const { registration } = await getUserRegistration()
   return fetch(VERIFY_EMPLOYEE_PHOTO, {
     method: 'POST',
     headers: {
@@ -63,9 +63,10 @@ export const verifyEmployeePhoto = async (imageB64) => {
       label: registration
     })
   }).then(resp => verifyResponse(resp))
-    .then(({ person }) => {
-      const [personData] = person
-      const { recognition: confidence } = personData
+    .then(({ people = [] }) => {
+      const [personData = {}] = people
+      const { recognition = {} } = personData
+      const { confidence } = recognition
       if (confidence >= 60) {
         return personData
       }
@@ -77,7 +78,7 @@ export const verifyEmployeePhoto = async (imageB64) => {
 }
 
 export const trainEmployeePhoto = async (imageB64) => {
-  const { registration = 902802 } = await getUserRegistration()
+  const { registration } = await getUserRegistration()
   return fetch(TRAIN_EMPLOYEE_PHOTO, {
     method: 'POST',
     headers: {

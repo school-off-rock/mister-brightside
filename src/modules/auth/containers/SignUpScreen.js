@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Alert } from 'react-native'
 import {
   func,
   shape,
   string,
   bool
 } from 'prop-types'
-
 import { verifyEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
 import { hideAlert } from '../../../redux/actions/sync/syncAuthActions'
 import { getLoading, getAlert } from '../../../redux/reducers/auth/selectors'
@@ -38,9 +38,15 @@ class SignInScreenContainer extends Component {
 
   state = {}
 
-  navigateSignUpPhotoScreen = (registration) => {
+  navigateSignUpPhotoScreen = async (registration) => {
     const { navigation, verifyEmployee } = this.props
-    verifyEmployee(registration, navigation)
+    try {
+      const employee = await verifyEmployee(registration, navigation)
+      Alert.alert('Tudo certo',
+        'Na proxima tela, tire uma foto sua para finalizar o cadastro',
+        [{ text: 'Tirar foto', onPress: () => navigation.navigate('home', { employee, signUp: true }) }],
+        { cancelable: true })
+    } catch (error) {}
   }
 
   render() {

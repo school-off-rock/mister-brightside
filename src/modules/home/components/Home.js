@@ -22,6 +22,8 @@ export class Home extends Component {
   static propTypes = {
     registerEmployee: func.isRequired,
     onHistoryPress: func.isRequired,
+    onRegisterEmployeeEntryPress: func.isRequired,
+    onTrainEmployeePhotoPress: func.isRequired,
     isSignUp: bool
   }
 
@@ -46,6 +48,19 @@ export class Home extends Component {
     onHistoryPress()
   }
 
+  registerEmployeeEntry = () => {
+    const { onRegisterEmployeeEntryPress } = this.props
+    this.hideModal()
+    onRegisterEmployeeEntryPress()
+  }
+
+  trainEmployeePhoto = () => {
+    const { onTrainEmployeePhotoPress } = this.props
+    const { imageB64 } = this.state
+    this.hideModal()
+    onTrainEmployeePhotoPress(imageB64)
+  }
+
   showOptionsModal = (image) => {
     this.setState({
       imageB64: image.base64,
@@ -61,12 +76,11 @@ export class Home extends Component {
       await registerEmployee(image.base64)
       this.showOptionsModal(image)
     } catch (error) {}
-
   }
 
   takePicture = async () => {
     if (this.camera) {
-      const { isSignUp } = this.props
+      const { isSignUp, verifyEmployeePhoto } = this.props
       const options = {
         quality: 0.5,
         base64: true,
@@ -74,12 +88,18 @@ export class Home extends Component {
         fixOrientation: true,
         mirrorImage: true,
       }
-      this.setState({ isTakingPicture: true })
-      const data = await this.camera.takePictureAsync(options)
-      if (!isSignUp) {
-        this.showOptionsModal(data)
-      } else {
-        this.registerEmployee(data)
+      try {
+        this.setState({ isTakingPicture: true })
+        const data = await this.camera.takePictureAsync(options)
+        if (!isSignUp) {
+          await verifyEmployeePhoto(data.base64)
+          this.showOptionsModal(data)
+        } else {
+          this.registerEmployee(data)
+        }
+      } catch (error) {
+        this.setState({ isTakingPicture: false })
+        this.hideModal()
       }
     } else {
       this.setState({ imageSnap: undefined })
@@ -97,7 +117,7 @@ export class Home extends Component {
       {
         label: 'Bater ponto',
         iconName: 'map-marker-radius',
-        onPress: () => console.warn('Bater ponto')
+        onPress: this.registerEmployeeEntry
       },
       {
         label: 'Ver histórico',
@@ -107,7 +127,7 @@ export class Home extends Component {
       {
         label: 'Melhorar identificação',
         iconName: 'creation',
-        onPress: () => console.warn('Melhorar identificação')
+        onPress: this.trainEmployeePhoto
       },
     ]
     return (

@@ -21,7 +21,7 @@ export function fetchEmployeeEntriesAction(initDate, endDate) {
   return async (dispatch) => {
     try {
       dispatch(loadingClockEntries(true))
-      // await verifyIpAddress()
+      await verifyIpAddress()
       const clockEntries = await getEmployeeClockEntries(initDate, endDate)
       dispatch(saveClockEntries(clockEntries))
     } catch (error) {

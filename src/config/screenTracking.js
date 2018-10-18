@@ -1,4 +1,4 @@
-import { StatusBar } from 'react-native'
+import { StatusBar, Platform } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 
 const getCurrentRouteName = (navigationState) => {
@@ -15,7 +15,7 @@ const getCurrentRouteName = (navigationState) => {
 const setStyleByScreen = (nextScreen) => {
   switch (nextScreen) {
     case 'home':
-      return 'light-content'
+      return Platform.OS === 'ios' ? 'dark-content' : 'light-content'
     default:
       return 'dark-content'
   }

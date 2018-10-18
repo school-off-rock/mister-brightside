@@ -95,6 +95,7 @@ export class Home extends Component {
       try {
         this.setState({ isTakingPicture: true })
         const data = await this.camera.takePictureAsync(options)
+        this.setState({ isTakingPicture: false })
         if (!isSignUp) {
           await verifyEmployeePhoto(data.base64)
           this.showOptionsModal(data)
@@ -102,7 +103,6 @@ export class Home extends Component {
           this.registerEmployee(data)
         }
       } catch (error) {
-        this.setState({ isTakingPicture: false })
         this.hideModal()
       }
     } else {

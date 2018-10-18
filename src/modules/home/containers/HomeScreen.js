@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
-  bool,
   func,
   shape,
-  string,
-  oneOf,
 } from 'prop-types'
 
 import {
@@ -16,8 +13,6 @@ import {
 import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
-import { registerEmployeeAction } from '../../../redux/actions/async/asyncAuthActions'
-import { setModalAction } from '../../../redux/actions/sync/syncModalAction'
 
 import { Home } from '../components/Home'
 import { NavBarLarge } from '../../shared/components/NavBarLarge'

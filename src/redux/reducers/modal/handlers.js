@@ -1,16 +1,22 @@
 export const setModal = (
   state, {
-    description,
-    iconName,
     isVisible,
     theme,
+    iconName,
     title,
+    description,
+    buttonLabel,
+    onAction,
+    actionButtonLabel,
   }
 ) => ({
   ...state,
-  description,
-  iconName,
   isVisible,
   theme,
+  iconName,
   title,
+  description,
+  buttonLabel,
+  onAction,
+  actionButtonLabel,
 })

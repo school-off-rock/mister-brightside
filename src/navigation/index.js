@@ -5,6 +5,9 @@ import { func, object, bool } from 'prop-types'
 import { NavigationActions, StackActions } from 'react-navigation'
 
 import { StackNavigator } from './navigator'
+import { withModal } from '../modules/shared/components/hoc/withMainModal'
+
+const StackWithModal = withModal(StackNavigator)
 
 class Stack extends Component {
 
@@ -48,7 +51,7 @@ class Stack extends Component {
   render() {
     const { dispatch, nav } = this.props
     const { loaded } = this.state
-    return loaded && <StackNavigator state={nav} dispatch={dispatch} />
+    return loaded && <StackWithModal state={nav} dispatch={dispatch} />
   }
 }
 

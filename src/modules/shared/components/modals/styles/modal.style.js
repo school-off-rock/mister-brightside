@@ -7,14 +7,13 @@ import {
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.DARK_OVERLAY,
     flex: 1,
     justifyContent: 'center',
     padding: METRICS.TERA
   },
   blur: {
     backgroundColor: COLORS.WHITE_SECONDARY_ALT,
-    borderRadius: METRICS.BYTE,
+    borderRadius: METRICS.BORDER_RADIUS,
     alignItems: 'center',
     paddingVertical: METRICS.BIT,
     paddingHorizontal: METRICS.KILO

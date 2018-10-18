@@ -7,21 +7,20 @@ import { ButtonWithRightIcon } from '../../shared/components/buttons/ButtonWithR
 import { FormErrorMessage } from '../../shared/components/FormErrorMessage'
 import { InputWithLabel } from '../../shared/components/inputs/InputWithLabel'
 import { RowLoading } from '../../shared/components/rows/RowLoading'
-import { ScreenContainerHOC } from '../../shared/components/hoc/ScreenContainerHOC'
 import { ViewHandlingKeyboard } from '../../shared/components/ViewHandlingKeyboard'
 import { Paragraph } from '../../shared/components/text'
 
-import { hasText, openPhonePad } from '../../../config/functions'
+import { hasText } from '../../../config/functions'
 
 import { styles } from '../styles/signUp.style'
-
-const Container = ScreenContainerHOC(ViewHandlingKeyboard)
+import { ViewAvoidNavBar } from '../../shared/containers/ViewAvoidNavBar'
 
 export class SignUp extends Component {
   static propTypes = { onContinuePress: func.isRequired, loading: bool.isRequired, hideAlert: func.isRequired }
 
   state = {
-    alert: { message: '', showAlert: false }
+    alert: { message: '', showAlert: false },
+    hasKeyboard: false,
   }
 
   static getDerivedStateFromProps = (nextProps, prevState) => {
@@ -32,6 +31,10 @@ export class SignUp extends Component {
     }
     return null
   }
+
+  onKeyboardHide = () => this.setState({ hasKeyboard: false })
+
+  onKeyboardShow = () => this.setState({ hasKeyboard: true })
 
   setAlert = (showAlert, message) => { this.setState({ alert: { showAlert, message } }) }
 
@@ -73,39 +76,28 @@ export class SignUp extends Component {
     )
   }
 
-openNumber = () => openPhonePad('40035159')
-
-render() {
-  const { alert } = this.state
-  return (
-    <Container style={styles.container}>
-      <View style={styles.fluid}>
-        <Paragraph style={styles.description}>
-          Para possibilitar o acesso aos seus dados, precisamos da sua matrícula
-        </Paragraph>
-        <InputWithLabel
-          style={styles.input}
-          onChangeText={this.setRegistration}
-          label="Matrícula"
-        />
-        <FormErrorMessage
-          message={alert.message}
-          isVisible={alert.showAlert}
-        />
-      </View>
-      {this.renderFooter()}
-      {/* <ModalWithIcon
-        onCancel={() => {}}
-        onClose={() => {}}
-        onAction={this.openNumber}
-        isVisible={false}
-        iconName="phone-in-talk"
-        title="Precisa de ajuda?"
-        description="Ligue para 4003-5159 que iremos te ajudar"
-        closeButtonLabel="Fechar"
-        actionButtonLabel="Ligar"
-      /> */}
-    </Container>
-  )
-}
+  render() {
+    const { alert, hasKeyboard } = this.state
+    return (
+      <ViewAvoidNavBar forceInset={{ bottom: hasKeyboard ? 'never' : 'always' }}>
+        <ViewHandlingKeyboard style={styles.fluid} onKeyboardHide={this.onKeyboardHide} onKeyboardShow={this.onKeyboardShow}>
+          <View style={styles.fluid}>
+            <Paragraph style={styles.description}>
+            Para possibilitar o acesso aos seus dados, precisamos da sua matrícula
+            </Paragraph>
+            <InputWithLabel
+              style={styles.input}
+              onChangeText={this.setRegistration}
+              label="Matrícula"
+            />
+            <FormErrorMessage
+              message={alert.message}
+              isVisible={alert.showAlert}
+            />
+          </View>
+          {this.renderFooter()}
+        </ViewHandlingKeyboard>
+      </ViewAvoidNavBar>
+    )
+  }
 }

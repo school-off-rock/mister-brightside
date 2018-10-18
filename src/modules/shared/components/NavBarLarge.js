@@ -19,7 +19,7 @@ import { NavBarLogo } from './NavBarLogo'
 import { ViewBlurIOS } from './ViewBlurIOS'
 
 import { COLORS, METRICS } from '../../../constants/theme'
-import { hasText, isFunctionEmpty } from '../../../config/functions'
+import { hasText, isFunctionEmpty, openPhonePad } from '../../../config/functions'
 
 export class NavBarLarge extends Component {
   static propTypes = {
@@ -27,6 +27,7 @@ export class NavBarLarge extends Component {
     hasHelp: bool,
     navigation: shape({ goBack: func }).isRequired,
     onHeightUpdate: func,
+    onPressHelp: func.isRequired,
     rightButtons: arrayOf(shape({ name: string, onPress: func })),
     title: string,
   }
@@ -38,6 +39,10 @@ export class NavBarLarge extends Component {
     rightButtons: [],
     title: undefined,
   }
+
+  onHelpPress = () => this.props.onPressHelp(this.openNumber)
+
+  openNumber = () => openPhonePad(40035159)
 
   _onLayout = ({ nativeEvent: { layout: { height } } }) => {
     const { actualHeight, onHeightUpdate } = this.props
@@ -87,7 +92,7 @@ export class NavBarLarge extends Component {
                 <Icon
                   name="help-circle-outline"
                   color={COLORS.PRIMARY}
-                  onPress={() => navigation.navigate('signIn')}
+                  onPress={this.onHelpPress}
                 />
                 )}
               </View>

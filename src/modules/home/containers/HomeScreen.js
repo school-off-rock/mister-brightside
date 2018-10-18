@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { func, shape } from 'prop-types'
+import {
+  func,
+  shape,
+} from 'prop-types'
 
 import {
   registerEmployeeAction,
@@ -9,6 +12,7 @@ import {
 } from '../../../redux/actions/async/asyncAuthActions'
 import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
+import { getModalState } from '../../../redux/reducers/modal/selectors'
 
 import { Home } from '../components/Home'
 import { NavBarLarge } from '../../shared/components/NavBarLarge'
@@ -78,7 +82,8 @@ class HomeScreenContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLoading: getLoading(state)
+  isLoading: getLoading(state),
+  modalAlert: getModalState(state),
 })
 
 const mapDispatchToProps = {

@@ -1,6 +1,8 @@
 import { MODAL_INITIAL_STATE } from '../redux/reducers/modal/constants'
 
 import {
+  SIGN_UP_PHOTO_FAIL_TITLE,
+  SIGN_UP_PHOTO_FAIL_DESCRIPTION,
   CLOCK_IN_SUCCESS_TITLE,
   CLOCK_IN_SUCCESS_DESCRIPTION,
   CLOCK_IN_FAIL_DESCRIPTION,
@@ -45,6 +47,14 @@ const HELP = onAction => ({
   actionButtonLabel: HELP_MODAL_ACTION_LABEL,
 })
 
+const SIGN_UP_PHOTO_FAIL = {
+  ...fail,
+  title: SIGN_UP_PHOTO_FAIL_TITLE,
+  description: SIGN_UP_PHOTO_FAIL_DESCRIPTION,
+  iconName: 'alert-circle',
+  buttonLabel: 'Tentar novamente',
+}
+
 const CLOCK_IN_SUCCESS = {
   ...success,
   title: CLOCK_IN_SUCCESS_TITLE,
@@ -84,6 +94,7 @@ const IP_VALIDATION_FAIL = {
 }
 
 export const MODAL = {
+  SIGN_UP_PHOTO_FAIL,
   CLOCK_IN_SUCCESS,
   CLOCK_IN_FAIL,
   DISMISS,

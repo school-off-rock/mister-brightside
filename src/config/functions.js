@@ -89,7 +89,6 @@ export const openPhonePad = (number) => {
   return Linking.canOpenURL(url).then((canOpen) => {
     if (!canOpen) {
       console.log(canOpen)
-      // return createError(`invalid URL provided: ${url}`)
     }
     return Linking.openURL(url).catch(err => Promise.reject(err))
   })

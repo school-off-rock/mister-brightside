@@ -43,7 +43,7 @@ class SignInScreenContainer extends Component {
     try {
       const employee = await verifyEmployee(registration, navigation)
       Alert.alert('Tudo certo',
-        'Na proxima tela, tire uma foto sua para finalizar o cadastro',
+        'Na proxima tela, tire uma foto do seu rosto para finalizar o cadastro',
         [{ text: 'Tirar foto', onPress: () => navigation.navigate('home', { employee, signUp: true }) }],
         { cancelable: true })
     } catch (error) {}

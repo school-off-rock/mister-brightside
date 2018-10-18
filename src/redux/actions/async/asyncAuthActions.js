@@ -17,6 +17,7 @@ import {
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 import { setModalAction } from '../sync/syncModalAction'
 import { MODAL } from '../../../constants/modals'
+import { VERIFY_USER_FAIL_TITLE } from '../../../constants/strings'
 
 export function verifyEmployeeAction(registration) {
   return async (dispatch) => {
@@ -27,7 +28,11 @@ export function verifyEmployeeAction(registration) {
       dispatch(hideLoading())
       return employee
     } catch (err) {
-      dispatch(registerFailed(err.message))
+      if (err.status === 404) {
+        dispatch(registerFailed(VERIFY_USER_FAIL_TITLE))
+      } else {
+        dispatch(registerFailed(err.message))
+      }
       throw err
     }
   }
@@ -41,12 +46,14 @@ export function registerEmployeeAction(employee, image, navigation) {
       await registerEmployeePhoto(employee, image)
       await AsyncStorage.setItem('employee', JSON.stringify(employee)).then(() => { })
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
-      navigation.setParams({ signUp: false })
+      navigation.setParams({ signUp: false, userName: employee.firstName })
       dispatch(registerSuccess())
     } catch (err) {
       dispatch(registerFailed(err.message))
       if (err.ipError === true) {
         dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      } else {
+        dispatch(setModalAction(MODAL.SIGN_UP_PHOTO_FAIL))
       }
       throw err
     }

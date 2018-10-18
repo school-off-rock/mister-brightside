@@ -12,12 +12,12 @@ import { hideAlert } from '../../../redux/actions/sync/syncAuthActions'
 import { getLoading, getAlert } from '../../../redux/reducers/auth/selectors'
 
 import { SignUp } from '../components/SignUp'
-import { NavBarLarge } from '../../shared/components/NavBarLarge'
+import { NavBar } from '../../shared/containers/NavBar'
 
 class SignInScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     return ({
-      header: <NavBarLarge navigation={navigation} title="Bem vindo" />
+      header: <NavBar navigation={navigation} title="Bem vindo" />
     })
   }
 

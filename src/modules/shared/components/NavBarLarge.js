@@ -17,7 +17,6 @@ import { H2 } from './text'
 import { Icon } from './Icon'
 import { NavBarLogo } from './NavBarLogo'
 import { ViewBlurIOS } from './ViewBlurIOS'
-import { ModalWithIcon } from './modals/ModalWithIcon'
 
 import { COLORS, METRICS } from '../../../constants/theme'
 import { hasText, isFunctionEmpty, openPhonePad } from '../../../config/functions'
@@ -28,6 +27,7 @@ export class NavBarLarge extends Component {
     hasHelp: bool,
     navigation: shape({ goBack: func }).isRequired,
     onHeightUpdate: func,
+    onPressHelp: func.isRequired,
     rightButtons: arrayOf(shape({ name: string, onPress: func })),
     title: string,
   }
@@ -40,13 +40,7 @@ export class NavBarLarge extends Component {
     title: undefined,
   }
 
-  state = {
-    isModalVisible: false
-  }
-
-  showModal = () => this.setState({ isModalVisible: true })
-
-  hideModal = () => this.setState({ isModalVisible: false })
+  onHelpPress = () => this.props.onPressHelp(this.openNumber)
 
   openNumber = () => openPhonePad(40035159)
 
@@ -73,7 +67,6 @@ export class NavBarLarge extends Component {
       title,
       rightButtons,
     } = this.props
-    const { isModalVisible } = this.state
     const { state } = navigation.dangerouslyGetParent()
     const hasBackButton = state && state.index > 0
     return (
@@ -99,7 +92,7 @@ export class NavBarLarge extends Component {
                 <Icon
                   name="help-circle-outline"
                   color={COLORS.PRIMARY}
-                  onPress={this.showModal}
+                  onPress={this.onHelpPress}
                 />
                 )}
               </View>
@@ -108,17 +101,6 @@ export class NavBarLarge extends Component {
             { hasText(title) && <H2 numberOfLines={1} style={s.pageTitle}>{title}</H2> }
           </SafeAreaView>
         </View>
-        <ModalWithIcon
-          onCancel={this.hideModal}
-          onClose={this.hideModal}
-          onAction={this.openNumber}
-          isVisible={isModalVisible}
-          iconName="phone-in-talk"
-          title="Precisa de ajuda?"
-          description="Ligue para 4003-5159 que iremos te ajudar"
-          closeButtonLabel="Fechar"
-          actionButtonLabel="Ligar"
-        />
       </ViewBlurIOS>
     )
   }

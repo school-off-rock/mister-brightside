@@ -14,9 +14,12 @@ import { navBarHeightUpdate } from '../../../redux/actions/sync/syncNavBarAction
 import { getNavBarHeight } from '../../../redux/reducers/navBar/selectors'
 
 import { NavBarLarge } from '../components/NavBarLarge'
+import { setModalAction } from '../../../redux/actions/sync/syncModalAction'
+import { MODAL } from '../../../constants/modals'
 
 class NavBarContainer extends Component {
   static propTypes = {
+    setModal: func.isRequired,
     navBarHeightUpdate: func.isRequired,
     height: number.isRequired,
     hasHelp: bool,
@@ -33,6 +36,8 @@ class NavBarContainer extends Component {
 
   updateHeight = height => this.props.navBarHeightUpdate(height)
 
+  showHelpModal = action => this.props.setModal(MODAL.HELP(action))
+
   render() {
     const {
       height,
@@ -46,6 +51,7 @@ class NavBarContainer extends Component {
         actualHeight={height}
         onHeightUpdate={this.updateHeight}
         hasHelp={hasHelp}
+        onPressHelp={this.showHelpModal}
         navigation={navigation}
         rightButtons={rightButtons}
         title={title}
@@ -59,7 +65,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  navBarHeightUpdate
+  navBarHeightUpdate,
+  setModal: modal => setModalAction(modal)
 }
 
 export const NavBar = connect(mapStateToProps, mapDispatchToProps)(NavBarContainer)

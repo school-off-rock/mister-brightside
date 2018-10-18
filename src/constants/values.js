@@ -12,6 +12,11 @@ const {
   IP_ADDRESS_API
 } = Config
 
+const HELP_PHONE = {
+  STRING: '4003-5159',
+  NUMBER: 40035159,
+}
+
 const NAV_BAR_STYLES = {
   absolute: {
     headerTransparent: true,
@@ -96,5 +101,6 @@ export const Values = {
   FRAPI_API_KEY,
   FRAPI_SCHOOL_GALLERY_NAME,
   IP_ADDRESS_API,
-  NAV_BAR_STYLES
+  NAV_BAR_STYLES,
+  HELP_PHONE
 }

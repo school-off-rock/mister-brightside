@@ -64,7 +64,7 @@ export const verifyIpAddress = async () => {
       if (valid === 'true') {
         return valid
       }
-      throw { ipError: true, valid, message: 'Seu endrereço de IP não possui permissão' }
+      throw { ipError: true, valid, message: 'Seu endereço de IP não possui permissão de acesso ao aplicativo' }
     })
     .catch((error) => {
       throw error

@@ -38,6 +38,7 @@ export class Home extends Component {
     isCameraReady: false,
     isTakingPicture: false,
     modalVisible: false,
+    isSignUp: this.props.isSignUp,
   }
 
   hideModal = () => this.setState({ modalVisible: false, imageSnap: undefined })
@@ -66,7 +67,6 @@ export class Home extends Component {
   showOptionsModal = (image) => {
     this.setState({
       imageB64: image.base64,
-      imageSnap: image.uri,
       modalVisible: true,
       isTakingPicture: false
     })
@@ -76,15 +76,17 @@ export class Home extends Component {
     const { registerEmployee } = this.props
     try {
       await registerEmployee(image.base64)
+      this.setState({ isSignUp: false })
       this.showOptionsModal(image)
     } catch (error) {
-      this.setState({ isTakingPicture: false })
+      this.setState({ imageSnap: undefined })
     }
   }
 
   takePicture = async () => {
     if (this.camera) {
-      const { isSignUp, verifyEmployeePhoto } = this.props
+      const { verifyEmployeePhoto } = this.props
+      const { isSignUp } = this.state
       const options = {
         quality: 0.5,
         base64: true,
@@ -95,7 +97,10 @@ export class Home extends Component {
       try {
         this.setState({ isTakingPicture: true })
         const data = await this.camera.takePictureAsync(options)
-        this.setState({ isTakingPicture: false })
+        this.setState({
+          isTakingPicture: false,
+          imageSnap: (data && data.uri) ? data.uri : undefined,
+        })
         if (!isSignUp) {
           await verifyEmployeePhoto(data.base64)
           this.showOptionsModal(data)
@@ -153,26 +158,26 @@ export class Home extends Component {
                 // pendingAuthorizationView={<PendingAuthView />}
                 onCameraReady={this.onCameraReady}
               />
-              {
-                isCameraReady
-                && (
-                  <View style={styles.bottomOverlay}>
-                    <View style={styles.captureWrap}>
-                      <TouchableOpacity
-                        style={styles.capture}
-                        onPress={() => this.takePicture(this.camera)}
-                        disabled={isTakingPicture}
-                      >
-                        {(isTakingPicture || isLoading) && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )
-              }
-              <Flash willFlash={isTakingPicture} />
             </View>
           )
         }
+        {
+          isCameraReady && !modalVisible
+          && (
+            <View style={styles.bottomOverlay}>
+              <View style={styles.captureWrap}>
+                <TouchableOpacity
+                  style={styles.capture}
+                  onPress={() => this.takePicture(this.camera)}
+                  disabled={isTakingPicture}
+                >
+                  {(isTakingPicture || isLoading) && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
+                </TouchableOpacity>
+              </View>
+            </View>
+          )
+        }
+        <Flash willFlash={isTakingPicture} />
         <OptionsModal
           isVisible={modalVisible}
           onCancel={this.hideModal}

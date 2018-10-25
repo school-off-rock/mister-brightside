@@ -10,7 +10,7 @@ import moment from 'moment'
 import { fetchEmployeeEntriesAction } from '../../../redux/actions/async/asyncClockEntryActions'
 import { getLoadingEntries, getClockEntries } from '../../../redux/reducers/clockEntry/selectors'
 
-import { History } from '../components/History'
+import { History } from '../components/history'
 import { NavBar } from '../../shared/containers/NavBar'
 
 class HistoryScreenContainer extends Component {

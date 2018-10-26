@@ -41,19 +41,21 @@ class HomeScreenContainer extends Component {
   }
 
   static propTypes = {
-    verifyEmployeePhoto: func.isRequired,
+    isLoading: bool,
+    isLoadingClockIn: bool,
+    isSignUp: bool,
+    navigation: shape({ navigate: func }),
     registerEmployee: func.isRequired,
     registerEmployeeEntry: func.isRequired,
     trainEmployeePhoto: func.isRequired,
-    navigation: shape({ navigate: func }),
-    isLoading: bool,
-    isLoadingClockIn: bool,
+    verifyEmployeePhoto: func.isRequired,
   }
 
   static defaultProps = {
-    navigation: { navigate: () => {} },
     isLoading: false,
     isLoadingClockIn: false,
+    isSignUp: false,
+    navigation: { navigate: () => {} },
   }
 
   componentDidMount = () => {
@@ -62,7 +64,9 @@ class HomeScreenContainer extends Component {
       const user = await getUserRegistration()
       navigation.setParams({ userName: user.firstName })
     })
-  };
+  }
+
+  componentWillUnmount = () => this.blurSubscription.remove()
 
   navigateToHistory = () => {
     const { navigation } = this.props
@@ -73,34 +77,35 @@ class HomeScreenContainer extends Component {
     const { registerEmployee, navigation } = this.props
     const employee = navigation.getParam('employee', '')
     await registerEmployee(employee, image, navigation)
+    navigation.setParams({ signUp: false })
   }
 
   render() {
     const {
-      navigation,
-      verifyEmployeePhoto,
+      isLoading,
+      isLoadingClockIn,
+      isSignUp,
       registerEmployeeEntry,
       trainEmployeePhoto,
-      isLoading,
-      isLoadingClockIn
+      verifyEmployeePhoto,
     } = this.props
-    const signUp = navigation.getParam('signUp', '') || false
     const isLoadingPhoto = isLoading || isLoadingClockIn
     return (
       <Home
-        registerEmployee={this.onRegisterEmployee}
+        onRegisterEmployee={this.onRegisterEmployee}
         onHistoryPress={this.navigateToHistory}
         verifyEmployeePhoto={verifyEmployeePhoto}
         onRegisterEmployeeEntryPress={registerEmployeeEntry}
         onTrainEmployeePhotoPress={trainEmployeePhoto}
-        isSignUp={signUp}
+        isSignUp={isSignUp}
         isLoading={isLoadingPhoto}
       />
     )
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
+  isSignUp: props.navigation.getParam('signUp', '') || false,
   isLoading: getLoading(state),
   isLoadingClockIn: getLoadingClockIn(state),
   modalAlert: getModalState(state),

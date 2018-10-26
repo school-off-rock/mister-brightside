@@ -3,8 +3,12 @@ import {
   View,
   TouchableOpacity,
   Image,
+  StyleSheet,
+  Platform,
 } from 'react-native'
-import { func, bool } from 'prop-types'
+
+import { func, bool, object } from 'prop-types'
+import { withNavigation } from 'react-navigation'
 
 import { RNCamera } from 'react-native-camera'
 
@@ -13,24 +17,28 @@ import { LoadingSpinner } from '../../shared/components/LoadingSpinner'
 import { OptionsModal } from './OptionsModal'
 import { PendingAuthView } from './PendingAuthView'
 import { StatusBarLight } from '../../shared/components/StatusBarLight'
+import { AutoShotMechanism } from './AutoShotMechanism'
 
 import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE } from '../../../constants/strings'
 
 import { styles } from '../styles/styles.home'
 
-export class Home extends Component {
+class HomeComponent extends Component {
   static propTypes = {
-    registerEmployee: func.isRequired,
+    onRegisterEmployee: func.isRequired,
     onHistoryPress: func.isRequired,
     onRegisterEmployeeEntryPress: func.isRequired,
     onTrainEmployeePhotoPress: func.isRequired,
     isSignUp: bool,
     isLoading: bool,
+    hasAutoShot: bool,
+    navigation: object.isRequired,
   }
 
   static defaultProps = {
     isSignUp: false,
     isLoading: false,
+    hasAutoShot: true,
   }
 
   state = {
@@ -39,9 +47,33 @@ export class Home extends Component {
     isTakingPicture: false,
     modalVisible: false,
     isSignUp: this.props.isSignUp,
+    hasAutoShot: this.props.hasAutoShot,
+    isFirstView: true,
   }
 
-  hideModal = () => this.setState({ modalVisible: false, imageSnap: undefined })
+  componentDidMount = () => {
+    const { navigation } = this.props
+    const focusType = Platform.OS === 'ios' ? 'willFocus' : 'didFocus'
+    const blurType = Platform.OS === 'ios' ? 'willBlur' : 'didBlur'
+    this.focusSubscription = navigation.addListener(focusType, this.onFocus)
+    this.blurSubscription = navigation.addListener(
+      blurType,
+      () => this.setState({ hasAutoShot: false })
+    )
+  }
+
+  onFocus = () => {
+    const { isSignUp } = this.props
+    this.setState(({ isFirstView }) => ({
+      hasAutoShot: (isSignUp || isFirstView),
+      isFirstView: false
+    }))
+  }
+
+  hideModal = () => {
+    this.setState({ modalVisible: false, imageSnap: undefined })
+    if (Platform.OS === 'android') this.camera.resumePreview()
+  }
 
   onCameraReady = () => this.setState({ isCameraReady: true })
 
@@ -73,13 +105,13 @@ export class Home extends Component {
   }
 
   registerEmployee = async (image) => {
-    const { registerEmployee } = this.props
+    const { onRegisterEmployee } = this.props
     try {
-      await registerEmployee(image.base64)
+      await onRegisterEmployee(image.base64)
       this.setState({ isSignUp: false })
       this.showOptionsModal(image)
     } catch (error) {
-      this.setState({ imageSnap: undefined })
+      this.cleanPreview()
     }
   }
 
@@ -93,13 +125,14 @@ export class Home extends Component {
         forceUpOrientation: true,
         fixOrientation: true,
         mirrorImage: true,
+        doNotSave: true,
       }
       try {
-        this.setState({ isTakingPicture: true })
+        this.setState({ isTakingPicture: true, hasAutoShot: false })
         const data = await this.camera.takePictureAsync(options)
         this.setState({
           isTakingPicture: false,
-          imageSnap: (data && data.uri) ? data.uri : undefined,
+          imageSnap: (data && data.base64) ? data.base64 : undefined,
         })
         if (!isSignUp) {
           await verifyEmployeePhoto(data.base64)
@@ -111,18 +144,47 @@ export class Home extends Component {
         this.hideModal()
       }
     } else {
-      this.setState({ imageSnap: undefined })
+      this.cleanPreview()
     }
+  }
+
+  onPictureTaken = () => {
+    if (Platform.OS === 'android') this.camera.pausePreview()
+  }
+
+  cleanPreview = () => {
+    if (Platform.OS === 'android') this.camera.resumePreview()
+    this.setState({ imageSnap: undefined })
+  }
+
+  renderFooter = () => {
+    const { isTakingPicture } = this.state
+    const { isLoading } = this.props
+
+    return this.state.hasAutoShot
+      ? <AutoShotMechanism onTimerEnd={() => this.takePicture(this.camera)} />
+      : (
+        <View style={styles.bottomOverlay}>
+          <View style={styles.captureWrap}>
+            <TouchableOpacity
+              style={styles.capture}
+              onPress={() => this.takePicture(this.camera)}
+              disabled={isTakingPicture}
+            >
+              {(isTakingPicture || isLoading) && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
+            </TouchableOpacity>
+          </View>
+        </View>
+      )
   }
 
   render() {
     const {
-      imageSnap,
       modalVisible,
       isTakingPicture,
       isCameraReady,
+      imageSnap,
     } = this.state
-    const { isLoading, isLoadingClockIn } = this.props
     const modalOptions = [
       {
         label: 'Bater ponto',
@@ -143,40 +205,27 @@ export class Home extends Component {
     return (
       <View style={styles.container}>
         <StatusBarLight />
-        {imageSnap
-          ? <Image source={{ uri: imageSnap }} style={styles.preview} fadeDuration={0} />
-          : (
-            <View style={styles.preview}>
-              <RNCamera
-                ref={(ref) => { this.camera = ref }}
-                style={styles.preview}
-                type={RNCamera.Constants.Type.front}
-                flashMode={RNCamera.Constants.FlashMode.on}
-                permissionDialogTitle={CAMERA_PERMISSION_TITLE}
-                permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
-                notAuthorizedView={<PendingAuthView />}
-                // pendingAuthorizationView={<PendingAuthView />}
-                onCameraReady={this.onCameraReady}
-              />
-            </View>
-          )
-        }
-        {
-          isCameraReady && !modalVisible
-          && (
-            <View style={styles.bottomOverlay}>
-              <View style={styles.captureWrap}>
-                <TouchableOpacity
-                  style={styles.capture}
-                  onPress={() => this.takePicture(this.camera)}
-                  disabled={isTakingPicture}
-                >
-                  {(isTakingPicture || isLoading) && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
-                </TouchableOpacity>
-              </View>
-            </View>
-          )
-        }
+        <View style={styles.preview}>
+          <RNCamera
+            ref={(ref) => { this.camera = ref }}
+            style={styles.preview}
+            type={RNCamera.Constants.Type.front}
+            permissionDialogTitle={CAMERA_PERMISSION_TITLE}
+            permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
+            notAuthorizedView={<PendingAuthView />}
+            // pendingAuthorizationView={<PendingAuthView />}
+            onCameraReady={this.onCameraReady}
+            onPictureTaken={this.onPictureTaken}
+          />
+          {(Platform.OS === 'android' || imageSnap) && (
+            <Image
+              source={{ uri: `data:image/gif;base64,${imageSnap}` }}
+              style={{ ...StyleSheet.absoluteFillObject }}
+              fadeDuration={100}
+            />
+          )}
+        </View>
+        {isCameraReady && !modalVisible && this.renderFooter()}
         <Flash willFlash={isTakingPicture} />
         <OptionsModal
           isVisible={modalVisible}
@@ -188,3 +237,5 @@ export class Home extends Component {
     )
   }
 }
+
+export const Home = withNavigation(HomeComponent)

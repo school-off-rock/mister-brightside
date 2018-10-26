@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native'
-import { COLORS, METRICS } from '../../../constants/theme'
+import { COLORS, METRICS, FONTS } from '../../../constants/theme'
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,6 +14,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     ...StyleSheet.absoluteFillObject
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    top: null,
+    ...Platform.select({
+      android: {
+        backgroundColor: COLORS.SURFACE_OPACITY
+      }
+    })
   },
   bottomOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -64,5 +73,16 @@ export const styles = StyleSheet.create({
   pendingText: {
     marginTop: METRICS.KILO,
     textAlign: 'center',
+  },
+  countdownText: {
+    textAlign: 'center',
+    margin: METRICS.KILO,
+    ...FONTS.standardStyle.p,
+  },
+  countdownTextBold: {
+    textAlign: 'center',
+    margin: METRICS.KILO,
+    ...FONTS.standardStyle.pEmphasis,
+    ...FONTS.type.medium
   }
 })

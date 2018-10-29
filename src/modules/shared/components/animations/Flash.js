@@ -1,19 +1,24 @@
 import React, { Component } from 'react'
 import { Animated, StyleSheet } from 'react-native'
-import { bool } from 'prop-types'
+import { bool, func } from 'prop-types'
 
 import { COLORS } from '../../../../constants/theme'
 
 export class Flash extends Component {
   static propTypes = {
-    willFlash: bool.isRequired
+    willFlash: bool.isRequired,
+    onFlashEnd: func,
+  }
+
+  static defaultProps = {
+    onFlashEnd: () => {},
   }
 
   state = { opacity: new Animated.Value(0) }
 
-  componentDidUpdate = () => {
+  componentDidUpdate = (prevProps) => {
     const { willFlash } = this.props
-    if (willFlash) {
+    if (willFlash !== prevProps.willFlash && willFlash) {
       this.flash()
     }
   }
@@ -21,7 +26,7 @@ export class Flash extends Component {
   flash = () => {
     const { opacity } = this.state
     opacity.setValue(1)
-    Animated.timing(opacity, { toValue: 0, useNativeDriver: true }).start()
+    Animated.timing(opacity, { toValue: 0, useNativeDriver: true }).start(this.props.onFlashEnd)
   }
 
   render() {

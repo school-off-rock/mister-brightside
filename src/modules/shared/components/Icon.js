@@ -19,11 +19,14 @@ import { viewPropTypes } from '../propTypes'
 // import { animationTiming } from './animations'
 
 const MIN_SCALE_VALUE = Platform.OS === 'android' ? 0.01 : 0
+const AnimatedTouchable = Animated.createAnimatedComponent(Touchable)
+
 export class Icon extends PureComponent {
   static defaultProps = {
     color: undefined,
     containerStyle: {},
     dense: false,
+    disabled: false,
     hasBadge: false,
     badge: { name: 'check', color: COLORS.PRIMARY },
     onPress: () => {},
@@ -33,13 +36,15 @@ export class Icon extends PureComponent {
     color: string,
     containerStyle: viewPropTypes,
     dense: bool,
+    disabled: bool,
     hasBadge: bool,
     badge: shape({ name: string, color: string }),
     onPress: func,
   }
 
   state = {
-    badgeScale: new Animated.Value(MIN_SCALE_VALUE)
+    badgeScale: new Animated.Value(MIN_SCALE_VALUE),
+    opacity: new Animated.Value(1),
   }
 
   componentDidMount = () => {
@@ -60,9 +65,18 @@ export class Icon extends PureComponent {
     // }
   }
 
+  componentDidUpdate = (prevProps) => {
+    const { disabled } = this.props
+    if (prevProps.disabled !== disabled) {
+      Animated.timing(this.state.opacity, {
+        toValue: disabled ? 0.2 : 1
+      }).start()
+    }
+  }
+
   setWrapStyle = () => (this.props.dense
-    ? StyleSheet.flatten([styles.wrap, styles.denseWidth, this.props.containerStyle])
-    : StyleSheet.flatten([styles.wrap, styles.standardWidth, this.props.containerStyle])
+    ? StyleSheet.flatten([styles.wrap, styles.denseWidth, { opacity: this.state.opacity }, this.props.containerStyle])
+    : StyleSheet.flatten([styles.wrap, styles.standardWidth, { opacity: this.state.opacity }, this.props.containerStyle])
   )
 
   setIconSize = () => (this.props.dense ? METRICS.ICONS.small : METRICS.ICONS.medium)
@@ -100,17 +114,18 @@ export class Icon extends PureComponent {
       color,
       hasBadge,
       onPress,
+      disabled,
       ...props
     } = this.props
     return (
-      <Touchable style={this.setWrapStyle()} onPress={onPress} borderless>
+      <AnimatedTouchable disabled={disabled} style={this.setWrapStyle()} onPress={onPress} borderless>
         <CustomIcon
           size={this.setIconSize()}
           color={color || COLORS.BLACK_SECONDARY_ALT}
           {...props}
         />
         {this.renderBadge()}
-      </Touchable>
+      </AnimatedTouchable>
     )
   }
 }

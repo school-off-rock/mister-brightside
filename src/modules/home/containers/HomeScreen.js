@@ -13,6 +13,7 @@ import {
   trainEmployeePhotoAction
 } from '../../../redux/actions/async/asyncAuthActions'
 import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
+import { showLoading } from '../../../redux/actions/sync/syncAuthActions'
 import { getLoading } from '../../../redux/reducers/auth/selectors'
 import { getLoadingClockIn } from '../../../redux/reducers/clockEntry/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
@@ -26,10 +27,12 @@ class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     const userName = navigation.getParam('userName', '')
     const signUp = navigation.getParam('signUp', '')
+    const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
+
     const firstName = hasText(userName) ? `${userName.charAt(0)}${userName.slice(1, userName.length).toLowerCase()}` : ''
     const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
     const title = signUp ? 'Tirar foto' : welcomeText
-    const rightButton = [{ name: 'autorenew', onPress: () => navigation.navigate('signIn') }]
+    const rightButton = [{ name: 'account-switch', onPress: () => navigation.navigate('signIn'), disabled: isDisabledOnLoading }]
     const rightButtons = signUp ? [] : rightButton
     return ({
       header: <NavBar
@@ -41,28 +44,43 @@ class HomeScreenContainer extends Component {
   }
 
   static propTypes = {
-    verifyEmployeePhoto: func.isRequired,
+    isLoading: bool,
+    isLoadingClockIn: bool,
+    isSignUp: bool,
+    navigation: shape({ navigate: func }),
+    showLoading: func.isRequired,
     registerEmployee: func.isRequired,
     registerEmployeeEntry: func.isRequired,
     trainEmployeePhoto: func.isRequired,
-    navigation: shape({ navigate: func }),
-    isLoading: bool,
-    isLoadingClockIn: bool,
+    verifyEmployeePhoto: func.isRequired,
   }
 
   static defaultProps = {
-    navigation: { navigate: () => {} },
     isLoading: false,
     isLoadingClockIn: false,
+    isSignUp: false,
+    navigation: { navigate: () => {} },
   }
 
   componentDidMount = () => {
     InteractionManager.runAfterInteractions(async () => {
-      const { navigation } = this.props
+      const { navigation, isLoadingClockIn, isLoading } = this.props
       const user = await getUserRegistration()
-      navigation.setParams({ userName: user.firstName })
+      navigation.setParams({
+        userName: user.firstName,
+        isDisabledOnLoading: isLoadingClockIn || isLoading,
+      })
     })
-  };
+  }
+
+  componentDidUpdate = (prevProps) => {
+    const { isLoadingClockIn, isLoading, navigation } = this.props
+    if ((prevProps.isLoadingClockIn !== isLoadingClockIn) || (prevProps.isLoading !== isLoading)) {
+      navigation.setParams({
+        isDisabledOnLoading: isLoadingClockIn || isLoading,
+      })
+    }
+  }
 
   navigateToHistory = () => {
     const { navigation } = this.props
@@ -77,32 +95,34 @@ class HomeScreenContainer extends Component {
 
   render() {
     const {
-      navigation,
-      verifyEmployeePhoto,
+      isLoading,
+      isLoadingClockIn,
+      isSignUp,
       registerEmployeeEntry,
       trainEmployeePhoto,
-      isLoading,
-      isLoadingClockIn
+      verifyEmployeePhoto,
+      showLoading,
     } = this.props
-    const signUp = navigation.getParam('signUp', '') || false
     const isLoadingPhoto = isLoading || isLoadingClockIn
     return (
       <Home
-        registerEmployee={this.onRegisterEmployee}
+        isLoading={isLoadingPhoto}
+        isSignUp={isSignUp}
         onHistoryPress={this.navigateToHistory}
-        verifyEmployeePhoto={verifyEmployeePhoto}
+        onRegisterEmployee={this.onRegisterEmployee}
         onRegisterEmployeeEntryPress={registerEmployeeEntry}
         onTrainEmployeePhotoPress={trainEmployeePhoto}
-        isSignUp={signUp}
-        isLoading={isLoadingPhoto}
+        verifyEmployeePhoto={verifyEmployeePhoto}
+        onTakePicture={showLoading}
       />
     )
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
   isLoading: getLoading(state),
   isLoadingClockIn: getLoadingClockIn(state),
+  isSignUp: props.navigation.getParam('signUp', false),
   modalAlert: getModalState(state),
 })
 
@@ -111,6 +131,7 @@ const mapDispatchToProps = {
   registerEmployee: (employee, image, navigation) => registerEmployeeAction(employee, image, navigation),
   registerEmployeeEntry: () => registerEmployeeEntryAction(),
   trainEmployeePhoto: image => trainEmployeePhotoAction(image),
+  showLoading,
 }
 
 export const HomeScreen = connect(mapStateToProps, mapDispatchToProps)(HomeScreenContainer)

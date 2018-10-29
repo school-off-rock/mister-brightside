@@ -49,9 +49,11 @@ export function registerEmployeeAction(employee, image, navigation) {
       navigation.setParams({ signUp: false, userName: employee.firstName })
       dispatch(registerSuccess())
     } catch (err) {
-      dispatch(registerFailed(err.message))
+      dispatch(registerFailed())
       if (err.ipError === true) {
         dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      } else if (err.message === 'Invalid number of people on image: 0') {
+        dispatch(setModalAction(MODAL.NO_PERSON_ON_IMAGE))
       } else {
         dispatch(setModalAction(MODAL.SIGN_UP_PHOTO_FAIL))
       }
@@ -69,10 +71,13 @@ export function verifyEmployeePhotoAction(image) {
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       dispatch(hideLoading())
     } catch (err) {
+      console.log('TCL: }catch -> err', err)
       dispatch(hideLoading())
       dispatch(verifyEmployeePhotoFailed(err.message))
       if (err.ipError === true) {
         dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      } else if (err.status === 404) {
+        dispatch(setModalAction(MODAL.NO_PERSON_ON_IMAGE))
       } else {
         dispatch(setModalAction(MODAL.USER_RECOGNITION_FAIL))
       }

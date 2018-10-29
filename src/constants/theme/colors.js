@@ -4,6 +4,7 @@ const isIOS = Platform.OS === 'ios'
 
 export const COLORS = {
   PRIMARY: '#ED323D',
+  PRIMARY_OPACITY: 'rgba(237, 50, 61, 0.3)',
   ALERT: '#FF9F1C',
   SUCCESS: '#256EFF',
   POSITIVE: '#00973A',

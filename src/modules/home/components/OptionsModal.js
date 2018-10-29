@@ -59,6 +59,7 @@ export class OptionsModal extends Component {
       translateY,
       {
         toValue: isVisible ? 0 : this.menuCardHeight,
+        duration: 350,
         useNativeDriver: true,
       }
     ).start()
@@ -77,7 +78,7 @@ export class OptionsModal extends Component {
 
   setOpacity = () => (
     this.state.translateY.interpolate({
-      inputRange: [0, this.menuCardHeight * 0.1],
+      inputRange: [0, this.menuCardHeight * 0.7],
       outputRange: [1, 0],
       extrapolate: 'clamp',
     })

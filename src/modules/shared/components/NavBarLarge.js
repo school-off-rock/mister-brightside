@@ -51,12 +51,13 @@ export class NavBarLarge extends Component {
     }
   }
 
-  renderRightIcons = ({ name, onPress }) => (
+  renderRightIcons = ({ name, onPress, disabled }) => (
     <Icon
       key={name}
       name={name}
       color={COLORS.PRIMARY}
       onPress={onPress}
+      disabled={disabled}
     />
   )
 

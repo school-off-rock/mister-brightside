@@ -138,30 +138,34 @@ static propTypes ={
             label={displayEndDate}
           />
         </View>
-        <DateTimePickerIOS
-          date={selectedInitialDate}
-          dismissButtonText="Cancelar"
-          isVisible={isIosInitialPickerVisible}
-          maximumDate={now}
-          mode="date"
-          onCancel={this.hideInitialPicker}
-          onDateChange={this.updateInitialDate}
-          onSubmit={() => this.setSelectedInitialDate(selectedInitialDate)}
-          submitButtonText="Confirmar"
-          title="Data inicial"
-        />
-        <DateTimePickerIOS
-          date={selectedEndDate}
-          dismissButtonText="Cancelar"
-          isVisible={isIosEndPickerVisible}
-          minimumDate={selectedInitialDate}
-          mode="date"
-          onCancel={this.hideEndPicker}
-          onDateChange={this.updateEndDate}
-          onSubmit={() => this.setSelectedEndDate(selectedEndDate)}
-          submitButtonText="Confirmar"
-          title="Data final"
-        />
+        {Platform.OS === 'ios' && (
+          <React.Fragment>
+            <DateTimePickerIOS
+              date={selectedInitialDate}
+              dismissButtonText="Cancelar"
+              isVisible={isIosInitialPickerVisible}
+              maximumDate={now}
+              mode="date"
+              onCancel={this.hideInitialPicker}
+              onDateChange={this.updateInitialDate}
+              onSubmit={() => this.setSelectedInitialDate(selectedInitialDate)}
+              submitButtonText="Confirmar"
+              title="Data inicial"
+            />
+            <DateTimePickerIOS
+              date={selectedEndDate}
+              dismissButtonText="Cancelar"
+              isVisible={isIosEndPickerVisible}
+              minimumDate={selectedInitialDate}
+              mode="date"
+              onCancel={this.hideEndPicker}
+              onDateChange={this.updateEndDate}
+              onSubmit={() => this.setSelectedEndDate(selectedEndDate)}
+              submitButtonText="Confirmar"
+              title="Data final"
+            />
+          </React.Fragment>
+        )}
       </ViewBlurIOS>
     )
   }

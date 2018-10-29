@@ -82,14 +82,14 @@ const TRAIN_PHOTO_SUCCESS = {
   ...success,
   title: TRAIN_PHOTO_SUCCESS_TITLE,
   description: TRAIN_PHOTO_SUCCESS_DESCRIPTION,
-  iconName: 'map-marker-radius',
+  iconName: 'creation',
 }
 
 const IP_VALIDATION_FAIL = {
   ...fail,
   title: IP_VALIDATION_FAIL_TITLE,
   description: IP_VALIDATION_FAIL_DESCRIPTION,
-  iconName: 'alert-circle',
+  iconName: 'map-marker-outline',
   buttonLabel: 'Tentar novamente',
 }
 

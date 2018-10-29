@@ -69,7 +69,7 @@ export class Icon extends PureComponent {
     const { disabled } = this.props
     if (prevProps.disabled !== disabled) {
       Animated.timing(this.state.opacity, {
-        toValue: disabled ? 0.3 : 1
+        toValue: disabled ? 0.2 : 1
       }).start()
     }
   }

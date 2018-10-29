@@ -82,9 +82,6 @@ class HomeScreenContainer extends Component {
     }
   }
 
-
-  componentWillUnmount = () => this.blurSubscription.remove()
-
   navigateToHistory = () => {
     const { navigation } = this.props
     navigation.navigate('history')

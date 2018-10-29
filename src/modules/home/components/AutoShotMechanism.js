@@ -8,7 +8,7 @@ import { styles } from '../styles/styles.home'
 import { ViewBlurIOS } from '../../shared/components/ViewBlurIOS'
 import { RowProgressCountdown } from '../../shared/components/rows/RowProgressCountdown'
 
-const COUNTDOWN = 2
+const COUNTDOWN = 3
 
 class AutoShot extends Component {
   static propTypes = {

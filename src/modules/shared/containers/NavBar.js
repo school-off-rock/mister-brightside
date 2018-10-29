@@ -24,7 +24,11 @@ class NavBarContainer extends Component {
     height: number.isRequired,
     hasHelp: bool,
     navigation: shape({ goBack: func }).isRequired,
-    rightButtons: arrayOf(shape({ name: string, onPress: func })),
+    rightButtons: arrayOf(shape({
+      name: string,
+      onPress: func,
+      disabled: bool
+    })),
     title: string,
   }
 

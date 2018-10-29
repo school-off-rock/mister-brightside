@@ -1,31 +1,33 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { any, func } from 'prop-types'
 import { TouchableOpacity, View } from 'react-native'
 import { isFunctionEmpty } from '../../../config/functions'
 
 
-export const Touchable = (props) => {
-  const { onPress, children } = props
-  if (isFunctionEmpty(onPress)) {
+export class Touchable extends Component {
+  static defaultProps = {
+    children: null,
+    onPress: () => {},
+  }
+
+  static propTypes = {
+    children: any,
+    onPress: func,
+  }
+
+  render() {
+    const { onPress, children, ...props } = this.props
+    if (isFunctionEmpty(onPress)) {
+      return (
+        <View {...props}>
+          {props.children}
+        </View>
+      )
+    }
     return (
-      <View {...props}>
-        {props.children}
-      </View>
+      <TouchableOpacity onPress={onPress} {...props}>
+        {children}
+      </TouchableOpacity>
     )
   }
-  return (
-    <TouchableOpacity onPress={onPress} {...props}>
-      {children}
-    </TouchableOpacity>
-  )
-}
-
-Touchable.defaultProps = {
-  children: null,
-  onPress: () => {},
-}
-
-Touchable.propTypes = {
-  children: any,
-  onPress: func,
 }

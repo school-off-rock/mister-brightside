@@ -27,6 +27,7 @@ class HomeComponent extends Component {
   static propTypes = {
     onRegisterEmployee: func.isRequired,
     onHistoryPress: func.isRequired,
+    onTakePicture: func.isRequired,
     onRegisterEmployeeEntryPress: func.isRequired,
     onTrainEmployeePhotoPress: func.isRequired,
     isSignUp: bool,
@@ -46,7 +47,6 @@ class HomeComponent extends Component {
     isCameraReady: false,
     isTakingPicture: false,
     modalVisible: false,
-    isSignUp: this.props.isSignUp,
     hasAutoShot: this.props.hasAutoShot,
     isFirstView: true,
   }
@@ -105,20 +105,20 @@ class HomeComponent extends Component {
   }
 
   registerEmployee = async (image) => {
-    const { onRegisterEmployee } = this.props
+    const { onRegisterEmployee, navigation } = this.props
     try {
       await onRegisterEmployee(image.base64)
-      this.setState({ isSignUp: false })
+      navigation.setParams({ signUp: false })
       this.showOptionsModal(image)
     } catch (error) {
+
       this.cleanPreview()
     }
   }
 
   takePicture = async () => {
     if (this.camera) {
-      const { verifyEmployeePhoto } = this.props
-      const { isSignUp } = this.state
+      const { verifyEmployeePhoto, isSignUp, onTakePicture } = this.props
       const options = {
         quality: 0.5,
         base64: true,
@@ -128,6 +128,7 @@ class HomeComponent extends Component {
         doNotSave: true,
       }
       try {
+        onTakePicture()
         this.setState({ isTakingPicture: true, hasAutoShot: false })
         const data = await this.camera.takePictureAsync(options)
         this.setState({

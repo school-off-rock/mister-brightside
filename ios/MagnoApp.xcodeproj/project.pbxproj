@@ -1514,7 +1514,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1538,7 +1538,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.colegiomagno.colegiomagnorh;
 				PRODUCT_NAME = MagnoApp;
-				PROVISIONING_PROFILE_SPECIFIER = "Magno RH Dist";
+				PROVISIONING_PROFILE_SPECIFIER = "Magno RH DEV";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

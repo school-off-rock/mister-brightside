@@ -21,6 +21,7 @@ import { ViewBlurIOS } from '../../shared/components/ViewBlurIOS'
 import { COLORS, METRICS } from '../../../constants/theme'
 
 const AnimatedBlurView = Animated.createAnimatedComponent(ViewBlurIOS)
+const duration = 250
 
 export class OptionsModal extends Component {
   static propTypes = {
@@ -55,23 +56,23 @@ export class OptionsModal extends Component {
     }
   }
 
-  animateTranslate = async (isVisible) => {
+  animateTranslate = (isVisible) => {
     const { translateY } = this.state
     if (isVisible) this.setState({ isVisible })
-    await Animated.timing(
+    Animated.timing(
       translateY,
       {
         toValue: isVisible ? 0 : this.menuCardHeight,
-        duration: 350,
+        duration,
         useNativeDriver: true,
       }
-    ).start()
-    if (!isVisible) this.setState({ isVisible })
+    ).start(() => { if (!isVisible) { this.setState({ isVisible }) } })
   }
 
   renderOption = ({ label, iconName, onPress }) => (
     <RowIconText
       iconName={iconName}
+      iconColor={COLORS.BLACK_SECONDARY_ALT}
       key={label}
       onPress={onPress}
       text={label}
@@ -81,8 +82,8 @@ export class OptionsModal extends Component {
 
   setOpacity = () => (
     this.state.translateY.interpolate({
-      inputRange: [0, this.menuCardHeight * 0.7],
-      outputRange: [1, 0],
+      inputRange: [0, this.menuCardHeight * 0.6, this.menuCardHeight],
+      outputRange: [1, 1, 0],
       extrapolate: 'clamp',
     })
   )
@@ -93,7 +94,7 @@ export class OptionsModal extends Component {
     return (
       <Modal
         onRequestClose={onCancel}
-        animationType="slide"
+        // animationType="slide"
         transparent={true}
         visible={isVisible}
       >

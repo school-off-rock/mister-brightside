@@ -18,6 +18,8 @@ import {
   IP_VALIDATION_FAIL_DESCRIPTION,
   NO_PERSON_ON_IMAGE_TITLE,
   NO_PERSON_ON_IMAGE_DESCRIPTION,
+  SIGN_ID_MISMATCH_IMAGE_TITLE,
+  SIGN_ID_MISMATCH_IMAGE_DESCRIPTION,
 } from './strings'
 
 const success = {
@@ -80,6 +82,13 @@ const NO_PERSON_ON_IMAGE = {
   buttonLabel: 'Tentar novamente',
 }
 
+const ID_MISMATCH_IMAGE = {
+  ...fail,
+  title: SIGN_ID_MISMATCH_IMAGE_TITLE,
+  description: SIGN_ID_MISMATCH_IMAGE_DESCRIPTION,
+  iconName: 'face',
+}
+
 const USER_RECOGNITION_FAIL = {
   ...fail,
   title: USER_RECOGNITION_FAIL_TITLE,
@@ -108,6 +117,7 @@ export const MODAL = {
   CLOCK_IN_SUCCESS,
   DISMISS,
   HELP,
+  ID_MISMATCH_IMAGE,
   IP_VALIDATION_FAIL,
   NO_PERSON_ON_IMAGE,
   SIGN_UP_PHOTO_FAIL,

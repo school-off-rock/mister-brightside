@@ -1,12 +1,13 @@
 import React from 'react'
 import { View } from 'react-native'
 import { string, func, bool } from 'prop-types'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { Icon } from '../Icon'
 import { Paragraph } from '../text/Paragraph'
 import { Touchable } from '../Touchable'
 
 import { rowStyles } from './style/row.style'
+import { METRICS, COLORS } from '../../../../constants/theme'
 
 export default function RowIconText({
   iconColor,
@@ -18,7 +19,9 @@ export default function RowIconText({
   return (
     <Touchable onPress={onPress}>
       <View style={rowStyles.centerRow}>
-        <Icon name={iconName} color={iconColor} containerStyle={rowStyles.iconWrap} />
+        <View style={rowStyles.iconWrap}>
+          <Icon name={iconName} color={iconColor} size={METRICS.ICONS.medium} />
+        </View>
         <Paragraph emphasis={textEmphasis}>{text}</Paragraph>
       </View>
     </Touchable>
@@ -33,7 +36,7 @@ RowIconText.propTypes = {
   textEmphasis: bool,
 }
 RowIconText.defaultProps = {
-  iconColor: undefined,
+  iconColor: COLORS.BLACK_SECONDARY_ALT,
   onPress: () => { },
   text: '',
   textEmphasis: false,

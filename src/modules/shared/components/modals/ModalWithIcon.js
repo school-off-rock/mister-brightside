@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { ButtonText } from '../buttons/ButtonText'
 import { ViewBlurDark } from '../ViewBlurDark'
+import { ViewBlurIOS } from '../ViewBlurIOS'
 
 import { hasText } from '../../../../config/functions'
 import { COLORS, METRICS } from '../../../../constants/theme'
@@ -60,13 +61,14 @@ export class ModalWithIcon extends Component {
     return (
       <Modal onRequestClose={onCancel} animationType="fade" transparent={true} visible={isVisible}>
         <ViewBlurDark style={styles.container}>
-          <View style={styles.blur}>
+          <ViewBlurIOS style={styles.blur}>
             <Icon name={iconName} style={styles.icon} color={primaryColor} size={METRICS.ICONS.xl} />
             { hasText(title) && <Text style={styles.title}>{title}</Text> }
             { hasText(description) && <Text style={styles.description}>{description}</Text> }
             <View style={styles.buttonContainer}>
               <ButtonText
                 onPress={onClose}
+                containerStyle={styles.buttonWrap}
                 contentStyle={[{ color: primaryColor }, styles.button]}
                 title={closeButtonLabel}
               />
@@ -74,13 +76,14 @@ export class ModalWithIcon extends Component {
                 && (
                 <ButtonText
                   onPress={onAction}
+                  containerStyle={styles.buttonWrap}
                   contentStyle={[{ color: primaryColor }, styles.button]}
                   title={actionButtonLabel}
                 />
                 )
               }
             </View>
-          </View>
+          </ViewBlurIOS>
         </ViewBlurDark>
       </Modal>
     )

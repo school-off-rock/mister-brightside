@@ -23,7 +23,11 @@ export const rowStyles = StyleSheet.create({
   },
 
   iconWrap: {
+    alignItems: 'center',
+    height: METRICS.ICON_TOUCHABLE_AREA_DENSE,
+    justifyContent: 'center',
     marginHorizontal: METRICS.BIT,
+    width: METRICS.ICON_TOUCHABLE_AREA_DENSE,
   },
 
   centerRow: {

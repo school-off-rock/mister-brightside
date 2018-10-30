@@ -33,12 +33,11 @@ class HomeScreenContainer extends Component {
     const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
     const title = signUp ? 'Tirar foto' : welcomeText
     const rightButton = [{ name: 'account-switch', onPress: () => navigation.navigate('signIn'), disabled: isDisabledOnLoading }]
-    const rightButtons = signUp ? [] : rightButton
     return ({
       header: <NavBar
         navigation={navigation}
         title={title}
-        rightButtons={rightButtons}
+        rightButtons={rightButton}
       />
     })
   }

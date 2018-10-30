@@ -4,7 +4,9 @@ export const CAMERA_PERMISSION_TITLE = 'O acesso à camera é necessário'
 export const CAMERA_PERMISSION_MESSAGE = 'Você precisa conceder acesso à camera para poder bater ponto e checar seu histórico'
 
 export const SIGN_UP_PHOTO_FAIL_TITLE = 'Erro de identificação'
-export const SIGN_UP_PHOTO_FAIL_DESCRIPTION = 'Não conseguimos te identificar na foto. Tente melhorar a identificação para obter melhores resultados'
+export const SIGN_UP_PHOTO_FAIL_DESCRIPTION = 'Não conseguimos te identificar na foto'
+export const SIGN_ID_MISMATCH_IMAGE_TITLE = 'Parece que este não é você'
+export const SIGN_ID_MISMATCH_IMAGE_DESCRIPTION = 'Sua foto não corresponde à matricula. Verifique se você inseriu sua matrícula correta. Se o problema persistir, entre em contato com o RH'
 export const CLOCK_IN_SUCCESS_TITLE = 'Ponto registrado'
 export const CLOCK_IN_SUCCESS_DESCRIPTION = 'Sua foto foi identificada e seu ponto foi registrado com sucesso'
 export const CLOCK_IN_FAIL_TITLE = 'Erro ao registrar ponto'
@@ -22,3 +24,6 @@ export const IP_VALIDATION_FAIL_TITLE = 'IP não reconhecido'
 export const IP_VALIDATION_FAIL_DESCRIPTION = 'Verifique se você está conectado à rede correta'
 
 export const VERIFY_USER_FAIL_TITLE = 'Funcionário não encontrado, verifique se você digitou sua matrícula correta'
+
+export const ERROR_NO_PERSON_ON_IMAGE = 'Rosto não reconhecido'
+export const ERROR_ID_MISMATCH_IMAGE = 'Foto não corresponde à matrícula do funcionário'

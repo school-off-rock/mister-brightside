@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import {
   METRICS,
   COLORS,
@@ -9,33 +9,42 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: METRICS.TERA
+    padding: METRICS.TERA,
   },
   blur: {
-    backgroundColor: COLORS.WHITE_SECONDARY_ALT,
+    backgroundColor: COLORS.SURFACE_OPACITY,
     borderRadius: METRICS.BORDER_RADIUS,
     alignItems: 'center',
-    paddingVertical: METRICS.BIT,
-    paddingHorizontal: METRICS.KILO
+    paddingVertical: METRICS.BYTE,
+    paddingHorizontal: METRICS.KILO,
+    ...Platform.select({
+      android: {
+        elevation: 24,
+      }
+    })
   },
   title: {
-    ...FONTS.style.title,
-    paddingVertical: METRICS.BIT
+    ...FONTS.standardStyle.pEmphasis,
+    ...FONTS.type.medium,
+    paddingTop: METRICS.BIT,
+    textAlign: 'center',
   },
   description: {
-    color: COLORS.BLACK_SECONDARY_ALT,
-    paddingVertical: METRICS.BIT,
-    textAlign: 'center'
+    ...FONTS.standardStyle.description,
+    marginTop: METRICS.BIT,
+    textAlign: 'center',
   },
   icon: {
     paddingVertical: METRICS.BIT,
   },
+  buttonWrap: {
+    marginTop: METRICS.BIT,
+  },
   button: {
-    paddingVertical: METRICS.BIT,
-    marginHorizontal: METRICS.GIGA
+    paddingVertical: METRICS.KILO,
+    paddingHorizontal: METRICS.GIGA,
   },
   buttonContainer: {
-    paddingVertical: METRICS.BIT,
     flexDirection: 'row',
   }
 })

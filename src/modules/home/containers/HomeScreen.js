@@ -32,8 +32,8 @@ class HomeScreenContainer extends Component {
     const firstName = hasText(userName) ? `${userName.charAt(0)}${userName.slice(1, userName.length).toLowerCase()}` : ''
     const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
     const title = signUp ? 'Tirar foto' : welcomeText
-    const rightButton = [{ name: 'account-switch', onPress: () => navigation.navigate('signIn'), disabled: isDisabledOnLoading }]
-    const rightButtons = signUp ? [] : rightButton
+    const rightButtons = [{ name: 'account-switch', onPress: () => navigation.navigate('signIn'), disabled: isDisabledOnLoading }]
+    // const rightButtons = signUp ? [] : rightButton
     return ({
       header: <NavBar
         navigation={navigation}

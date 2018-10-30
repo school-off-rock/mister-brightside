@@ -1,12 +1,13 @@
 import { verifyResponse } from '../../config/functions'
 import {
   VERIFY_EMPLOYEE_REGISTRATION,
-  REGISTER_EMPLOYEE_PHOTO,
-  VERIFY_IP_ADDRESS
+  VERIFY_IP_ADDRESS,
+  VERIFY_EMPLOYEE_PHOTO
 } from '../../constants/routes'
 import { Values } from '../../constants/values'
 import { getIpAddress } from '../shared'
 import { Employee } from '../../domain/Employee'
+import { ERROR_NO_PERSON_ON_IMAGE, ERROR_ID_MISMATCH_IMAGE } from '../../constants/strings'
 
 const {
   FRAPI_API_KEY
@@ -31,7 +32,7 @@ export const verifyEmployee = async (registration) => {
 
 
 export const registerEmployeePhoto = async ({ registration }, imageB64) => {
-  return fetch(REGISTER_EMPLOYEE_PHOTO, {
+  return fetch(VERIFY_EMPLOYEE_PHOTO, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -43,8 +44,19 @@ export const registerEmployeePhoto = async ({ registration }, imageB64) => {
       imageB64,
     })
   }).then(resp => verifyResponse(resp))
+
     .then((response) => {
-      return response
+      const { people = [] } = response
+      const [personData = {}] = people
+      const { recognition = {} } = personData
+      const { confidence, predictedLabel } = recognition
+      if (confidence >= 60) {
+        if (predictedLabel === registration) {
+          return personData
+        }
+        throw { message: ERROR_ID_MISMATCH_IMAGE, status: 404 }
+      }
+      throw { message: ERROR_NO_PERSON_ON_IMAGE, status: 404 }
     })
     .catch((err) => {
       throw err

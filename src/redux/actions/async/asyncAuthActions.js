@@ -17,7 +17,7 @@ import {
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 import { setModalAction } from '../sync/syncModalAction'
 import { MODAL } from '../../../constants/modals'
-import { VERIFY_USER_FAIL_TITLE } from '../../../constants/strings'
+import { VERIFY_USER_FAIL_TITLE, ERROR_NO_PERSON_ON_IMAGE, ERROR_ID_MISMATCH_IMAGE } from '../../../constants/strings'
 
 export function verifyEmployeeAction(registration) {
   return async (dispatch) => {
@@ -52,8 +52,10 @@ export function registerEmployeeAction(employee, image, navigation) {
       dispatch(registerFailed())
       if (err.ipError === true) {
         dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
-      } else if (err.message === 'Invalid number of people on image: 0') {
+      } else if (err.message === ERROR_NO_PERSON_ON_IMAGE) {
         dispatch(setModalAction(MODAL.NO_PERSON_ON_IMAGE))
+      } else if (err.message === ERROR_ID_MISMATCH_IMAGE) {
+        dispatch(setModalAction(MODAL.ID_MISMATCH_IMAGE))
       } else {
         dispatch(setModalAction(MODAL.SIGN_UP_PHOTO_FAIL))
       }

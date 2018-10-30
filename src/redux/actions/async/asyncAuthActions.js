@@ -17,7 +17,9 @@ import {
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 import { setModalAction } from '../sync/syncModalAction'
 import { MODAL } from '../../../constants/modals'
-import { VERIFY_USER_FAIL_TITLE, ERROR_NO_PERSON_ON_IMAGE, ERROR_ID_MISMATCH_IMAGE } from '../../../constants/strings'
+import {
+  VERIFY_USER_FAIL_TITLE, ERROR_NO_PERSON_ON_IMAGE, ERROR_ID_MISMATCH_IMAGE, ERROR_TOO_MUCH_PERSON_ON_IMAGE
+} from '../../../constants/strings'
 
 export function verifyEmployeeAction(registration) {
   return async (dispatch) => {
@@ -54,6 +56,8 @@ export function registerEmployeeAction(employee, image, navigation) {
         dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
       } else if (err.message === ERROR_NO_PERSON_ON_IMAGE) {
         dispatch(setModalAction(MODAL.NO_PERSON_ON_IMAGE))
+      } else if (err.message === ERROR_TOO_MUCH_PERSON_ON_IMAGE) {
+        dispatch(setModalAction(MODAL.TOO_MUCH_PERSON_ON_IMAGE))
       } else if (err.message === ERROR_ID_MISMATCH_IMAGE) {
         dispatch(setModalAction(MODAL.ID_MISMATCH_IMAGE))
       } else {
@@ -73,7 +77,6 @@ export function verifyEmployeePhotoAction(image) {
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       dispatch(hideLoading())
     } catch (err) {
-      console.log('TCL: }catch -> err', err)
       dispatch(hideLoading())
       dispatch(verifyEmployeePhotoFailed(err.message))
       if (err.ipError === true) {

@@ -20,6 +20,8 @@ import {
   NO_PERSON_ON_IMAGE_DESCRIPTION,
   SIGN_ID_MISMATCH_IMAGE_TITLE,
   SIGN_ID_MISMATCH_IMAGE_DESCRIPTION,
+  TOO_MUCH_PERSON_ON_IMAGE_DESCRIPTION,
+  TOO_MUCH_PERSON_ON_IMAGE_TITLE,
 } from './strings'
 
 const success = {
@@ -82,6 +84,14 @@ const NO_PERSON_ON_IMAGE = {
   buttonLabel: 'Tentar novamente',
 }
 
+const TOO_MUCH_PERSON_ON_IMAGE = {
+  ...fail,
+  title: TOO_MUCH_PERSON_ON_IMAGE_TITLE,
+  description: TOO_MUCH_PERSON_ON_IMAGE_DESCRIPTION,
+  iconName: 'account-multiple',
+  buttonLabel: 'Tentar novamente',
+}
+
 const ID_MISMATCH_IMAGE = {
   ...fail,
   title: SIGN_ID_MISMATCH_IMAGE_TITLE,
@@ -123,4 +133,5 @@ export const MODAL = {
   SIGN_UP_PHOTO_FAIL,
   TRAIN_PHOTO_SUCCESS,
   USER_RECOGNITION_FAIL,
+  TOO_MUCH_PERSON_ON_IMAGE,
 }

@@ -89,12 +89,12 @@ export class OptionsModal extends Component {
   )
 
   render() {
-    const { onCancel, options } = this.props
-    const { isVisible, translateY } = this.state
+    const { onCancel, options, isVisible } = this.props
+    const { translateY } = this.state
     return (
       <Modal
         onRequestClose={onCancel}
-        // animationType="slide"
+        animationType="slide"
         transparent={true}
         visible={isVisible}
       >
@@ -108,7 +108,7 @@ export class OptionsModal extends Component {
               }
             ]}
           >
-            <SafeAreaView forceInset={{ bottom: 'always' }}>
+            <SafeAreaView forceInset={{ top: 'never', bottom: 'always' }}>
               {options.map(this.renderOption)}
               <RowIconText
                 text="Cancelar"

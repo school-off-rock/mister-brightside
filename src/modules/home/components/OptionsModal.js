@@ -16,8 +16,11 @@ import {
 import { SafeAreaView } from 'react-navigation'
 
 import RowIconText from '../../shared/components/rows/RowIconText'
+import { ViewBlurIOS } from '../../shared/components/ViewBlurIOS'
 
 import { COLORS, METRICS } from '../../../constants/theme'
+
+const AnimatedBlurView = Animated.createAnimatedComponent(ViewBlurIOS)
 
 export class OptionsModal extends Component {
   static propTypes = {
@@ -95,7 +98,7 @@ export class OptionsModal extends Component {
         visible={isVisible}
       >
         <View style={styles.container}>
-          <Animated.View
+          <AnimatedBlurView
             style={[
               styles.blur,
               {
@@ -112,7 +115,7 @@ export class OptionsModal extends Component {
                 onPress={onCancel}
               />
             </SafeAreaView>
-          </Animated.View>
+          </AnimatedBlurView>
         </View>
       </Modal>
     )

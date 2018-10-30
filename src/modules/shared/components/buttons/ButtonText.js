@@ -32,7 +32,7 @@ ButtonText.propTypes = {
   upperCase: bool,
 }
 ButtonText.defaultProps = {
-  borderless: true,
+  borderless: false,
   containerStyle: {},
   contentStyle: {},
   onPress: () => {},

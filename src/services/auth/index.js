@@ -44,10 +44,8 @@ export const registerEmployeePhoto = async ({ registration }, imageB64) => {
       imageB64,
     })
   }).then(resp => verifyResponse(resp))
-
     .then((response) => {
       const { people = [] } = response
-      console.log('TCL: registerEmployeePhoto -> people', people)
       if (people.length === 0) {
         throw { message: ERROR_NO_PERSON_ON_IMAGE, status: 404 }
       }

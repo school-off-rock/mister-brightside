@@ -7,6 +7,7 @@ import {
 import { Values } from '../../constants/values'
 import { verifyResponse, getUserRegistration, mapClockHistory } from '../../config/functions'
 import { ClockEntry } from '../../domain/ClockEntry'
+import { ERROR_NO_PERSON_ON_IMAGE, ERROR_TOO_MUCH_PERSON_ON_IMAGE, ERROR_ID_MISMATCH_IMAGE } from '../../constants/strings'
 
 const {
   FRAPI_API_KEY
@@ -63,14 +64,21 @@ export const verifyEmployeePhoto = async (imageB64) => {
       label: registration
     })
   }).then(resp => verifyResponse(resp))
-    .then(({ people = [] }) => {
+    .then((response) => {
+      const { people = [] } = response
+      if (people.length === 0) {
+        throw { message: ERROR_NO_PERSON_ON_IMAGE, status: 404 }
+      }
+      if (people.length > 1) {
+        throw { message: ERROR_TOO_MUCH_PERSON_ON_IMAGE, status: 404 }
+      }
       const [personData = {}] = people
       const { recognition = {} } = personData
-      const { confidence } = recognition
-      if (confidence >= 60) {
+      const { confidence, predictedLabel } = recognition
+      if (confidence >= 60 && predictedLabel === registration) {
         return personData
       }
-      throw { message: 'Rosto não reconhecido', status: 404 }
+      throw { message: ERROR_ID_MISMATCH_IMAGE, status: 404 }
     })
     .catch((err) => {
       throw err

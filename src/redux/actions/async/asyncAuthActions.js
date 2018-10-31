@@ -81,10 +81,14 @@ export function verifyEmployeePhotoAction(image) {
       dispatch(verifyEmployeePhotoFailed(err.message))
       if (err.ipError === true) {
         dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
-      } else if (err.status === 404) {
+      } else if (err.message === ERROR_NO_PERSON_ON_IMAGE) {
         dispatch(setModalAction(MODAL.NO_PERSON_ON_IMAGE))
+      } else if (err.message === ERROR_TOO_MUCH_PERSON_ON_IMAGE) {
+        dispatch(setModalAction(MODAL.TOO_MUCH_PERSON_ON_IMAGE))
+      } else if (err.message === ERROR_ID_MISMATCH_IMAGE) {
+        dispatch(setModalAction(MODAL.ID_MISMATCH_IMAGE))
       } else {
-        dispatch(setModalAction(MODAL.USER_RECOGNITION_FAIL))
+        dispatch(setModalAction(MODAL.SIGN_UP_PHOTO_FAIL))
       }
       throw err
     }

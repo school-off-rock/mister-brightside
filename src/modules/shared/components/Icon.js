@@ -74,10 +74,17 @@ export class Icon extends PureComponent {
     }
   }
 
-  setWrapStyle = () => (this.props.dense
-    ? StyleSheet.flatten([styles.wrap, styles.denseWidth, { opacity: this.state.opacity }, this.props.containerStyle])
-    : StyleSheet.flatten([styles.wrap, styles.standardWidth, { opacity: this.state.opacity }, this.props.containerStyle])
-  )
+
+  setWrapStyle = () => {
+    const staticOpacity = this.props.disabled ? 0.2 : 1
+    const opacityToUse = Platform.OS === 'ios'
+      ? staticOpacity
+      : this.state.opacity
+    return (this.props.dense
+      ? StyleSheet.flatten([styles.wrap, styles.denseWidth, { opacity: opacityToUse }, this.props.containerStyle])
+      : StyleSheet.flatten([styles.wrap, styles.standardWidth, { opacity: opacityToUse }, this.props.containerStyle])
+    )
+  }
 
   setIconSize = () => (this.props.dense ? METRICS.ICONS.small : METRICS.ICONS.medium)
 

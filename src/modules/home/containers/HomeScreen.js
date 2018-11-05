@@ -10,11 +10,13 @@ import {
 import {
   registerEmployeeAction,
   verifyEmployeePhotoAction,
-  trainEmployeePhotoAction
+  trainEmployeePhotoAction,
+  clearUserAction,
+  checkEmployeeOnImageAction
 } from '../../../redux/actions/async/asyncAuthActions'
 import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
 import { showLoading } from '../../../redux/actions/sync/syncAuthActions'
-import { getLoading } from '../../../redux/reducers/auth/selectors'
+import { getLoading, getUser } from '../../../redux/reducers/auth/selectors'
 import { getLoadingClockIn } from '../../../redux/reducers/clockEntry/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
 
@@ -26,18 +28,17 @@ import { hasText, getUserRegistration } from '../../../config/functions'
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     const userName = navigation.getParam('userName', '')
-    const signUp = navigation.getParam('signUp', '')
-    const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
+    // const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
 
     const firstName = hasText(userName) ? `${userName.charAt(0)}${userName.slice(1, userName.length).toLowerCase()}` : ''
-    const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
-    const title = signUp ? 'Tirar foto' : welcomeText
-    const rightButton = [{ name: 'account-switch', onPress: () => navigation.navigate('signIn'), disabled: isDisabledOnLoading }]
+    // const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
+    const title = hasText(userName) ? `Olá, ${firstName}` : 'Tirar foto'
+    // const rightButton = [{ name: 'account-switch', onPress: () => navigation.navigate('signIn'), disabled: isDisabledOnLoading }]
     return ({
       header: <NavBar
         navigation={navigation}
         title={title}
-        rightButtons={rightButton}
+        // rightButtons={rightButton}
       />
     })
   }
@@ -48,10 +49,12 @@ class HomeScreenContainer extends Component {
     isSignUp: bool,
     navigation: shape({ navigate: func }),
     showLoading: func.isRequired,
-    registerEmployee: func.isRequired,
+    // registerEmployee: func.isRequired,
+    checkEmployeeOnImage: func.isRequired,
     registerEmployeeEntry: func.isRequired,
     trainEmployeePhoto: func.isRequired,
     verifyEmployeePhoto: func.isRequired,
+    clearUser: func.isRequired,
   }
 
   static defaultProps = {
@@ -63,23 +66,28 @@ class HomeScreenContainer extends Component {
 
   componentDidMount = () => {
     InteractionManager.runAfterInteractions(async () => {
-      const { navigation, isLoadingClockIn, isLoading } = this.props
-      const user = await getUserRegistration()
-      navigation.setParams({
-        userName: user.firstName,
-        isDisabledOnLoading: isLoadingClockIn || isLoading,
-      })
+      this.props.clearUser()
+      // const {
+      // navigation,
+      // isLoadingClockIn,
+      // isLoading
+      // } = this.props
+      // const user = await getUserRegistration()
+      // navigation.setParams({
+      //   userName: user.firstName,
+      // isDisabledOnLoading: isLoadingClockIn || isLoading,
+      // })
     })
   }
 
-  componentDidUpdate = (prevProps) => {
-    const { isLoadingClockIn, isLoading, navigation } = this.props
-    if ((prevProps.isLoadingClockIn !== isLoadingClockIn) || (prevProps.isLoading !== isLoading)) {
-      navigation.setParams({
-        isDisabledOnLoading: isLoadingClockIn || isLoading,
-      })
-    }
-  }
+  // componentDidUpdate = (prevProps) => {
+  //   const { isLoadingClockIn, isLoading, navigation } = this.props
+  // if ((prevProps.isLoadingClockIn !== isLoadingClockIn) || (prevProps.isLoading !== isLoading)) {
+  //   navigation.setParams({
+  //     isDisabledOnLoading: isLoadingClockIn || isLoading,
+  //   })
+  // }
+  // }
 
   navigateToHistory = () => {
     const { navigation } = this.props
@@ -87,9 +95,13 @@ class HomeScreenContainer extends Component {
   }
 
   onRegisterEmployee = async (image) => {
-    const { registerEmployee, navigation } = this.props
-    const employee = navigation.getParam('employee', '')
-    await registerEmployee(employee, image, navigation)
+    const { checkEmployeeOnImage, navigation } = this.props
+    await checkEmployeeOnImage(image, navigation)
+  }
+
+  clearUser = () => {
+    this.props.navigation.setParams({ userName: undefined })
+    this.props.clearUser()
   }
 
   render() {
@@ -113,6 +125,7 @@ class HomeScreenContainer extends Component {
         onTrainEmployeePhotoPress={trainEmployeePhoto}
         verifyEmployeePhoto={verifyEmployeePhoto}
         onTakePicture={showLoading}
+        clearUser={this.clearUser}
       />
     )
   }
@@ -123,13 +136,16 @@ const mapStateToProps = (state, props) => ({
   isLoadingClockIn: getLoadingClockIn(state),
   isSignUp: props.navigation.getParam('signUp', false),
   modalAlert: getModalState(state),
+  user: getUser(state),
 })
 
 const mapDispatchToProps = {
   verifyEmployeePhoto: image => verifyEmployeePhotoAction(image),
-  registerEmployee: (employee, image, navigation) => registerEmployeeAction(employee, image, navigation),
+  // registerEmployee: (employee, image, navigation) => registerEmployeeAction(employee, image, navigation),
+  checkEmployeeOnImage: (image, navigation) => checkEmployeeOnImageAction(image, navigation),
   registerEmployeeEntry: () => registerEmployeeEntryAction(),
   trainEmployeePhoto: image => trainEmployeePhotoAction(image),
+  clearUser: () => clearUserAction(),
   showLoading,
 }
 

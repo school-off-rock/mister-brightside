@@ -28,6 +28,7 @@ class HomeComponent extends Component {
     onRegisterEmployee: func.isRequired,
     onHistoryPress: func.isRequired,
     onTakePicture: func.isRequired,
+    clearUser: func.isRequired,
     onRegisterEmployeeEntryPress: func.isRequired,
     onTrainEmployeePhotoPress: func.isRequired,
     isSignUp: bool,
@@ -68,11 +69,17 @@ class HomeComponent extends Component {
       hasAutoShot: (isSignUp || isFirstView),
       isFirstView: false
     }))
+    this.props.clearUser()
   }
 
   hideModal = () => {
     this.setState({ modalVisible: false, imageSnap: undefined })
     if (Platform.OS === 'android') this.camera.resumePreview()
+  }
+
+  onCancelOptionsModal = () => {
+    this.hideModal()
+    this.props.clearUser()
   }
 
   onCameraReady = () => this.setState({ isCameraReady: true })
@@ -83,17 +90,19 @@ class HomeComponent extends Component {
     onHistoryPress()
   }
 
-  registerEmployeeEntry = () => {
-    const { onRegisterEmployeeEntryPress } = this.props
+  registerEmployeeEntry = async () => {
+    const { onRegisterEmployeeEntryPress, clearUser } = this.props
     this.hideModal()
-    onRegisterEmployeeEntryPress()
+    await onRegisterEmployeeEntryPress()
+    clearUser()
   }
 
   trainEmployeePhoto = async () => {
-    const { onTrainEmployeePhotoPress } = this.props
+    const { onTrainEmployeePhotoPress, clearUser } = this.props
     const { imageB64 } = this.state
     this.hideModal()
     await onTrainEmployeePhotoPress(imageB64)
+    clearUser()
   }
 
   showOptionsModal = (image) => {
@@ -108,10 +117,9 @@ class HomeComponent extends Component {
     const { onRegisterEmployee, navigation } = this.props
     try {
       await onRegisterEmployee(image.base64)
-      navigation.setParams({ signUp: false })
+      // navigation.setParams({ signUp: false })
       this.showOptionsModal(image)
     } catch (error) {
-
       this.cleanPreview()
     }
   }
@@ -135,12 +143,12 @@ class HomeComponent extends Component {
           isTakingPicture: false,
           imageSnap: (data && data.base64) ? data.base64 : undefined,
         })
-        if (!isSignUp) {
-          await verifyEmployeePhoto(data.base64)
-          this.showOptionsModal(data)
-        } else {
-          this.registerEmployee(data)
-        }
+        // if (!isSignUp) {
+        //   await verifyEmployeePhoto(data.base64)
+        //   this.showOptionsModal(data)
+        // } else {
+        this.registerEmployee(data)
+        // }
       } catch (error) {
         this.hideModal()
       }
@@ -230,7 +238,7 @@ class HomeComponent extends Component {
         <Flash willFlash={isTakingPicture} />
         <OptionsModal
           isVisible={modalVisible}
-          onCancel={this.hideModal}
+          onCancel={this.onCancelOptionsModal}
           onHistoryPress={this.navigateToHistory}
           options={modalOptions}
         />

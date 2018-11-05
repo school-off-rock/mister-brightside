@@ -4,7 +4,8 @@ import {
 import {
   verifyEmployee,
   registerEmployeePhoto,
-  verifyIpAddress
+  verifyIpAddress,
+  findEmployeeOnPhoto
 } from '../../../services/auth'
 import {
   showLoading,
@@ -12,13 +13,18 @@ import {
   registerFailed,
   verifyEmployeePhotoFailed,
   hideLoading,
-  saveUser
+  saveUser,
+  clearUser
 } from '../sync/syncAuthActions'
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 import { setModalAction } from '../sync/syncModalAction'
 import { MODAL } from '../../../constants/modals'
 import {
-  VERIFY_USER_FAIL_TITLE, ERROR_NO_PERSON_ON_IMAGE, ERROR_ID_MISMATCH_IMAGE, ERROR_TOO_MUCH_PERSON_ON_IMAGE
+  VERIFY_USER_FAIL_TITLE,
+  ERROR_NO_PERSON_ON_IMAGE,
+  ERROR_ID_MISMATCH_IMAGE,
+  ERROR_TOO_MUCH_PERSON_ON_IMAGE,
+  ERROR_IMAGE_MISMATCH_IDS,
 } from '../../../constants/strings'
 
 export function verifyEmployeeAction(registration) {
@@ -60,6 +66,37 @@ export function registerEmployeeAction(employee, image, navigation) {
         dispatch(setModalAction(MODAL.TOO_MUCH_PERSON_ON_IMAGE))
       } else if (err.message === ERROR_ID_MISMATCH_IMAGE) {
         dispatch(setModalAction(MODAL.ID_MISMATCH_IMAGE))
+      } else {
+        dispatch(setModalAction(MODAL.SIGN_UP_PHOTO_FAIL))
+      }
+      throw err
+    }
+  }
+}
+
+export function checkEmployeeOnImageAction(image, navigation) {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoading())
+      await verifyIpAddress()
+      const employeeId = await findEmployeeOnPhoto(image)
+      const employee = await verifyEmployee(employeeId)
+      await AsyncStorage.setItem('employee', JSON.stringify(employee)).then(() => { })
+      await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
+      navigation.setParams({ userName: employee.firstName })
+      dispatch(registerSuccess())
+    } catch (err) {
+      dispatch(registerFailed())
+      if (err.ipError === true) {
+        dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      } else if (err.message === ERROR_NO_PERSON_ON_IMAGE) {
+        dispatch(setModalAction(MODAL.NO_PERSON_ON_IMAGE))
+      } else if (err.message === ERROR_TOO_MUCH_PERSON_ON_IMAGE) {
+        dispatch(setModalAction(MODAL.TOO_MUCH_PERSON_ON_IMAGE))
+      } else if (err.message === ERROR_ID_MISMATCH_IMAGE) {
+        dispatch(setModalAction(MODAL.ID_MISMATCH_IMAGE))
+      } else if (err.message === ERROR_IMAGE_MISMATCH_IDS) {
+        dispatch(setModalAction(MODAL.IMAGE_MISMATCH_IDS))
       } else {
         dispatch(setModalAction(MODAL.SIGN_UP_PHOTO_FAIL))
       }
@@ -124,6 +161,17 @@ export function fetchEmployeeAction(registration) {
       const employee = await verifyEmployee(registration)
       await AsyncStorage.setItem('employee', JSON.stringify({ employee })).then(() => { })
       dispatch(saveUser(employee))
+    } catch (err) {
+      throw err
+    }
+  }
+}
+
+export function clearUserAction() {
+  return async (dispatch) => {
+    try {
+      await AsyncStorage.removeItem('employee')
+      dispatch(clearUser())
     } catch (err) {
       throw err
     }

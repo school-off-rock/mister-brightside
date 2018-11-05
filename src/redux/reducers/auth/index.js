@@ -6,7 +6,8 @@ import {
   REGISTER_FAILED,
   HIDE_ALERT,
   VERIFY_EMPLOYEE_PHOTO_FAILED,
-  SAVE_USER
+  SAVE_USER,
+  CLEAR_USER
 } from '../../types/authTypes'
 import {
   showLoading,
@@ -15,7 +16,8 @@ import {
   registerFailed,
   hideAlert,
   verifyEmployeePhotoFailed,
-  saveUser
+  saveUser,
+  clearUser
 } from './handlers'
 
 export const actionHandlers = {
@@ -25,7 +27,8 @@ export const actionHandlers = {
   [REGISTER_FAILED]: registerFailed,
   [HIDE_ALERT]: hideAlert,
   [VERIFY_EMPLOYEE_PHOTO_FAILED]: verifyEmployeePhotoFailed,
-  [SAVE_USER]: saveUser
+  [SAVE_USER]: saveUser,
+  [CLEAR_USER]: clearUser,
 }
 
 export const authReducerConfig = {

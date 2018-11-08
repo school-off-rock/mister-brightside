@@ -10,10 +10,15 @@ export const styles = StyleSheet.create({
   preview: {
     flex: 1,
   },
-  absoluteCentered: {
+  spinnerAbsoluteCentered: {
     alignItems: 'center',
     justifyContent: 'center',
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
+    ...Platform.select({
+      ios: {
+        transform: [{ translateY: 1 }, { translateX: 2 }]
+      }
+    })
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -48,6 +53,23 @@ export const styles = StyleSheet.create({
   },
   capture: {
     backgroundColor: COLORS.SURFACE,
+    width: METRICS.SNAP_BUTTON,
+    aspectRatio: 1,
+    borderRadius: METRICS.SNAP_RADIUS,
+    margin: METRICS.NANO,
+    ...Platform.select({
+      android: {
+        elevation: 2,
+      },
+      ios: {
+        shadowColor: COLORS.DARK_DIVIDER,
+        shadowOffset: { height: 2 },
+        shadowRadius: 2,
+      }
+    }),
+  },
+  captureDisabled: {
+    backgroundColor: COLORS.LIGHT_OVERLAY,
     width: METRICS.SNAP_BUTTON,
     aspectRatio: 1,
     borderRadius: METRICS.SNAP_RADIUS,

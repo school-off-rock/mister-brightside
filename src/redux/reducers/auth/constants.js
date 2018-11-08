@@ -10,4 +10,5 @@ export const AUTH_INITIAL_STATE = {
   registration: undefined,
   isLoading: false,
   alert: NO_ALERTS,
+  ipStatus: 'NOT_SET',
 }

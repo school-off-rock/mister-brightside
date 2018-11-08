@@ -7,7 +7,9 @@ import {
   Platform,
 } from 'react-native'
 
-import { func, bool, object } from 'prop-types'
+import {
+  func, bool, object, oneOf
+} from 'prop-types'
 import { withNavigation } from 'react-navigation'
 
 import { RNCamera } from 'react-native-camera'
@@ -35,6 +37,7 @@ class HomeComponent extends Component {
     isLoading: bool,
     hasAutoShot: bool,
     navigation: object.isRequired,
+    ipStatus: oneOf(['NOT_SET', 'VALID', 'INVALID']).isRequired,
   }
 
   static defaultProps = {
@@ -124,31 +127,39 @@ class HomeComponent extends Component {
     }
   }
 
+  onAutoShot =() => {
+    this.setState({ hasAutoShot: false })
+    this.takePicture()
+  }
+
   takePicture = async () => {
-    if (this.camera) {
-      const { verifyEmployeePhoto, isSignUp, onTakePicture } = this.props
+    if (this.props.ipStatus === 'VALID' && this.camera) {
+      console.log('*Processo de fotografia iniciado')
+      console.time('*')
+      const { onTakePicture } = this.props
       const options = {
-        quality: 0.5,
+        quality: 0.2,
         base64: true,
         forceUpOrientation: true,
         fixOrientation: true,
         mirrorImage: true,
         doNotSave: true,
+        width: 720,
       }
       try {
         onTakePicture()
-        this.setState({ isTakingPicture: true, hasAutoShot: false })
+        this.setState({ isTakingPicture: true })
+        console.time('* Tempo da captura de foto do dispisitivo')
         const data = await this.camera.takePictureAsync(options)
+        console.timeEnd('* Tempo da captura de foto do dispisitivo')
+        console.log('TCL: takePicture -> data', data)
         this.setState({
           isTakingPicture: false,
           imageSnap: (data && data.base64) ? data.base64 : undefined,
         })
-        // if (!isSignUp) {
-        //   await verifyEmployeePhoto(data.base64)
-        //   this.showOptionsModal(data)
-        // } else {
-        this.registerEmployee(data)
-        // }
+        await this.registerEmployee(data)
+        console.log('*Processo de fotografia finalizado')
+        console.timeEnd('*')
       } catch (error) {
         this.hideModal()
       }
@@ -167,20 +178,21 @@ class HomeComponent extends Component {
   }
 
   renderFooter = () => {
-    const { isTakingPicture } = this.state
-    const { isLoading } = this.props
+    const { isTakingPicture, hasAutoShot } = this.state
+    const { isLoading, ipStatus } = this.props
+    const isDisabled = isTakingPicture || ipStatus !== 'VALID'
 
-    return this.state.hasAutoShot
-      ? <AutoShotMechanism onTimerEnd={() => this.takePicture(this.camera)} />
+    return (hasAutoShot && ipStatus !== 'INVALID')
+      ? <AutoShotMechanism onTimerEnd={this.onAutoShot} />
       : (
         <View style={styles.bottomOverlay}>
           <View style={styles.captureWrap}>
             <TouchableOpacity
-              style={styles.capture}
-              onPress={() => this.takePicture(this.camera)}
-              disabled={isTakingPicture}
+              style={ipStatus !== 'VALID' ? styles.captureDisabled : styles.capture}
+              onPress={() => this.takePicture()}
+              disabled={isDisabled}
             >
-              {(isTakingPicture || isLoading) && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
+              {(isTakingPicture || isLoading) && <View style={styles.spinnerAbsoluteCentered}><LoadingSpinner /></View>}
             </TouchableOpacity>
           </View>
         </View>
@@ -211,6 +223,7 @@ class HomeComponent extends Component {
         onPress: this.trainEmployeePhoto
       },
     ]
+    console.log(this.props.ipStatus)
     return (
       <View style={styles.container}>
         <StatusBarLight />

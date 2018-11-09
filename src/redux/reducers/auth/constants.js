@@ -11,4 +11,5 @@ export const AUTH_INITIAL_STATE = {
   isLoading: false,
   alert: NO_ALERTS,
   ipStatus: 'NOT_SET',
+  networkType: undefined,
 }

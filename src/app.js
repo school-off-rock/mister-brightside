@@ -1,10 +1,11 @@
 
 import React from 'react'
+import { NetInfo } from 'react-native'
 import { shape, func } from 'prop-types'
 import { Provider } from 'react-redux'
 import { Navigator } from './navigation'
 import { setUpConfigs } from './config'
-import { saveUser } from './redux/actions/sync/syncAuthActions'
+import { saveUser, setNetworkType } from './redux/actions/sync/syncAuthActions'
 import { getUserRegistration } from './config/functions'
 
 export class App extends React.Component {
@@ -32,6 +33,7 @@ export class App extends React.Component {
   }
 
   componentDidMount = () => {
+    const { store } = this.props
     setUpConfigs()
     getUserRegistration().then((user) => {
       const hasId = ((typeof user.registration !== 'undefined') && (user.registration !== ''))
@@ -40,9 +42,24 @@ export class App extends React.Component {
         isLogged: hasId,
         loaded: true
       })
-      this.props.store.dispatch(saveUser(user))
+      store.dispatch(saveUser(user))
     })
+    NetInfo.getConnectionInfo()
+      .then(this.handleNetworkChange)
+    NetInfo.addEventListener(
+      'connectionChange',
+      this.handleNetworkChange
+    )
   }
+
+  componentWillUnmount = () => {
+    NetInfo.removeEventListener(
+      'connectionChange',
+      this.handleNetworkChange
+    )
+  }
+
+  handleNetworkChange = ({ type }) => this.props.store.dispatch(setNetworkType(type))
 
   render() {
     const { loaded, user, isLogged } = this.state

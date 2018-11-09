@@ -9,7 +9,8 @@ import {
   SAVE_USER,
   CLEAR_USER,
   SET_IP_IS_VALID,
-  SET_IP_IS_INVALID
+  SET_IP_IS_INVALID,
+  SET_NETWORK_TYPE
 } from '../../types/authTypes'
 import {
   showLoading,
@@ -22,6 +23,7 @@ import {
   clearUser,
   setIpIsValid,
   setIpIsInvalid,
+  setNetworkType,
 } from './handlers'
 
 export const actionHandlers = {
@@ -35,6 +37,7 @@ export const actionHandlers = {
   [VERIFY_EMPLOYEE_PHOTO_FAILED]: verifyEmployeePhotoFailed,
   [SAVE_USER]: saveUser,
   [CLEAR_USER]: clearUser,
+  [SET_NETWORK_TYPE]: setNetworkType,
 }
 
 export const authReducerConfig = {

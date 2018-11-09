@@ -8,7 +8,8 @@ import {
   SAVE_USER,
   CLEAR_USER,
   SET_IP_IS_VALID,
-  SET_IP_IS_INVALID
+  SET_IP_IS_INVALID,
+  SET_NETWORK_TYPE
 } from '../../types/authTypes'
 
 export const showLoading = () => ({ type: SHOW_AUTH_LOADING })
@@ -21,3 +22,4 @@ export const saveUser = user => ({ type: SAVE_USER, user })
 export const clearUser = () => ({ type: CLEAR_USER })
 export const setIpIsValid = () => ({ type: SET_IP_IS_VALID })
 export const setIpIsInvalid = () => ({ type: SET_IP_IS_INVALID })
+export const setNetworkType = networkType => ({ type: SET_NETWORK_TYPE, networkType })

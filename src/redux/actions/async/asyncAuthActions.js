@@ -85,7 +85,7 @@ export function verifyIpAddressAction() {
       dispatch(setIpIsValid())
     } catch (err) {
       dispatch(setIpIsInvalid())
-      dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      // dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
       // console.timeEnd('IP checking')
       throw err
     }

@@ -17,7 +17,9 @@ import {
 } from '../../../redux/actions/async/asyncAuthActions'
 import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
 import { showLoading } from '../../../redux/actions/sync/syncAuthActions'
-import { getLoading, getUser, getIpStatus } from '../../../redux/reducers/auth/selectors'
+import {
+  getLoading, getUser, getIpStatus, getNetworkType
+} from '../../../redux/reducers/auth/selectors'
 import { getLoadingClockIn } from '../../../redux/reducers/clockEntry/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
 
@@ -144,6 +146,7 @@ const mapStateToProps = (state, props) => ({
   modalAlert: getModalState(state),
   user: getUser(state),
   ipStatus: getIpStatus(state),
+  networkType: getNetworkType(state),
 })
 
 const mapDispatchToProps = {

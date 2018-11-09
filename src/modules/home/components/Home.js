@@ -21,7 +21,7 @@ import { PendingAuthView } from './PendingAuthView'
 import { StatusBarLight } from '../../shared/components/StatusBarLight'
 import { AutoShotMechanism } from './AutoShotMechanism'
 
-import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE } from '../../../constants/strings'
+import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE, IP_VALIDATION_FAIL_DESCRIPTION } from '../../../constants/strings'
 
 import { styles } from '../styles/styles.home'
 
@@ -117,25 +117,22 @@ class HomeComponent extends Component {
   }
 
   registerEmployee = async (image) => {
-    const { onRegisterEmployee, navigation } = this.props
+    const { onRegisterEmployee } = this.props
     try {
       await onRegisterEmployee(image.base64)
-      // navigation.setParams({ signUp: false })
       this.showOptionsModal(image)
     } catch (error) {
       this.cleanPreview()
     }
   }
 
-  onAutoShot =() => {
+  onAutoShot = () => {
     this.setState({ hasAutoShot: false })
     this.takePicture()
   }
 
   takePicture = async () => {
-    if (this.props.ipStatus === 'VALID' && this.camera) {
-      console.log('*Processo de fotografia iniciado')
-      console.time('*')
+    if (this.camera) {
       const { onTakePicture } = this.props
       const options = {
         quality: 0.2,
@@ -149,17 +146,12 @@ class HomeComponent extends Component {
       try {
         onTakePicture()
         this.setState({ isTakingPicture: true })
-        console.time('* Tempo da captura de foto do dispisitivo')
         const data = await this.camera.takePictureAsync(options)
-        console.timeEnd('* Tempo da captura de foto do dispisitivo')
-        console.log('TCL: takePicture -> data', data)
         this.setState({
           isTakingPicture: false,
           imageSnap: (data && data.base64) ? data.base64 : undefined,
         })
         await this.registerEmployee(data)
-        console.log('*Processo de fotografia finalizado')
-        console.timeEnd('*')
       } catch (error) {
         this.hideModal()
       }
@@ -179,17 +171,17 @@ class HomeComponent extends Component {
 
   renderFooter = () => {
     const { isTakingPicture, hasAutoShot } = this.state
-    const { isLoading, ipStatus } = this.props
-    const isDisabled = isTakingPicture || ipStatus !== 'VALID'
+    const { isLoading } = this.props
+    const isDisabled = isTakingPicture
 
-    return (hasAutoShot && ipStatus !== 'INVALID')
+    return (hasAutoShot)
       ? <AutoShotMechanism onTimerEnd={this.onAutoShot} />
       : (
         <View style={styles.bottomOverlay}>
           <View style={styles.captureWrap}>
             <TouchableOpacity
-              style={ipStatus !== 'VALID' ? styles.captureDisabled : styles.capture}
-              onPress={() => this.takePicture()}
+              style={styles.capture}
+              onPress={this.takePicture}
               disabled={isDisabled}
             >
               {(isTakingPicture || isLoading) && <View style={styles.spinnerAbsoluteCentered}><LoadingSpinner /></View>}
@@ -200,17 +192,21 @@ class HomeComponent extends Component {
   }
 
   render() {
+    const { ipStatus } = this.props
     const {
       modalVisible,
       isTakingPicture,
       isCameraReady,
       imageSnap,
     } = this.state
+    const ipIsNotValid = ipStatus !== 'VALID'
     const modalOptions = [
       {
         label: 'Bater ponto',
         iconName: 'map-marker-radius',
-        onPress: this.registerEmployeeEntry
+        onPress: this.registerEmployeeEntry,
+        isDisabled: ipIsNotValid,
+        subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : ''
       },
       {
         label: 'Ver histórico',
@@ -220,10 +216,11 @@ class HomeComponent extends Component {
       {
         label: 'Melhorar identificação',
         iconName: 'creation',
-        onPress: this.trainEmployeePhoto
+        onPress: this.trainEmployeePhoto,
+        isDisabled: ipIsNotValid,
+        subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : ''
       },
     ]
-    console.log(this.props.ipStatus)
     return (
       <View style={styles.container}>
         <StatusBarLight />

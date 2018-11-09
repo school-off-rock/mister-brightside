@@ -5,25 +5,28 @@ import {
   func,
   shape,
   bool,
+  oneOf,
 } from 'prop-types'
 
 import {
-  registerEmployeeAction,
   verifyEmployeePhotoAction,
   trainEmployeePhotoAction,
   clearUserAction,
-  checkEmployeeOnImageAction
+  checkEmployeeOnImageAction,
+  verifyIpAddressAction
 } from '../../../redux/actions/async/asyncAuthActions'
 import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
 import { showLoading } from '../../../redux/actions/sync/syncAuthActions'
-import { getLoading, getUser } from '../../../redux/reducers/auth/selectors'
+import {
+  getLoading, getUser, getIpStatus, getNetworkType
+} from '../../../redux/reducers/auth/selectors'
 import { getLoadingClockIn } from '../../../redux/reducers/clockEntry/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
 
 import { Home } from '../components/Home'
 import { NavBar } from '../../shared/containers/NavBar'
 
-import { hasText, getUserRegistration } from '../../../config/functions'
+import { hasText } from '../../../config/functions'
 
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -44,20 +47,22 @@ class HomeScreenContainer extends Component {
   }
 
   static propTypes = {
+    checkEmployeeOnImage: func.isRequired,
+    clearUser: func.isRequired,
+    ipStatus: oneOf(['NOT_SET', 'VALID', 'INVALID']),
     isLoading: bool,
     isLoadingClockIn: bool,
     isSignUp: bool,
     navigation: shape({ navigate: func }),
-    showLoading: func.isRequired,
-    // registerEmployee: func.isRequired,
-    checkEmployeeOnImage: func.isRequired,
     registerEmployeeEntry: func.isRequired,
+    showLoading: func.isRequired,
     trainEmployeePhoto: func.isRequired,
     verifyEmployeePhoto: func.isRequired,
-    clearUser: func.isRequired,
+    verifyIpAddress: func.isRequired,
   }
 
   static defaultProps = {
+    ipStatus: 'NOT_SET',
     isLoading: false,
     isLoadingClockIn: false,
     isSignUp: false,
@@ -67,6 +72,7 @@ class HomeScreenContainer extends Component {
   componentDidMount = () => {
     InteractionManager.runAfterInteractions(async () => {
       this.props.clearUser()
+      this.props.verifyIpAddress()
       // const {
       // navigation,
       // isLoadingClockIn,
@@ -113,6 +119,7 @@ class HomeScreenContainer extends Component {
       trainEmployeePhoto,
       verifyEmployeePhoto,
       showLoading,
+      ipStatus,
     } = this.props
     const isLoadingPhoto = isLoading || isLoadingClockIn
     return (
@@ -126,6 +133,7 @@ class HomeScreenContainer extends Component {
         verifyEmployeePhoto={verifyEmployeePhoto}
         onTakePicture={showLoading}
         clearUser={this.clearUser}
+        ipStatus={ipStatus}
       />
     )
   }
@@ -137,15 +145,17 @@ const mapStateToProps = (state, props) => ({
   isSignUp: props.navigation.getParam('signUp', false),
   modalAlert: getModalState(state),
   user: getUser(state),
+  ipStatus: getIpStatus(state),
+  networkType: getNetworkType(state),
 })
 
 const mapDispatchToProps = {
   verifyEmployeePhoto: image => verifyEmployeePhotoAction(image),
-  // registerEmployee: (employee, image, navigation) => registerEmployeeAction(employee, image, navigation),
   checkEmployeeOnImage: (image, navigation) => checkEmployeeOnImageAction(image, navigation),
   registerEmployeeEntry: () => registerEmployeeEntryAction(),
   trainEmployeePhoto: image => trainEmployeePhotoAction(image),
   clearUser: () => clearUserAction(),
+  verifyIpAddress: () => verifyIpAddressAction(),
   showLoading,
 }
 

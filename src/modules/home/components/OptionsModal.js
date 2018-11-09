@@ -31,6 +31,8 @@ export class OptionsModal extends Component {
       label: string,
       iconName: string,
       onPress: func,
+      isDisabled: bool,
+      subtitle: string,
     })).isRequired
   }
 
@@ -69,7 +71,13 @@ export class OptionsModal extends Component {
     ).start(() => { if (!isVisible) { this.setState({ isVisible }) } })
   }
 
-  renderOption = ({ label, iconName, onPress }) => (
+  renderOption = ({
+    label,
+    iconName,
+    onPress,
+    isDisabled,
+    subtitle,
+  }) => (
     <RowIconText
       iconName={iconName}
       iconColor={COLORS.BLACK_SECONDARY_ALT}
@@ -77,6 +85,8 @@ export class OptionsModal extends Component {
       onPress={onPress}
       text={label}
       textEmphasis
+      isDisabled={isDisabled}
+      subtitle={subtitle}
     />
   )
 

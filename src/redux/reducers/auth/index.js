@@ -7,7 +7,10 @@ import {
   HIDE_ALERT,
   VERIFY_EMPLOYEE_PHOTO_FAILED,
   SAVE_USER,
-  CLEAR_USER
+  CLEAR_USER,
+  SET_IP_IS_VALID,
+  SET_IP_IS_INVALID,
+  SET_NETWORK_TYPE
 } from '../../types/authTypes'
 import {
   showLoading,
@@ -17,10 +20,15 @@ import {
   hideAlert,
   verifyEmployeePhotoFailed,
   saveUser,
-  clearUser
+  clearUser,
+  setIpIsValid,
+  setIpIsInvalid,
+  setNetworkType,
 } from './handlers'
 
 export const actionHandlers = {
+  [SET_IP_IS_VALID]: setIpIsValid,
+  [SET_IP_IS_INVALID]: setIpIsInvalid,
   [SHOW_AUTH_LOADING]: showLoading,
   [HIDE_AUTH_LOADING]: hideLoading,
   [REGISTER_SUCCESS]: registerSuccess,
@@ -29,6 +37,7 @@ export const actionHandlers = {
   [VERIFY_EMPLOYEE_PHOTO_FAILED]: verifyEmployeePhotoFailed,
   [SAVE_USER]: saveUser,
   [CLEAR_USER]: clearUser,
+  [SET_NETWORK_TYPE]: setNetworkType,
 }
 
 export const authReducerConfig = {

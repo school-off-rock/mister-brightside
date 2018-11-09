@@ -7,7 +7,9 @@ import {
   Platform,
 } from 'react-native'
 
-import { func, bool, object } from 'prop-types'
+import {
+  func, bool, object, oneOf
+} from 'prop-types'
 import { withNavigation } from 'react-navigation'
 
 import { RNCamera } from 'react-native-camera'
@@ -19,7 +21,7 @@ import { PendingAuthView } from './PendingAuthView'
 import { StatusBarLight } from '../../shared/components/StatusBarLight'
 import { AutoShotMechanism } from './AutoShotMechanism'
 
-import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE } from '../../../constants/strings'
+import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE, IP_VALIDATION_FAIL_DESCRIPTION } from '../../../constants/strings'
 
 import { styles } from '../styles/styles.home'
 
@@ -35,6 +37,7 @@ class HomeComponent extends Component {
     isLoading: bool,
     hasAutoShot: bool,
     navigation: object.isRequired,
+    ipStatus: oneOf(['NOT_SET', 'VALID', 'INVALID']).isRequired,
   }
 
   static defaultProps = {
@@ -114,41 +117,41 @@ class HomeComponent extends Component {
   }
 
   registerEmployee = async (image) => {
-    const { onRegisterEmployee, navigation } = this.props
+    const { onRegisterEmployee } = this.props
     try {
       await onRegisterEmployee(image.base64)
-      // navigation.setParams({ signUp: false })
       this.showOptionsModal(image)
     } catch (error) {
       this.cleanPreview()
     }
   }
 
+  onAutoShot = () => {
+    this.setState({ hasAutoShot: false })
+    this.takePicture()
+  }
+
   takePicture = async () => {
     if (this.camera) {
-      const { verifyEmployeePhoto, isSignUp, onTakePicture } = this.props
+      const { onTakePicture } = this.props
       const options = {
-        quality: 0.5,
+        quality: 0.2,
         base64: true,
         forceUpOrientation: true,
         fixOrientation: true,
         mirrorImage: true,
         doNotSave: true,
+        width: 720,
       }
       try {
         onTakePicture()
-        this.setState({ isTakingPicture: true, hasAutoShot: false })
+        this.setState({ isTakingPicture: true })
         const data = await this.camera.takePictureAsync(options)
         this.setState({
           isTakingPicture: false,
           imageSnap: (data && data.base64) ? data.base64 : undefined,
         })
-        // if (!isSignUp) {
-        //   await verifyEmployeePhoto(data.base64)
-        //   this.showOptionsModal(data)
-        // } else {
-        this.registerEmployee(data)
-        // }
+        await this.registerEmployee(data)
       } catch (error) {
         this.hideModal()
       }
@@ -167,20 +170,21 @@ class HomeComponent extends Component {
   }
 
   renderFooter = () => {
-    const { isTakingPicture } = this.state
+    const { isTakingPicture, hasAutoShot } = this.state
     const { isLoading } = this.props
+    const isDisabled = isTakingPicture
 
-    return this.state.hasAutoShot
-      ? <AutoShotMechanism onTimerEnd={() => this.takePicture(this.camera)} />
+    return (hasAutoShot)
+      ? <AutoShotMechanism onTimerEnd={this.onAutoShot} />
       : (
         <View style={styles.bottomOverlay}>
           <View style={styles.captureWrap}>
             <TouchableOpacity
               style={styles.capture}
-              onPress={() => this.takePicture(this.camera)}
-              disabled={isTakingPicture}
+              onPress={this.takePicture}
+              disabled={isDisabled}
             >
-              {(isTakingPicture || isLoading) && <View style={styles.absoluteCentered}><LoadingSpinner /></View>}
+              {(isTakingPicture || isLoading) && <View style={styles.spinnerAbsoluteCentered}><LoadingSpinner /></View>}
             </TouchableOpacity>
           </View>
         </View>
@@ -188,17 +192,21 @@ class HomeComponent extends Component {
   }
 
   render() {
+    const { ipStatus } = this.props
     const {
       modalVisible,
       isTakingPicture,
       isCameraReady,
       imageSnap,
     } = this.state
+    const ipIsNotValid = ipStatus !== 'VALID'
     const modalOptions = [
       {
         label: 'Bater ponto',
         iconName: 'map-marker-radius',
-        onPress: this.registerEmployeeEntry
+        onPress: this.registerEmployeeEntry,
+        isDisabled: ipIsNotValid,
+        subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : ''
       },
       {
         label: 'Ver histórico',
@@ -208,7 +216,9 @@ class HomeComponent extends Component {
       {
         label: 'Melhorar identificação',
         iconName: 'creation',
-        onPress: this.trainEmployeePhoto
+        onPress: this.trainEmployeePhoto,
+        isDisabled: ipIsNotValid,
+        subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : ''
       },
     ]
     return (

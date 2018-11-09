@@ -14,7 +14,9 @@ import {
   verifyEmployeePhotoFailed,
   hideLoading,
   saveUser,
-  clearUser
+  clearUser,
+  setIpIsValid,
+  setIpIsInvalid
 } from '../sync/syncAuthActions'
 import { verifyEmployeePhoto, trainEmployeePhoto } from '../../../services/user'
 import { setModalAction } from '../sync/syncModalAction'
@@ -31,7 +33,7 @@ export function verifyEmployeeAction(registration) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
-      await verifyIpAddress()
+      // await verifyIpAddress()
       const employee = await verifyEmployee(registration)
       dispatch(hideLoading())
       return employee
@@ -50,7 +52,7 @@ export function registerEmployeeAction(employee, image, navigation) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
-      await verifyIpAddress()
+      // await verifyIpAddress()
       await registerEmployeePhoto(employee, image)
       await AsyncStorage.setItem('employee', JSON.stringify(employee)).then(() => { })
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
@@ -74,17 +76,38 @@ export function registerEmployeeAction(employee, image, navigation) {
   }
 }
 
+export function verifyIpAddressAction() {
+  return async (dispatch) => {
+    try {
+      // console.time('IP checking')
+      await verifyIpAddress()
+      // console.timeEnd('IP checking')
+      dispatch(setIpIsValid())
+    } catch (err) {
+      dispatch(setIpIsInvalid())
+      // dispatch(setModalAction(MODAL.IP_VALIDATION_FAIL))
+      // console.timeEnd('IP checking')
+      throw err
+    }
+  }
+}
+
 export function checkEmployeeOnImageAction(image, navigation) {
   return async (dispatch) => {
     try {
+      // console.log('**Actions iniciando')
       dispatch(showLoading())
-      await verifyIpAddress()
+      // console.time('** Checando foto')
       const employeeId = await findEmployeeOnPhoto(image)
+      // console.timeEnd('** Checando foto')
+      // console.time('** Checando matrícula')
       const employee = await verifyEmployee(employeeId)
+      // console.timeEnd('** Checando matrícula')
       await AsyncStorage.setItem('employee', JSON.stringify(employee)).then(() => { })
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       navigation.setParams({ userName: employee.firstName })
       dispatch(registerSuccess())
+      // console.log('**Actions terminando')
     } catch (err) {
       dispatch(registerFailed())
       if (err.ipError === true) {
@@ -109,7 +132,7 @@ export function verifyEmployeePhotoAction(image) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
-      await verifyIpAddress()
+      // await verifyIpAddress()
       await verifyEmployeePhoto(image)
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       dispatch(hideLoading())
@@ -136,7 +159,7 @@ export function trainEmployeePhotoAction(image) {
   return async (dispatch) => {
     try {
       dispatch(showLoading())
-      await verifyIpAddress()
+      // await verifyIpAddress()
       await trainEmployeePhoto(image)
       await AsyncStorage.setItem('lastImage', JSON.stringify({ image })).then(() => { })
       dispatch(hideLoading())
@@ -157,7 +180,7 @@ export function trainEmployeePhotoAction(image) {
 export function fetchEmployeeAction(registration) {
   return async (dispatch) => {
     try {
-      await verifyIpAddress()
+      // await verifyIpAddress()
       const employee = await verifyEmployee(registration)
       await AsyncStorage.setItem('employee', JSON.stringify({ employee })).then(() => { })
       dispatch(saveUser(employee))

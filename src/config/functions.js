@@ -34,7 +34,8 @@ export async function getUserRegistration() {
       } else {
         userJson = {}
       }
-    }).catch((err) => {
+    })
+    .catch((err) => {
       userJson = { err }
     })
 
@@ -42,7 +43,7 @@ export async function getUserRegistration() {
 }
 
 export const isFunctionEmpty = f => /^function[^{]+\{\s*\}/m.test(f.toString())
-export const hasText = prop => (typeof prop === 'string' && prop !== '')
+export const hasText = prop => typeof prop === 'string' && prop !== ''
 
 export function mapClockHistory(historyList) {
   const obj = _.groupBy(historyList, 'date')
@@ -65,12 +66,8 @@ export function mapClockHistory(historyList) {
 
 export function generateStandardNavBar(navigation, title, onTitlePress) {
   const standardNavBar = {
-    headerLeft: (
-      <NavBarLogo onPress={onTitlePress} />
-    ),
-    headerRight: (
-      <NavBarRight title={title} />
-    ),
+    headerLeft: <NavBarLogo onPress={onTitlePress} />,
+    headerRight: <NavBarRight title={title} />,
     ...Values.NAV_BAR_STYLES.absolute
   }
   return standardNavBar
@@ -80,9 +77,12 @@ export const openPhonePad = (number) => {
   const args = {
     number
   }
-  const settings = Object.assign({
-    prompt: true
-  }, args)
+  const settings = Object.assign(
+    {
+      prompt: true
+    },
+    args
+  )
 
   const url = `${Platform.OS === 'ios' && settings.prompt ? 'telprompt:' : 'tel:'}${settings.number}`
 
@@ -92,4 +92,18 @@ export const openPhonePad = (number) => {
     }
     return Linking.openURL(url).catch(err => Promise.reject(err))
   })
+}
+
+export const getFaceClassifications = (face) => {
+  const classifications = {}
+  if ('smilingProbability' in face) {
+    classifications.isSmiling = face.smilingProbability > 0.3
+  }
+  if ('leftEyeOpenProbability' in face) {
+    classifications.isLeftEyeOpen = face.leftEyeOpenProbability > 0.5
+  }
+  if ('rightEyeOpenProbability' in face) {
+    classifications.isRightEyeOpen = face.rightEyeOpenProbability > 0.5
+  }
+  return classifications
 }

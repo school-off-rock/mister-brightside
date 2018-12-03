@@ -94,16 +94,21 @@ export const openPhonePad = (number) => {
   })
 }
 
-export const getFaceClassifications = (face) => {
+export const getFaceClassifications = (face, method) => {
+  const isMethodSetToSmile = method === 'BOTH' || method === 'SMILE'
+  const isMethodSetToBlink = method === 'BOTH' || method === 'BLINK'
   const classifications = {}
-  if ('smilingProbability' in face) {
-    classifications.isSmiling = face.smilingProbability > 0.3
+
+  if (isMethodSetToSmile && 'smilingProbability' in face) {
+    classifications.isSmiling = face.smilingProbability > 0.4
   }
-  if ('leftEyeOpenProbability' in face) {
-    classifications.isLeftEyeOpen = face.leftEyeOpenProbability > 0.5
-  }
-  if ('rightEyeOpenProbability' in face) {
-    classifications.isRightEyeOpen = face.rightEyeOpenProbability > 0.5
+  if (isMethodSetToBlink) {
+    if ('leftEyeOpenProbability' in face) {
+      classifications.isLeftEyeOpen = face.leftEyeOpenProbability > 0.5
+    }
+    if ('rightEyeOpenProbability' in face) {
+      classifications.isRightEyeOpen = face.rightEyeOpenProbability > 0.5
+    }
   }
   return classifications
 }

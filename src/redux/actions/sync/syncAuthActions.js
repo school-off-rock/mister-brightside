@@ -9,7 +9,9 @@ import {
   CLEAR_USER,
   SET_IP_IS_VALID,
   SET_IP_IS_INVALID,
-  SET_NETWORK_TYPE
+  SET_NETWORK_TYPE,
+  SET_FACE_DETECTION_DISABLED,
+  SET_FACE_DETECTION_ENABLED
 } from '../../types/authTypes'
 
 export const showLoading = () => ({ type: SHOW_AUTH_LOADING })
@@ -23,3 +25,5 @@ export const clearUser = () => ({ type: CLEAR_USER })
 export const setIpIsValid = () => ({ type: SET_IP_IS_VALID })
 export const setIpIsInvalid = () => ({ type: SET_IP_IS_INVALID })
 export const setNetworkType = networkType => ({ type: SET_NETWORK_TYPE, networkType })
+export const setFaceDetectionEnabled = () => ({ type: SET_FACE_DETECTION_ENABLED })
+export const setFaceDetectionDisabled = () => ({ type: SET_FACE_DETECTION_DISABLED })

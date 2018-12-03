@@ -10,7 +10,9 @@ import {
   CLEAR_USER,
   SET_IP_IS_VALID,
   SET_IP_IS_INVALID,
-  SET_NETWORK_TYPE
+  SET_NETWORK_TYPE,
+  SET_FACE_DETECTION_ENABLED,
+  SET_FACE_DETECTION_DISABLED
 } from '../../types/authTypes'
 import {
   showLoading,
@@ -24,6 +26,8 @@ import {
   setIpIsValid,
   setIpIsInvalid,
   setNetworkType,
+  setFaceDetectionEnabled,
+  setFaceDetectionDisabled
 } from './handlers'
 
 export const actionHandlers = {
@@ -38,6 +42,8 @@ export const actionHandlers = {
   [SAVE_USER]: saveUser,
   [CLEAR_USER]: clearUser,
   [SET_NETWORK_TYPE]: setNetworkType,
+  [SET_FACE_DETECTION_ENABLED]: setFaceDetectionEnabled,
+  [SET_FACE_DETECTION_DISABLED]: setFaceDetectionDisabled
 }
 
 export const authReducerConfig = {

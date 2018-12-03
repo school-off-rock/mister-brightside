@@ -2,23 +2,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { InteractionManager } from 'react-native'
 import {
-  func,
-  shape,
-  bool,
-  oneOf,
+  func, shape, bool, oneOf
 } from 'prop-types'
 
 import {
-  verifyEmployeePhotoAction,
-  trainEmployeePhotoAction,
-  clearUserAction,
-  checkEmployeeOnImageAction,
-  verifyIpAddressAction
+  verifyEmployeePhotoAction, trainEmployeePhotoAction, clearUserAction, checkEmployeeOnImageAction, verifyIpAddressAction
 } from '../../../redux/actions/async/asyncAuthActions'
-import { registerEmployeeEntryAction, } from '../../../redux/actions/async/asyncClockEntryActions'
-import { showLoading } from '../../../redux/actions/sync/syncAuthActions'
+import { registerEmployeeEntryAction } from '../../../redux/actions/async/asyncClockEntryActions'
+import { showLoading, setFaceDetectionEnabled, setFaceDetectionDisabled } from '../../../redux/actions/sync/syncAuthActions'
 import {
-  getLoading, getUser, getIpStatus, getNetworkType
+  getLoading, getUser, getIpStatus, getNetworkType, getFaceDetection
 } from '../../../redux/reducers/auth/selectors'
 import { getLoadingClockIn } from '../../../redux/reducers/clockEntry/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
@@ -27,52 +20,73 @@ import { Home } from '../components/Home'
 import { NavBar } from '../../shared/containers/NavBar'
 
 import { hasText } from '../../../config/functions'
+import { COLORS } from '../../../constants/theme'
 
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     const userName = navigation.getParam('userName', '')
+    const hasFaceDetection = navigation.getParam('hasFaceDetection', true)
+    const onToggleFaceDetect = navigation.getParam('onToggleFaceDetect', () => {})
     // const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
 
     const firstName = hasText(userName) ? `${userName.charAt(0)}${userName.slice(1, userName.length).toLowerCase()}` : ''
     // const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
     const title = hasText(userName) ? `Olá, ${firstName}` : 'Tirar foto'
     // const rightButton = [{ name: 'account-switch', onPress: () => navigation.navigate('signIn'), disabled: isDisabledOnLoading }]
-    return ({
-      header: <NavBar
-        navigation={navigation}
-        title={title}
-        // rightButtons={rightButton}
-      />
-    })
+    const faceDetectionButton = hasFaceDetection
+      ? { name: 'face', onPress: onToggleFaceDetect, color: COLORS.BLACK_SECONDARY_ALT }
+      : { name: 'face', onPress: onToggleFaceDetect, color: COLORS.BLACK_DEACTIVATED_ALT }
+    return {
+      header: (
+        <NavBar
+          navigation={navigation}
+          title={title}
+          titleRowButton={faceDetectionButton}
+
+          // rightButtons={rightButton}
+        />
+      )
+    }
   }
 
   static propTypes = {
     checkEmployeeOnImage: func.isRequired,
     clearUser: func.isRequired,
+    hasFaceDetection: bool,
     ipStatus: oneOf(['NOT_SET', 'VALID', 'INVALID']),
     isLoading: bool,
     isLoadingClockIn: bool,
     isSignUp: bool,
     navigation: shape({ navigate: func }),
     registerEmployeeEntry: func.isRequired,
+    setFaceDetectionDisabled: func.isRequired,
+    setFaceDetectionEnabled: func.isRequired,
     showLoading: func.isRequired,
     trainEmployeePhoto: func.isRequired,
     verifyEmployeePhoto: func.isRequired,
-    verifyIpAddress: func.isRequired,
+    verifyIpAddress: func.isRequired
   }
 
   static defaultProps = {
     ipStatus: 'NOT_SET',
+    hasFaceDetection: true,
     isLoading: false,
     isLoadingClockIn: false,
     isSignUp: false,
-    navigation: { navigate: () => {} },
+    navigation: { navigate: () => {} }
   }
 
   componentDidMount = () => {
+    const {
+      clearUser, verifyIpAddress, navigation, hasFaceDetection
+    } = this.props
     InteractionManager.runAfterInteractions(async () => {
-      this.props.clearUser()
-      this.props.verifyIpAddress()
+      clearUser()
+      verifyIpAddress()
+      navigation.setParams({
+        hasFaceDetection,
+        onToggleFaceDetect: this.toggleFaceDetection
+      })
       // const {
       // navigation,
       // isLoadingClockIn,
@@ -95,6 +109,13 @@ class HomeScreenContainer extends Component {
   // }
   // }
 
+  componentDidUpdate = (prevProps) => {
+    const { hasFaceDetection } = this.props
+    if (prevProps.hasFaceDetection !== hasFaceDetection) {
+      this.props.navigation.setParams({ hasFaceDetection })
+    }
+  }
+
   navigateToHistory = () => {
     const { navigation } = this.props
     navigation.navigate('history')
@@ -110,16 +131,14 @@ class HomeScreenContainer extends Component {
     this.props.clearUser()
   }
 
+  toggleFaceDetection = () => {
+    const { hasFaceDetection, setFaceDetectionEnabled, setFaceDetectionDisabled } = this.props
+    return hasFaceDetection ? setFaceDetectionDisabled() : setFaceDetectionEnabled()
+  }
+
   render() {
     const {
-      isLoading,
-      isLoadingClockIn,
-      isSignUp,
-      registerEmployeeEntry,
-      trainEmployeePhoto,
-      verifyEmployeePhoto,
-      showLoading,
-      ipStatus,
+      isLoading, isLoadingClockIn, isSignUp, registerEmployeeEntry, trainEmployeePhoto, verifyEmployeePhoto, showLoading, ipStatus, setFaceDetectionDisabled, hasFaceDetection
     } = this.props
     const isLoadingPhoto = isLoading || isLoadingClockIn
     return (
@@ -134,6 +153,8 @@ class HomeScreenContainer extends Component {
         onTakePicture={showLoading}
         clearUser={this.clearUser}
         ipStatus={ipStatus}
+        onFaceDetect={setFaceDetectionDisabled}
+        hasFaceDetection={hasFaceDetection}
       />
     )
   }
@@ -147,6 +168,7 @@ const mapStateToProps = (state, props) => ({
   user: getUser(state),
   ipStatus: getIpStatus(state),
   networkType: getNetworkType(state),
+  hasFaceDetection: getFaceDetection(state)
 })
 
 const mapDispatchToProps = {
@@ -157,6 +179,11 @@ const mapDispatchToProps = {
   clearUser: () => clearUserAction(),
   verifyIpAddress: () => verifyIpAddressAction(),
   showLoading,
+  setFaceDetectionEnabled,
+  setFaceDetectionDisabled
 }
 
-export const HomeScreen = connect(mapStateToProps, mapDispatchToProps)(HomeScreenContainer)
+export const HomeScreen = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreenContainer)

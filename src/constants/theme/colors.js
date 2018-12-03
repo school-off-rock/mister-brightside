@@ -17,6 +17,7 @@ export const COLORS = {
 
   DARK: '#261C15',
   BLACK_SECONDARY_ALT: 'rgba(0, 0, 0, 0.54)',
+  BLACK_DEACTIVATED_ALT: 'rgba(0, 0, 0, 0.1)',
   BLACK_SECONDARY: '#757575',
   BLACK_PRIMARY_ALT: 'rgba(0, 0, 0, 0.87)',
   DARK_OVERLAY: 'rgba(0, 0, 0, 0.80)',
@@ -32,12 +33,8 @@ export const COLORS = {
   ANDROID_STATUS_BAR: 'rgba(0, 0, 0, 0.12)',
 
   NAV_BAR: {
-    background: isIOS
-      ? '#f3f5f7'
-      : '#F6F8FA',
-    tint: isIOS
-      ? '#00973A'
-      : '#00000089',
-    iosBorderColor: 'rgba(167, 167, 164, 0.25)',
-  },
+    background: isIOS ? '#f3f5f7' : '#F6F8FA',
+    tint: isIOS ? '#00973A' : '#00000089',
+    iosBorderColor: 'rgba(167, 167, 164, 0.25)'
+  }
 }

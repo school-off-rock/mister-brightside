@@ -1,15 +1,8 @@
 import React, { Component } from 'react'
-import {
-  View, StyleSheet, Platform
-} from 'react-native'
+import { View, StyleSheet, Platform } from 'react-native'
 
 import {
-  arrayOf,
-  bool,
-  func,
-  number,
-  shape,
-  string,
+  arrayOf, bool, func, number, shape, string
 } from 'prop-types'
 import { SafeAreaView, HeaderBackButton } from 'react-navigation'
 
@@ -28,8 +21,9 @@ export class NavBarLarge extends Component {
     navigation: shape({ goBack: func }).isRequired,
     onHeightUpdate: func,
     onPressHelp: func.isRequired,
-    rightButtons: arrayOf(shape({ name: string, onPress: func })),
+    rightButtons: arrayOf(shape({ name: string, onPress: func, color: string })),
     title: string,
+    titleRowButton: shape({ name: string, onPress: func, color: string })
   }
 
   static defaultProps = {
@@ -38,35 +32,31 @@ export class NavBarLarge extends Component {
     onHeightUpdate: () => {},
     rightButtons: [],
     title: undefined,
+    titleRowButton: undefined
   }
 
   onHelpPress = () => this.props.onPressHelp(this.openNumber)
 
   openNumber = () => openPhonePad(40035159)
 
-  _onLayout = ({ nativeEvent: { layout: { height } } }) => {
+  _onLayout = ({
+    nativeEvent: {
+      layout: { height }
+    }
+  }) => {
     const { actualHeight, onHeightUpdate } = this.props
-    if (!isFunctionEmpty(onHeightUpdate) && (actualHeight !== height)) {
+    if (!isFunctionEmpty(onHeightUpdate) && actualHeight !== height) {
       onHeightUpdate(height)
     }
   }
 
-  renderRightIcons = ({ name, onPress, disabled }) => (
-    <Icon
-      key={name}
-      name={name}
-      color={COLORS.PRIMARY}
-      onPress={onPress}
-      disabled={disabled}
-    />
-  )
+  renderRightIcons = ({
+    name, onPress, disabled, color
+  }) => <Icon key={name} name={name} color={color || COLORS.PRIMARY} onPress={onPress} disabled={disabled} />
 
   render() {
     const {
-      hasHelp,
-      navigation,
-      title,
-      rightButtons,
+      hasHelp, navigation, title, rightButtons, titleRowButton
     } = this.props
     const { state } = navigation.dangerouslyGetParent()
     const hasBackButton = state && state.index > 0
@@ -75,31 +65,25 @@ export class NavBarLarge extends Component {
         <View onLayout={this._onLayout}>
           <SafeAreaView>
             <View style={s.topRow}>
-              {hasBackButton && (
-                <HeaderBackButton
-                  tintColor={COLORS.PRIMARY}
-                  onPress={() => navigation.goBack()}
-                />
-              )}
+              {hasBackButton && <HeaderBackButton tintColor={COLORS.PRIMARY} onPress={() => navigation.goBack()} />}
               <View style={s.logoWrap}>
                 <NavBarLogo />
               </View>
               {(hasHelp || (rightButtons && rightButtons.length >= 1)) && (
-              <View style={s.rightItemsWrap}>
-                {(rightButtons && rightButtons.length >= 1)
-                    && rightButtons.map(this.renderRightIcons)
-                  }
-                {hasHelp && (
-                <Icon
-                  name="help-circle-outline"
-                  color={COLORS.PRIMARY}
-                  onPress={this.onHelpPress}
-                />
-                )}
-              </View>
+                <View style={s.rightItemsWrap}>
+                  {rightButtons && rightButtons.length >= 1 && rightButtons.map(this.renderRightIcons)}
+                  {hasHelp && <Icon name="help-circle-outline" color={COLORS.PRIMARY} onPress={this.onHelpPress} />}
+                </View>
               )}
             </View>
-            { hasText(title) && <H2 numberOfLines={1} style={s.pageTitle}>{title}</H2> }
+            <View style={s.pageTitleWrap}>
+              {hasText(title) && (
+                <H2 numberOfLines={1} style={s.pageTitle}>
+                  {title}
+                </H2>
+              )}
+              {titleRowButton && <Icon containerStyle={s.titleBarIcon} name={titleRowButton.name} color={titleRowButton.color} onPress={titleRowButton.onPress} />}
+            </View>
           </SafeAreaView>
         </View>
       </ViewBlurIOS>
@@ -115,7 +99,7 @@ const s = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     ...Platform.select({
       android: {
-        paddingTop: METRICS.STATUS_BAR_HEIGHT,
+        paddingTop: METRICS.STATUS_BAR_HEIGHT
       }
     })
   },
@@ -125,15 +109,23 @@ const s = StyleSheet.create({
     alignItems: 'center'
   },
   logoWrap: {
-    flex: 1,
+    flex: 1
   },
   rightItemsWrap: {
     marginRight: METRICS.NANO,
     flexDirection: 'row',
     alignItems: 'center'
   },
+  pageTitleWrap: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   pageTitle: {
     marginVertical: METRICS.BIT,
     marginHorizontal: METRICS.KILO,
+    flex: 1
+  },
+  titleBarIcon: {
+    marginRight: METRICS.NANO
   }
 })

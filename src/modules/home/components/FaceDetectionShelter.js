@@ -1,48 +1,109 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text } from 'react-native'
+import PropTypes from 'prop-types'
+
+import { styles } from '../styles/styles.home'
+import { ViewBlurIOS } from '../../shared/components/ViewBlurIOS'
 
 export class FaceDetectionShelter extends Component {
-  state = {
-    serious: undefined,
-    smiling: undefined,
-    isSmiling: undefined
+  static propTypes = {
+    isSmiling: PropTypes.bool,
+    isLeftEyeOpen: PropTypes.bool,
+    isRightEyeOpen: PropTypes.bool,
+    onLiveness: PropTypes.func.isRequired
   }
 
-  // componentDidUpdate = (prevProps) => {
-  //   if ('smilingProbability' in prevProps) {
-  //     if (prevProps.smilingProbability > 0.3 && !this.state.smiling) {
-  //       this.setState({ smiling: true, serious: false })
-  //     }
-  //     if (prevProps.smilingProbability <= 0.3 && !this.state.serious) {
-  //       this.setState({ serious: true, smiling: false })
-  //     }
-  //   }
-  // }
+  static defaultProps = {
+    isSmiling: undefined,
+    isLeftEyeOpen: undefined,
+    isRightEyeOpen: undefined
+  }
 
-  // if ('leftEyeOpenProbability' in faces) {
-  //   if (faces.leftEyeOpenProbability >= 0.4 && !this.state.isLeftEyeOpen) {
-  //     this.setState({ isLeftEyeOpen: true })
-  //   } else if (faces.leftEyeOpenProbability < 0.4 && this.state.isLeftEyeOpen) {
-  //     this.setState({ isLeftEyeOpen: false })
-  //   }
-  //   this.leftEyeOpenProbability = faces.leftEyeOpenProbability
-  // }
-  // console.log(response)
-  // if (faces && faces.length > 0) this.setState({ ...faces[0] })
+  state = {
+    hasLiveness: false,
+    hasBeenSerious: false,
+    hasBeenSmiling: false,
+    hasLeftEyeBeenClosed: false,
+    hasLeftEyeBeenOpen: false,
+    hasRightEyeBeenClosed: false,
+    hasRightEyeBeenOpen: false
+  }
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    const { isSmiling, isLeftEyeOpen, isRightEyeOpen } = this.props
+    if (isSmiling !== nextProps.isSmiling) return true
+    if (isLeftEyeOpen !== nextProps.isLeftEyeOpen) return true
+    if (isRightEyeOpen !== nextProps.isRightEyeOpen) return true
+
+    const {
+      hasBeenSerious, hasBeenSmiling, hasLiveness, hasLeftEyeBeenClosed, hasLeftEyeBeenOpen, hasRightEyeBeenClosed, hasRightEyeBeenOpen
+    } = this.state
+    if (hasBeenSerious !== nextState.hasBeenSerious) return true
+    if (hasBeenSmiling !== nextState.hasBeenSmiling) return true
+    if (hasLeftEyeBeenClosed !== nextState.hasLeftEyeBeenClosed) return true
+    if (hasLeftEyeBeenOpen !== nextState.hasLeftEyeBeenOpen) return true
+    if (hasRightEyeBeenClosed !== nextState.hasRightEyeBeenClosed) return true
+    if (hasRightEyeBeenOpen !== nextState.hasRightEyeBeenOpen) return true
+    if (hasLiveness !== nextState.hasLiveness) return true
+
+    return false
+  }
+
+  componentDidUpdate = () => {
+    const { isSmiling, isLeftEyeOpen, isRightEyeOpen } = this.props
+
+    if ('isSmiling' in this.props && isSmiling !== undefined) {
+      if (isSmiling) {
+        this.setState({ hasBeenSmiling: true })
+      } else {
+        this.setState({ hasBeenSerious: true })
+      }
+    }
+
+    if ('isLeftEyeOpen' in this.props && isLeftEyeOpen !== undefined) {
+      if (isLeftEyeOpen) {
+        this.setState({ hasLeftEyeBeenOpen: true })
+      } else {
+        this.setState({ hasLeftEyeBeenClosed: true })
+      }
+    }
+
+    if ('isRightEyeOpen' in this.props && isRightEyeOpen !== undefined) {
+      if (isRightEyeOpen) {
+        this.setState({ hasRightEyeBeenOpen: true })
+      } else {
+        this.setState({ hasRightEyeBeenClosed: true })
+      }
+    }
+
+    if (!this.state.hasLiveness) {
+      this.checkLiveness()
+    }
+  }
+
+  checkLiveness = () => {
+    const {
+      hasBeenSmiling, hasBeenSerious, hasLeftEyeBeenOpen, hasLeftEyeBeenClosed, hasRightEyeBeenOpen, hasRightEyeBeenClosed
+    } = this.state
+    if (hasBeenSmiling && hasBeenSerious) {
+      this.setState({ hasLiveness: true })
+      return this.onLiveness('SORRISO')
+    }
+    if ((hasLeftEyeBeenOpen && hasLeftEyeBeenClosed) || (hasRightEyeBeenOpen && hasRightEyeBeenClosed)) {
+      this.setState({ hasLiveness: true })
+      return this.onLiveness('PISCAR')
+    }
+    return null
+  }
+
+  onLiveness = () => this.props.onLiveness()
 
   render() {
-    const { isSmiling } = this.props
     return (
-      <View style={s.container}>
-        {!isSmiling && <Text>serious</Text>}
-        {isSmiling && <Text>smiling</Text>}
-      </View>
+      <ViewBlurIOS style={styles.overlay}>
+        <Text style={styles.faceRecognitionText}>Reconhecimento facial ativo</Text>
+        <Text style={styles.faceRecognitionSubtitle}>Tente piscar ou sorrir para tirar a foto</Text>
+      </ViewBlurIOS>
     )
-  }
-}
-
-const s = {
-  container: {
-    backgroundColor: 'white'
   }
 }

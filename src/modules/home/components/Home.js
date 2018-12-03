@@ -21,27 +21,30 @@ import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE, IP_VALIDATION_FAIL_
 import { styles } from '../styles/styles.home'
 import { CaptureButton } from './CaptureButton'
 import { FaceDetectionShelter } from './FaceDetectionShelter'
-import { getFaceClassifications } from '../../../config/functions';
+import { getFaceClassifications } from '../../../config/functions'
 
 class HomeComponent extends Component {
   static propTypes = {
-    onRegisterEmployee: func.isRequired,
-    onHistoryPress: func.isRequired,
-    onTakePicture: func.isRequired,
     clearUser: func.isRequired,
-    onRegisterEmployeeEntryPress: func.isRequired,
-    onTrainEmployeePhotoPress: func.isRequired,
-    isSignUp: bool,
-    isLoading: bool,
     hasAutoShot: bool,
+    hasFaceDetection: bool,
+    ipStatus: oneOf(['NOT_SET', 'VALID', 'INVALID']).isRequired,
+    isLoading: bool,
+    isSignUp: bool,
     navigation: object.isRequired,
-    ipStatus: oneOf(['NOT_SET', 'VALID', 'INVALID']).isRequired
+    onHistoryPress: func.isRequired,
+    onFaceDetect: func.isRequired,
+    onRegisterEmployee: func.isRequired,
+    onRegisterEmployeeEntryPress: func.isRequired,
+    onTakePicture: func.isRequired,
+    onTrainEmployeePhotoPress: func.isRequired,
   }
 
   static defaultProps = {
-    isSignUp: false,
+    hasAutoShot: false,
+    hasFaceDetection: true,
     isLoading: false,
-    hasAutoShot: true
+    isSignUp: false,
   }
 
   face = undefined
@@ -52,10 +55,10 @@ class HomeComponent extends Component {
     isTakingPicture: false,
     modalVisible: false,
     hasAutoShot: this.props.hasAutoShot,
-    isFirstView: true,
+    // isFirstView: true,
 
-    hasFaceDetection: true, // fixMe
-    face: {},
+    method: 'BOTH',
+    faceClassifications: {}
   }
 
   componentDidMount = () => {
@@ -67,11 +70,11 @@ class HomeComponent extends Component {
   }
 
   onFocus = () => {
-    const { isSignUp } = this.props
-    this.setState(({ isFirstView }) => ({
-      hasAutoShot: isSignUp || isFirstView,
-      isFirstView: false
-    }))
+    // const { isSignUp } = this.props
+    // this.setState(({ isFirstView }) => ({
+    //   hasAutoShot: isSignUp || isFirstView,
+    //   isFirstView: false
+    // }))
     this.props.clearUser()
   }
 
@@ -91,9 +94,8 @@ class HomeComponent extends Component {
     const { faces } = response
     if (faces && faces.length > 0) {
       const [face] = faces
-      const classifications = getFaceClassifications(face)
-      console.log(classifications)
-      // this.setState({ face })
+      const classifications = getFaceClassifications(face, this.state.method)
+      this.setState(({ faceClassifications }) => ({ faceClassifications: { faceClassifications, ...classifications } }))
     }
   }
 
@@ -141,6 +143,12 @@ class HomeComponent extends Component {
     this.takePicture()
   }
 
+  onLiveness = () => {
+    this.setState({ hasAutoShot: false })
+    this.props.onFaceDetect()
+    setTimeout(() => this.takePicture(), 200)
+  }
+
   takePicture = async () => {
     if (this.camera) {
       const { onTakePicture } = this.props
@@ -180,11 +188,13 @@ class HomeComponent extends Component {
   }
 
   renderFooter = () => {
-    const { isTakingPicture, hasAutoShot, hasFaceDetection } = this.state
-    const { isLoading } = this.props
+    const { isLoading, hasFaceDetection } = this.props
+    const {
+      isTakingPicture, hasAutoShot, faceClassifications
+    } = this.state
     const isDisabled = isTakingPicture
 
-    if (hasFaceDetection) return <FaceDetectionShelter isSmiling={this.state.isSmiling} {...this.state.face} />
+    if (hasFaceDetection) return <FaceDetectionShelter onLiveness={this.onLiveness} {...faceClassifications} />
     if (hasAutoShot) return <AutoShotMechanism onTimerEnd={this.onAutoShot} />
     return <CaptureButton onPress={this.takePicture} disabled={isDisabled} isLoading={isTakingPicture || isLoading} />
   }
@@ -233,7 +243,7 @@ class HomeComponent extends Component {
             onCameraReady={this.onCameraReady}
             onPictureTaken={this.onPictureTaken}
             onFacesDetected={this.onFaceDetected}
-            onFaceDetectionError={e => console.log('ERROR', e)}
+            onFaceDetectionError={e => console.log('FACE ERROR', e)}
             faceDetectionMode={RNCamera.Constants.FaceDetection.Mode.fast}
             faceDetectionLandmarks={RNCamera.Constants.FaceDetection.Landmarks.none}
             faceDetectionClassifications={RNCamera.Constants.FaceDetection.Classifications.all}

@@ -7,4 +7,5 @@ export const MODAL_INITIAL_STATE = {
   buttonLabel: 'Fechar',
   onAction: () => {},
   actionButtonLabel: undefined,
+  onDismiss: () => {}
 }

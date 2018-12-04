@@ -37,19 +37,15 @@ class ModalContainer extends Component {
     }
   }
 
-  dismissModal = () => this.props.setModal(MODAL.DISMISS)
+  dismissModal = () => {
+    this.props.modal.onDismiss()
+    this.props.setModal(MODAL.DISMISS)
+  }
 
   render() {
     const { modal } = this.props
     const {
-      buttonLabel,
-      description,
-      iconName,
-      isVisible,
-      theme,
-      title,
-      onAction,
-      actionButtonLabel,
+      buttonLabel, description, iconName, isVisible, theme, title, onAction, actionButtonLabel
     } = modal
     return (
       <ModalWithIcon
@@ -76,4 +72,7 @@ const mapDispatchToProps = {
   setModal: modal => setModalAction(modal)
 }
 
-export const ModalMain = connect(mapStateToProps, mapDispatchToProps)(ModalContainer)
+export const ModalMain = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ModalContainer)

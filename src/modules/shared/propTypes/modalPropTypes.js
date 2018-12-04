@@ -9,4 +9,5 @@ export const modalPropTypes = {
   buttonLabel: PropTypes.string,
   onAction: PropTypes.func,
   actionButtonLabel: PropTypes.string,
+  onDismiss: PropTypes.func
 }

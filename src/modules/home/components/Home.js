@@ -14,13 +14,14 @@ import { Flash } from '../../shared/components/animations/Flash'
 import { OptionsModal } from './OptionsModal'
 import { PendingAuthView } from './PendingAuthView'
 import { StatusBarLight } from '../../shared/components/StatusBarLight'
-import { AutoShotMechanism } from './AutoShotMechanism'
+// import { AutoShotMechanism } from './AutoShotMechanism'
+import { DisabledFaceDetection } from './DisabledFaceDetection'
+// import { CaptureButton } from './CaptureButton'
+import { FaceDetectionShelter } from './FaceDetectionShelter'
 
 import { CAMERA_PERMISSION_MESSAGE, CAMERA_PERMISSION_TITLE, IP_VALIDATION_FAIL_DESCRIPTION } from '../../../constants/strings'
 
 import { styles } from '../styles/styles.home'
-import { CaptureButton } from './CaptureButton'
-import { FaceDetectionShelter } from './FaceDetectionShelter'
 import { getFaceClassifications } from '../../../config/functions'
 
 class HomeComponent extends Component {
@@ -33,7 +34,8 @@ class HomeComponent extends Component {
     isSignUp: bool,
     navigation: object.isRequired,
     onHistoryPress: func.isRequired,
-    onFaceDetect: func.isRequired,
+    onEnableFaceDetection: func.isRequired,
+    onDisableFaceDetection: func.isRequired,
     onRegisterEmployee: func.isRequired,
     onRegisterEmployeeEntryPress: func.isRequired,
     onTakePicture: func.isRequired,
@@ -145,7 +147,7 @@ class HomeComponent extends Component {
 
   onLiveness = () => {
     this.setState({ hasAutoShot: false })
-    this.props.onFaceDetect()
+    this.props.onDisableFaceDetection()
     setTimeout(() => this.takePicture(), 200)
   }
 
@@ -192,11 +194,13 @@ class HomeComponent extends Component {
     const {
       isTakingPicture, hasAutoShot, faceClassifications
     } = this.state
-    const isDisabled = isTakingPicture
+    // const isDisabled = isTakingPicture
 
-    if (hasFaceDetection) return <FaceDetectionShelter onLiveness={this.onLiveness} {...faceClassifications} />
-    if (hasAutoShot) return <AutoShotMechanism onTimerEnd={this.onAutoShot} />
-    return <CaptureButton onPress={this.takePicture} disabled={isDisabled} isLoading={isTakingPicture || isLoading} />
+    return hasFaceDetection && !isTakingPicture && !isLoading
+      ? <FaceDetectionShelter onLiveness={this.onLiveness} {...faceClassifications} />
+      : <DisabledFaceDetection isLoading={isTakingPicture || isLoading} />
+    // if (hasAutoShot) return <AutoShotMechanism onTimerEnd={this.onAutoShot} />
+    // return <CaptureButton onPress={this.takePicture} disabled={isDisabled} isLoading={isTakingPicture || isLoading} />
   }
 
   render() {

@@ -36,7 +36,13 @@ export class FaceDetectionShelter extends Component {
     if (isRightEyeOpen !== nextProps.isRightEyeOpen) return true
 
     const {
-      hasBeenSerious, hasBeenSmiling, hasLiveness, hasLeftEyeBeenClosed, hasLeftEyeBeenOpen, hasRightEyeBeenClosed, hasRightEyeBeenOpen
+      hasBeenSerious,
+      hasBeenSmiling,
+      hasLiveness,
+      hasLeftEyeBeenClosed,
+      hasLeftEyeBeenOpen,
+      hasRightEyeBeenClosed,
+      hasRightEyeBeenOpen
     } = this.state
     if (hasBeenSerious !== nextState.hasBeenSerious) return true
     if (hasBeenSmiling !== nextState.hasBeenSmiling) return true

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { InteractionManager, BackHandler, Alert } from 'react-native'
+import { InteractionManager, Alert } from 'react-native'
 import {
   func, shape, bool, oneOf
 } from 'prop-types'
@@ -25,26 +25,25 @@ import { Home } from '../components/Home'
 import { NavBar } from '../../shared/containers/NavBar'
 
 import { hasText } from '../../../config/functions'
-// import { COLORS } from '../../../constants/theme'
 
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     const userName = navigation.getParam('userName', '')
     // const hasFaceDetection = navigation.getParam('hasFaceDetection', true)
     // const onToggleFaceDetect = navigation.getParam('onToggleFaceDetect', () => {})
-    const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
-    const exitApp = navigation.getParam('exitApp', () => {})
+    // const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
+    // const exitApp = navigation.getParam('exitApp', () => {})
 
     const firstName = hasText(userName) ? `${userName.charAt(0)}${userName.slice(1, userName.length).toLowerCase()}` : ''
     // const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
     const title = hasText(userName) ? `Olá, ${firstName}` : 'Tirar foto'
-    const rightButton = [
-      {
-        name: 'exit-to-app',
-        onPress: exitApp,
-        disabled: isDisabledOnLoading
-      }
-    ]
+    // const rightButton = [
+    //   {
+    //     name: 'exit-to-app',
+    //     onPress: exitApp,
+    //     disabled: isDisabledOnLoading
+    //   }
+    // ]
     // const faceDetectionButton = hasFaceDetection
     //   ? {
     //     name: 'face',
@@ -60,7 +59,7 @@ class HomeScreenContainer extends Component {
       header: (
         <NavBar
           navigation={navigation}
-          rightButtons={rightButton}
+          // rightButtons={rightButton}
           title={title}
           // titleRowButton={faceDetectionButton}
         />

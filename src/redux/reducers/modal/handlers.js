@@ -1,15 +1,6 @@
-export const setModal = (
-  state, {
-    isVisible,
-    theme,
-    iconName,
-    title,
-    description,
-    buttonLabel,
-    onAction,
-    actionButtonLabel,
-  }
-) => ({
+export const setModal = (state, {
+  isVisible, theme, iconName, title, description, buttonLabel, onAction, actionButtonLabel
+}) => ({
   ...state,
   isVisible,
   theme,
@@ -18,5 +9,7 @@ export const setModal = (
   description,
   buttonLabel,
   onAction,
-  actionButtonLabel,
+  actionButtonLabel
 })
+
+export const setOnDismissModal = (state, { onDismiss }) => ({ ...state, onDismiss })

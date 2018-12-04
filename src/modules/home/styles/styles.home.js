@@ -118,5 +118,19 @@ export const styles = StyleSheet.create({
     marginHorizontal: METRICS.KILO,
     marginBottom: METRICS.KILO,
     ...FONTS.standardStyle.description
+  },
+  faceRecognitionDisabledText: {
+    textAlign: 'center',
+    marginTop: METRICS.KILO,
+    marginHorizontal: METRICS.KILO,
+    ...FONTS.standardStyle.p,
+    color: COLORS.BLACK_DEACTIVATED_ALT
+  },
+  faceRecognitionDisabledSubtitle: {
+    textAlign: 'center',
+    marginHorizontal: METRICS.KILO,
+    marginBottom: METRICS.KILO,
+    ...FONTS.standardStyle.description,
+    color: COLORS.BLACK_DEACTIVATED_ALT
   }
 })

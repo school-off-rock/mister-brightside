@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { InteractionManager } from 'react-native'
+import { InteractionManager, BackHandler, Alert } from 'react-native'
 import {
   func, shape, bool, oneOf
 } from 'prop-types'
 
 import {
-  verifyEmployeePhotoAction, trainEmployeePhotoAction, clearUserAction, checkEmployeeOnImageAction, verifyIpAddressAction
+  verifyEmployeePhotoAction,
+  trainEmployeePhotoAction,
+  clearUserAction,
+  checkEmployeeOnImageAction,
+  verifyIpAddressAction
 } from '../../../redux/actions/async/asyncAuthActions'
 import { registerEmployeeEntryAction } from '../../../redux/actions/async/asyncClockEntryActions'
 import { showLoading, setFaceDetectionEnabled, setFaceDetectionDisabled } from '../../../redux/actions/sync/syncAuthActions'
@@ -15,35 +19,50 @@ import {
 } from '../../../redux/reducers/auth/selectors'
 import { getLoadingClockIn } from '../../../redux/reducers/clockEntry/selectors'
 import { getModalState } from '../../../redux/reducers/modal/selectors'
+import { setOnDismissModal } from '../../../redux/actions/sync/syncModalAction'
 
 import { Home } from '../components/Home'
 import { NavBar } from '../../shared/containers/NavBar'
 
 import { hasText } from '../../../config/functions'
-import { COLORS } from '../../../constants/theme'
+// import { COLORS } from '../../../constants/theme'
 
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     const userName = navigation.getParam('userName', '')
-    const hasFaceDetection = navigation.getParam('hasFaceDetection', true)
-    const onToggleFaceDetect = navigation.getParam('onToggleFaceDetect', () => {})
-    // const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
+    // const hasFaceDetection = navigation.getParam('hasFaceDetection', true)
+    // const onToggleFaceDetect = navigation.getParam('onToggleFaceDetect', () => {})
+    const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
+    const exitApp = navigation.getParam('exitApp', () => {})
 
     const firstName = hasText(userName) ? `${userName.charAt(0)}${userName.slice(1, userName.length).toLowerCase()}` : ''
     // const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
     const title = hasText(userName) ? `Olá, ${firstName}` : 'Tirar foto'
-    // const rightButton = [{ name: 'account-switch', onPress: () => navigation.navigate('signIn'), disabled: isDisabledOnLoading }]
-    const faceDetectionButton = hasFaceDetection
-      ? { name: 'face', onPress: onToggleFaceDetect, color: COLORS.BLACK_SECONDARY_ALT }
-      : { name: 'face', onPress: onToggleFaceDetect, color: COLORS.BLACK_DEACTIVATED_ALT }
+    const rightButton = [
+      {
+        name: 'exit-to-app',
+        onPress: exitApp,
+        disabled: isDisabledOnLoading
+      }
+    ]
+    // const faceDetectionButton = hasFaceDetection
+    //   ? {
+    //     name: 'face',
+    //     onPress: onToggleFaceDetect,
+    //     color: COLORS.BLACK_SECONDARY_ALT
+    //   }
+    //   : {
+    //     name: 'face',
+    //     onPress: onToggleFaceDetect,
+    //     color: COLORS.BLACK_DEACTIVATED_ALT
+    //   }
     return {
       header: (
         <NavBar
           navigation={navigation}
+          rightButtons={rightButton}
           title={title}
-          titleRowButton={faceDetectionButton}
-
-          // rightButtons={rightButton}
+          // titleRowButton={faceDetectionButton}
         />
       )
     }
@@ -64,7 +83,9 @@ class HomeScreenContainer extends Component {
     showLoading: func.isRequired,
     trainEmployeePhoto: func.isRequired,
     verifyEmployeePhoto: func.isRequired,
-    verifyIpAddress: func.isRequired
+    verifyIpAddress: func.isRequired,
+    setOnDismissModal: func.isRequired,
+    modalAlert: shape({ isVisible: bool })
   }
 
   static defaultProps = {
@@ -73,47 +94,36 @@ class HomeScreenContainer extends Component {
     isLoading: false,
     isLoadingClockIn: false,
     isSignUp: false,
-    navigation: { navigate: () => {} }
+    navigation: { navigate: () => {} },
+    modalAlert: { isVisible: false }
   }
 
   componentDidMount = () => {
     const {
-      clearUser, verifyIpAddress, navigation, hasFaceDetection
+      clearUser, verifyIpAddress, navigation, isLoading
     } = this.props
     InteractionManager.runAfterInteractions(async () => {
       clearUser()
       verifyIpAddress()
       navigation.setParams({
-        hasFaceDetection,
-        onToggleFaceDetect: this.toggleFaceDetection
+        exitApp: this.handleExitApp,
+        isDisabledOnLoading: isLoading
       })
-      // const {
-      // navigation,
-      // isLoadingClockIn,
-      // isLoading
-      // } = this.props
-      // const user = await getUserRegistration()
-      // navigation.setParams({
-      //   userName: user.firstName,
-      // isDisabledOnLoading: isLoadingClockIn || isLoading,
-      // })
     })
   }
 
-  // componentDidUpdate = (prevProps) => {
-  //   const { isLoadingClockIn, isLoading, navigation } = this.props
-  // if ((prevProps.isLoadingClockIn !== isLoadingClockIn) || (prevProps.isLoading !== isLoading)) {
-  //   navigation.setParams({
-  //     isDisabledOnLoading: isLoadingClockIn || isLoading,
-  //   })
-  // }
-  // }
-
   componentDidUpdate = (prevProps) => {
-    const { hasFaceDetection } = this.props
-    if (prevProps.hasFaceDetection !== hasFaceDetection) {
-      this.props.navigation.setParams({ hasFaceDetection })
-    }
+    const { isLoading, navigation } = this.props
+    if (prevProps.isLoading !== isLoading) navigation.setParams({ isDisabledOnLoading: isLoading })
+  }
+
+  handleExitApp = () => {
+    const { setFaceDetectionDisabled, setFaceDetectionEnabled } = this.props
+    setFaceDetectionDisabled()
+    Alert.alert('Sair do aplicativo', 'Você realmente deseja sair do MagnoRH?', [
+      { text: 'Continuar', onPress: () => setFaceDetectionEnabled(), style: 'cancel' },
+      { text: 'Sair', onPress: () => BackHandler.exitApp(), style: 'destructive' }
+    ])
   }
 
   navigateToHistory = () => {
@@ -127,8 +137,17 @@ class HomeScreenContainer extends Component {
   }
 
   clearUser = () => {
-    this.props.navigation.setParams({ userName: undefined })
-    this.props.clearUser()
+    const {
+      navigation, clearUser, setFaceDetectionEnabled, modalAlert
+    } = this.props
+    navigation.setParams({
+      userName: undefined
+    })
+    clearUser()
+    if (modalAlert.isVisible) {
+      return this.props.setOnDismissModal(setFaceDetectionEnabled)
+    }
+    return setFaceDetectionEnabled()
   }
 
   toggleFaceDetection = () => {
@@ -138,7 +157,17 @@ class HomeScreenContainer extends Component {
 
   render() {
     const {
-      isLoading, isLoadingClockIn, isSignUp, registerEmployeeEntry, trainEmployeePhoto, verifyEmployeePhoto, showLoading, ipStatus, setFaceDetectionDisabled, hasFaceDetection
+      isLoading,
+      isLoadingClockIn,
+      isSignUp,
+      registerEmployeeEntry,
+      trainEmployeePhoto,
+      verifyEmployeePhoto,
+      showLoading,
+      ipStatus,
+      setFaceDetectionDisabled,
+      hasFaceDetection,
+      setFaceDetectionEnabled
     } = this.props
     const isLoadingPhoto = isLoading || isLoadingClockIn
     return (
@@ -153,7 +182,8 @@ class HomeScreenContainer extends Component {
         onTakePicture={showLoading}
         clearUser={this.clearUser}
         ipStatus={ipStatus}
-        onFaceDetect={setFaceDetectionDisabled}
+        onEnableFaceDetection={setFaceDetectionEnabled}
+        onDisableFaceDetection={setFaceDetectionDisabled}
         hasFaceDetection={hasFaceDetection}
       />
     )
@@ -180,7 +210,8 @@ const mapDispatchToProps = {
   verifyIpAddress: () => verifyIpAddressAction(),
   showLoading,
   setFaceDetectionEnabled,
-  setFaceDetectionDisabled
+  setFaceDetectionDisabled,
+  setOnDismissModal: onDismiss => setOnDismissModal(onDismiss)
 }
 
 export const HomeScreen = connect(

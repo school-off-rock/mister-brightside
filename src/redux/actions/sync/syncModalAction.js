@@ -1,14 +1,7 @@
-import { SET_MODAL } from '../../types/modalTypes'
+import { SET_MODAL, SET_ON_DISMISS_MODAL } from '../../types/modalTypes'
 
 export const setModalAction = ({
-  isVisible,
-  theme,
-  title,
-  description,
-  iconName,
-  buttonLabel,
-  onAction,
-  actionButtonLabel
+  isVisible, theme, title, description, iconName, buttonLabel, onAction, actionButtonLabel
 }) => ({
   type: SET_MODAL,
   isVisible,
@@ -18,5 +11,7 @@ export const setModalAction = ({
   description,
   buttonLabel,
   onAction,
-  actionButtonLabel,
+  actionButtonLabel
 })
+
+export const setOnDismissModal = onDismiss => ({ type: SET_ON_DISMISS_MODAL, onDismiss })

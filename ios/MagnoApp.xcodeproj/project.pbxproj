@@ -642,6 +642,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				82D5416121C13BE200191D1C /* FaceDetector */,
 				82D5413D21C1397500191D1C /* AddressBook.framework */,
 				82D5412721C1396200191D1C /* Detector */,
 				82D5411921C1396100191D1C /* GoogleInterchangeUtilities-1.2.2 */,
@@ -880,6 +881,21 @@
 				82D5413021C1396200191D1C /* GoogleMVDataOutput.framework */,
 			);
 			path = frameworks;
+			sourceTree = "<group>";
+		};
+		82D5416121C13BE200191D1C /* FaceDetector */ = {
+			isa = PBXGroup;
+			children = (
+				82D5416221C13BE200191D1C /* Frameworks */,
+			);
+			path = FaceDetector;
+			sourceTree = "<group>";
+		};
+		82D5416221C13BE200191D1C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {

@@ -64,6 +64,13 @@
 		82D5413B21C1396200191D1C /* dummy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 82D5412D21C1396200191D1C /* dummy.txt */; };
 		82D5413C21C1396200191D1C /* GoogleMVDataOutput.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D5413021C1396200191D1C /* GoogleMVDataOutput.framework */; };
 		82D5413E21C1397500191D1C /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D5413D21C1397500191D1C /* AddressBook.framework */; };
+		82D5419921C13EC900191D1C /* BCLlefteyeclosed_200.emd in Resources */ = {isa = PBXBuildFile; fileRef = 82D5419021C13EC900191D1C /* BCLlefteyeclosed_200.emd */; };
+		82D5419A21C13EC900191D1C /* BCLjoy_100.emd in Resources */ = {isa = PBXBuildFile; fileRef = 82D5419121C13EC900191D1C /* BCLjoy_100.emd */; };
+		82D5419B21C13EC900191D1C /* MFTprec_202.emd in Resources */ = {isa = PBXBuildFile; fileRef = 82D5419221C13EC900191D1C /* MFTprec_202.emd */; };
+		82D5419C21C13EC900191D1C /* PFFprec_702.emd in Resources */ = {isa = PBXBuildFile; fileRef = 82D5419321C13EC900191D1C /* PFFprec_702.emd */; };
+		82D5419D21C13EC900191D1C /* LMprec_600.emd in Resources */ = {isa = PBXBuildFile; fileRef = 82D5419421C13EC900191D1C /* LMprec_600.emd */; };
+		82D5419E21C13EC900191D1C /* BCLrighteyeclosed_200.emd in Resources */ = {isa = PBXBuildFile; fileRef = 82D5419521C13EC900191D1C /* BCLrighteyeclosed_200.emd */; };
+		82D5419F21C13EC900191D1C /* FaceDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D5419821C13EC900191D1C /* FaceDetector.framework */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8D814C8D91E54000A216EE34 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5F722A73EA04A588C154D04 /* FontAwesome5_Brands.ttf */; };
 		ACA1828B13384E31A57207E1 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74E708B5240149229AC42CDE /* Zocial.ttf */; };
@@ -441,6 +448,13 @@
 		82D5412D21C1396200191D1C /* dummy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dummy.txt; sourceTree = "<group>"; };
 		82D5413021C1396200191D1C /* GoogleMVDataOutput.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMVDataOutput.framework; sourceTree = "<group>"; };
 		82D5413D21C1397500191D1C /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		82D5419021C13EC900191D1C /* BCLlefteyeclosed_200.emd */ = {isa = PBXFileReference; lastKnownFileType = file; path = BCLlefteyeclosed_200.emd; sourceTree = "<group>"; };
+		82D5419121C13EC900191D1C /* BCLjoy_100.emd */ = {isa = PBXFileReference; lastKnownFileType = file; path = BCLjoy_100.emd; sourceTree = "<group>"; };
+		82D5419221C13EC900191D1C /* MFTprec_202.emd */ = {isa = PBXFileReference; lastKnownFileType = file; path = MFTprec_202.emd; sourceTree = "<group>"; };
+		82D5419321C13EC900191D1C /* PFFprec_702.emd */ = {isa = PBXFileReference; lastKnownFileType = file; path = PFFprec_702.emd; sourceTree = "<group>"; };
+		82D5419421C13EC900191D1C /* LMprec_600.emd */ = {isa = PBXFileReference; lastKnownFileType = file; path = LMprec_600.emd; sourceTree = "<group>"; };
+		82D5419521C13EC900191D1C /* BCLrighteyeclosed_200.emd */ = {isa = PBXFileReference; lastKnownFileType = file; path = BCLrighteyeclosed_200.emd; sourceTree = "<group>"; };
+		82D5419821C13EC900191D1C /* FaceDetector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FaceDetector.framework; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		852F15C9274B44EDAFE0C9A7 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		91A60AA72E5E4A33BE6DD4AD /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -489,6 +503,7 @@
 				4DC5A47CD09E45F4B9885BA8 /* libRNCamera.a in Frameworks */,
 				441B8C9C48F844C38D1425E2 /* libReactNativeConfig.a in Frameworks */,
 				82D5413A21C1396200191D1C /* GoogleMobileVision.framework in Frameworks */,
+				82D5419F21C13EC900191D1C /* FaceDetector.framework in Frameworks */,
 				27987C8B0D8A431580AFA44E /* libRNBlur.a in Frameworks */,
 				36B5EC5644E7468C896AB201 /* libRNVectorIcons.a in Frameworks */,
 				82D5413221C1396200191D1C /* GoogleNetworkingUtilities.framework in Frameworks */,
@@ -642,7 +657,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				82D5416121C13BE200191D1C /* FaceDetector */,
+				82D5418E21C13EC900191D1C /* FaceDetector */,
 				82D5413D21C1397500191D1C /* AddressBook.framework */,
 				82D5412721C1396200191D1C /* Detector */,
 				82D5411921C1396100191D1C /* GoogleInterchangeUtilities-1.2.2 */,
@@ -883,19 +898,42 @@
 			path = frameworks;
 			sourceTree = "<group>";
 		};
-		82D5416121C13BE200191D1C /* FaceDetector */ = {
+		82D5418E21C13EC900191D1C /* FaceDetector */ = {
 			isa = PBXGroup;
 			children = (
-				82D5416221C13BE200191D1C /* Frameworks */,
+				82D5418F21C13EC900191D1C /* Resources */,
+				82D5419621C13EC900191D1C /* Frameworks */,
 			);
 			path = FaceDetector;
 			sourceTree = "<group>";
 		};
-		82D5416221C13BE200191D1C /* Frameworks */ = {
+		82D5418F21C13EC900191D1C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				82D5419021C13EC900191D1C /* BCLlefteyeclosed_200.emd */,
+				82D5419121C13EC900191D1C /* BCLjoy_100.emd */,
+				82D5419221C13EC900191D1C /* MFTprec_202.emd */,
+				82D5419321C13EC900191D1C /* PFFprec_702.emd */,
+				82D5419421C13EC900191D1C /* LMprec_600.emd */,
+				82D5419521C13EC900191D1C /* BCLrighteyeclosed_200.emd */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		82D5419621C13EC900191D1C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				82D5419721C13EC900191D1C /* frameworks */,
 			);
 			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		82D5419721C13EC900191D1C /* frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				82D5419821C13EC900191D1C /* FaceDetector.framework */,
+			);
+			path = frameworks;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -1056,7 +1094,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = H3ALR95Z2L;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1482,18 +1520,24 @@
 				82D5413921C1396200191D1C /* dummy.txt in Resources */,
 				82D5413721C1396200191D1C /* dummy.txt in Resources */,
 				82D5413521C1396200191D1C /* dummy.txt in Resources */,
+				82D5419D21C13EC900191D1C /* LMprec_600.emd in Resources */,
 				82D5413321C1396200191D1C /* dummy.txt in Resources */,
 				82D5413121C1396200191D1C /* dummy.txt in Resources */,
+				82D5419C21C13EC900191D1C /* PFFprec_702.emd in Resources */,
 				8D814C8D91E54000A216EE34 /* FontAwesome5_Brands.ttf in Resources */,
+				82D5419E21C13EC900191D1C /* BCLrighteyeclosed_200.emd in Resources */,
 				0B8344FE8A944A3697CEB68E /* FontAwesome5_Regular.ttf in Resources */,
 				827ABD8D5E6A4DCC9FAD2261 /* FontAwesome5_Solid.ttf in Resources */,
 				53308D8BE4974714B5D5AE11 /* Foundation.ttf in Resources */,
 				82D5413B21C1396200191D1C /* dummy.txt in Resources */,
+				82D5419B21C13EC900191D1C /* MFTprec_202.emd in Resources */,
+				82D5419A21C13EC900191D1C /* BCLjoy_100.emd in Resources */,
 				2C18A62FB1E5435C909B434B /* Ionicons.ttf in Resources */,
 				C6D574AEE698438EB4E57D76 /* MaterialCommunityIcons.ttf in Resources */,
 				D10288C5EC5240C581463E50 /* MaterialIcons.ttf in Resources */,
 				5D28082C95B44A0DBE9EFC08 /* Octicons.ttf in Resources */,
 				7F30FE3234074588816EAD78 /* SimpleLineIcons.ttf in Resources */,
+				82D5419921C13EC900191D1C /* BCLlefteyeclosed_200.emd in Resources */,
 				ACA1828B13384E31A57207E1 /* Zocial.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1685,10 +1729,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = H3ALR95Z2L;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GoogleNetworkingUtilities-1.2.2/Frameworks/frameworks",
@@ -1697,6 +1741,7 @@
 					"$(PROJECT_DIR)/GoogleSymbolUtilities-1.1.1/Frameworks",
 					"$(PROJECT_DIR)/Detector/Frameworks/frameworks",
 					"$(PROJECT_DIR)/MVDataOutput/Frameworks/frameworks",
+					"$(PROJECT_DIR)/FaceDetector/Frameworks/frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1718,7 +1763,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.colegiomagno.colegiomagnorh;
 				PRODUCT_NAME = MagnoApp;
-				PROVISIONING_PROFILE_SPECIFIER = "Magno RH DEV";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1730,9 +1775,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = H3ALR95Z2L;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/GoogleNetworkingUtilities-1.2.2/Frameworks/frameworks",
@@ -1741,6 +1786,7 @@
 					"$(PROJECT_DIR)/GoogleSymbolUtilities-1.1.1/Frameworks",
 					"$(PROJECT_DIR)/Detector/Frameworks/frameworks",
 					"$(PROJECT_DIR)/MVDataOutput/Frameworks/frameworks",
+					"$(PROJECT_DIR)/FaceDetector/Frameworks/frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1762,7 +1808,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.colegiomagno.colegiomagnorh;
 				PRODUCT_NAME = MagnoApp;
-				PROVISIONING_PROFILE_SPECIFIER = "Magno RH DEV";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

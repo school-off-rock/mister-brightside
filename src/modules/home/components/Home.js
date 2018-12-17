@@ -1,28 +1,28 @@
-import React, { Component } from "react";
-import { View, Image, StyleSheet, Platform } from "react-native";
+import React, { Component } from "react"
+import { View, Image, StyleSheet, Platform } from "react-native"
 
-import { func, bool, object, oneOf } from "prop-types";
-import { withNavigation } from "react-navigation";
+import { func, bool, object, oneOf } from "prop-types"
+import { withNavigation } from "react-navigation"
 
-import { RNCamera } from "react-native-camera";
+import { RNCamera } from "react-native-camera"
 
-import { Flash } from "../../shared/components/animations/Flash";
-import { OptionsModal } from "./OptionsModal";
-import { PendingAuthView } from "./PendingAuthView";
-import { StatusBarLight } from "../../shared/components/StatusBarLight";
+import { Flash } from "../../shared/components/animations/Flash"
+import { OptionsModal } from "./OptionsModal"
+import { PendingAuthView } from "./PendingAuthView"
+import { StatusBarLight } from "../../shared/components/StatusBarLight"
 // import { AutoShotMechanism } from './AutoShotMechanism'
-import { DisabledFaceDetection } from "./DisabledFaceDetection";
+import { DisabledFaceDetection } from "./DisabledFaceDetection"
 // import { CaptureButton } from './CaptureButton'
-import { FaceDetectionShelter } from "./FaceDetectionShelter";
+import { FaceDetectionShelter } from "./FaceDetectionShelter"
 
 import {
   CAMERA_PERMISSION_MESSAGE,
   CAMERA_PERMISSION_TITLE,
   IP_VALIDATION_FAIL_DESCRIPTION
-} from "../../../constants/strings";
+} from "../../../constants/strings"
 
-import { styles } from "../styles/styles.home";
-import { getFaceClassifications } from "../../../config/functions";
+import { styles } from "../styles/styles.home"
+import { getFaceClassifications } from "../../../config/functions"
 
 class HomeComponent extends Component {
   static propTypes = {
@@ -33,23 +33,24 @@ class HomeComponent extends Component {
     isLoading: bool,
     isSignUp: bool,
     navigation: object.isRequired,
-    onHistoryPress: func.isRequired,
-    onEnableFaceDetection: func.isRequired,
+    onCleanPreview: func.isRequired,
     onDisableFaceDetection: func.isRequired,
+    onEnableFaceDetection: func.isRequired,
+    onHistoryPress: func.isRequired,
     onRegisterEmployee: func.isRequired,
     onRegisterEmployeeEntryPress: func.isRequired,
     onTakePicture: func.isRequired,
     onTrainEmployeePhotoPress: func.isRequired
-  };
+  }
 
   static defaultProps = {
     hasAutoShot: false,
     hasFaceDetection: true,
     isLoading: false,
     isSignUp: false
-  };
+  }
 
-  face = undefined;
+  face = undefined
 
   state = {
     imageSnap: undefined,
@@ -61,17 +62,17 @@ class HomeComponent extends Component {
 
     method: "BOTH",
     faceClassifications: {}
-  };
+  }
 
   componentDidMount = () => {
-    const { navigation } = this.props;
-    const focusType = Platform.OS === "ios" ? "willFocus" : "didFocus";
-    const blurType = Platform.OS === "ios" ? "willBlur" : "didBlur";
-    this.focusSubscription = navigation.addListener(focusType, this.onFocus);
+    const { navigation } = this.props
+    const focusType = Platform.OS === "ios" ? "willFocus" : "didFocus"
+    const blurType = Platform.OS === "ios" ? "willBlur" : "didBlur"
+    this.focusSubscription = navigation.addListener(focusType, this.onFocus)
     this.blurSubscription = navigation.addListener(blurType, () =>
       this.setState({ hasAutoShot: false })
-    );
-  };
+    )
+  }
 
   onFocus = () => {
     // const { isSignUp } = this.props
@@ -79,85 +80,85 @@ class HomeComponent extends Component {
     //   hasAutoShot: isSignUp || isFirstView,
     //   isFirstView: false
     // }))
-    this.props.clearUser();
-  };
+    this.props.clearUser()
+  }
 
   hideModal = () => {
-    this.setState({ modalVisible: false, imageSnap: undefined });
-    if (Platform.OS === "android") this.camera.resumePreview();
-  };
+    this.setState({ modalVisible: false, imageSnap: undefined })
+    if (Platform.OS === "android") this.camera.resumePreview()
+  }
 
   onCancelOptionsModal = () => {
-    this.hideModal();
-    this.props.clearUser();
-  };
+    this.hideModal()
+    this.props.clearUser()
+  }
 
-  onCameraReady = () => this.setState({ isCameraReady: true });
+  onCameraReady = () => this.setState({ isCameraReady: true })
 
   onFaceDetected = response => {
-    const { faces } = response;
+    const { faces } = response
     if (faces && faces.length > 0) {
-      const [face] = faces;
-      const classifications = getFaceClassifications(face, this.state.method);
+      const [face] = faces
+      const classifications = getFaceClassifications(face, this.state.method)
       this.setState(({ faceClassifications }) => ({
         faceClassifications: { faceClassifications, ...classifications }
-      }));
+      }))
     }
-  };
+  }
 
   navigateToHistory = () => {
-    const { onHistoryPress } = this.props;
-    this.hideModal();
-    onHistoryPress();
-  };
+    const { onHistoryPress } = this.props
+    this.hideModal()
+    onHistoryPress()
+  }
 
   registerEmployeeEntry = async () => {
-    const { onRegisterEmployeeEntryPress, clearUser } = this.props;
-    this.hideModal();
-    await onRegisterEmployeeEntryPress();
-    clearUser();
-  };
+    const { onRegisterEmployeeEntryPress, clearUser } = this.props
+    this.hideModal()
+    await onRegisterEmployeeEntryPress()
+    clearUser()
+  }
 
   trainEmployeePhoto = async () => {
-    const { onTrainEmployeePhotoPress, clearUser } = this.props;
-    const { imageB64 } = this.state;
-    this.hideModal();
-    await onTrainEmployeePhotoPress(imageB64);
-    clearUser();
-  };
+    const { onTrainEmployeePhotoPress, clearUser } = this.props
+    const { imageB64 } = this.state
+    this.hideModal()
+    await onTrainEmployeePhotoPress(imageB64)
+    clearUser()
+  }
 
   showOptionsModal = image => {
     this.setState({
       imageB64: image.base64,
       modalVisible: true,
       isTakingPicture: false
-    });
-  };
+    })
+  }
 
   registerEmployee = async image => {
-    const { onRegisterEmployee } = this.props;
+    const { onRegisterEmployee } = this.props
     try {
-      await onRegisterEmployee(image.base64);
-      this.showOptionsModal(image);
+      await onRegisterEmployee(image.base64)
+      this.showOptionsModal(image)
     } catch (error) {
-      this.cleanPreview();
+      this.cleanPreview()
     }
-  };
+  }
 
   onAutoShot = () => {
-    this.setState({ hasAutoShot: false });
-    this.takePicture();
-  };
+    this.setState({ hasAutoShot: false })
+    this.takePicture()
+  }
 
   onLiveness = async () => {
-    this.setState({ hasAutoShot: false });
-    await this.props.onDisableFaceDetection();
-    this.takePicture();
-  };
+    this.setState({ hasAutoShot: false })
+    await this.props.onDisableFaceDetection()
+    this.takePicture()
+  }
 
   takePicture = async () => {
     if (this.camera) {
-      const { onTakePicture } = this.props;
+      const { onTakePicture } = this.props
       const options = {
         quality: 0.2,
         base64: true,
@@ -166,36 +167,38 @@ class HomeComponent extends Component {
         mirrorImage: true,
         doNotSave: true,
         width: 720
-      };
+      }
       try {
-        onTakePicture();
-        this.setState({ isTakingPicture: true });
-        const data = await this.camera.takePictureAsync(options);
+        onTakePicture()
+        this.setState({ isTakingPicture: true })
+        const data = await this.camera.takePictureAsync(options)
         this.setState({
           isTakingPicture: false,
           imageSnap: data && data.base64 ? data.base64 : undefined
-        });
-        await this.registerEmployee(data);
+        })
+        await this.registerEmployee(data)
       } catch (error) {
-        this.hideModal();
+        this.hideModal()
       }
     } else {
-      this.cleanPreview();
+      this.cleanPreview()
     }
-  };
+  }
 
   onPictureTaken = () => {
-    if (Platform.OS === "android") this.camera.pausePreview();
-  };
+    if (Platform.OS === "android") this.camera.pausePreview()
+  }
 
   cleanPreview = () => {
-    if (Platform.OS === "android") this.camera.resumePreview();
-    this.setState({ imageSnap: undefined });
-  };
+    const { onCleanPreview } = this.props
+    if (Platform.OS === "android") this.camera.resumePreview()
+    this.setState({ imageSnap: undefined })
+    onCleanPreview()
+  }
 
   renderFooter = () => {
-    const { isLoading, hasFaceDetection } = this.props;
-    const { isTakingPicture, hasAutoShot, faceClassifications } = this.state;
+    const { isLoading, hasFaceDetection } = this.props
+    const { isTakingPicture, hasAutoShot, faceClassifications } = this.state
     // const isDisabled = isTakingPicture
 
     return hasFaceDetection && !isTakingPicture && !isLoading ? (
@@ -205,20 +208,20 @@ class HomeComponent extends Component {
       />
     ) : (
       <DisabledFaceDetection isLoading={isTakingPicture || isLoading} />
-    );
+    )
     // if (hasAutoShot) return <AutoShotMechanism onTimerEnd={this.onAutoShot} />
     // return <CaptureButton onPress={this.takePicture} disabled={isDisabled} isLoading={isTakingPicture || isLoading} />
-  };
+  }
 
   render() {
-    const { ipStatus } = this.props;
+    const { ipStatus } = this.props
     const {
       modalVisible,
       isTakingPicture,
       isCameraReady,
       imageSnap
-    } = this.state;
-    const ipIsNotValid = ipStatus !== "VALID";
+    } = this.state
+    const ipIsNotValid = ipStatus !== "VALID"
     const modalOptions = [
       {
         label: "Bater ponto",
@@ -239,14 +242,14 @@ class HomeComponent extends Component {
         isDisabled: ipIsNotValid,
         subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : ""
       }
-    ];
+    ]
     return (
       <View style={styles.container}>
         <StatusBarLight />
         <View style={styles.preview}>
           <RNCamera
             ref={ref => {
-              this.camera = ref;
+              this.camera = ref
             }}
             style={styles.preview}
             type={RNCamera.Constants.Type.front}
@@ -283,8 +286,8 @@ class HomeComponent extends Component {
           options={modalOptions}
         />
       </View>
-    );
+    )
   }
 }
 
-export const Home = withNavigation(HomeComponent);
+export const Home = withNavigation(HomeComponent)

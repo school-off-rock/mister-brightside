@@ -1,7 +1,7 @@
-import React from 'react'
-import { Platform, View } from 'react-native'
-import Config from 'react-native-config'
-import { COLORS, METRICS } from './theme'
+import React from "react"
+import { Platform, View } from "react-native"
+import Config from "react-native-config"
+import { COLORS, METRICS } from "./theme"
 
 const {
   BASE_URL,
@@ -13,8 +13,13 @@ const {
 } = Config
 
 const HELP_PHONE = {
-  STRING: '4003-5159',
-  NUMBER: 40035159,
+  STRING: "4003-5159",
+  NUMBER: 40035159
+}
+
+export const livenessThreshold = {
+  OPEN_EYE: Platform.OS === "ios" ? 0.2 : 0.35,
+  SMILING: Platform.OS === "ios" ? 0.6 : 0.4
 }
 
 const NAV_BAR_STYLES = {
@@ -28,7 +33,7 @@ const NAV_BAR_STYLES = {
           height: METRICS.NAV_BAR_HEIGHT
         }
       })
-    },
+    }
   },
   twoLines: {
     headerTransparent: true,
@@ -40,13 +45,15 @@ const NAV_BAR_STYLES = {
           height: METRICS.NAV_BAR_HEIGHT_LARGE
         }
       })
-    },
+    }
   },
   primary: {
     headerTintColor: COLORS.NAV_BAR.tint,
     headerTitleStyle: { color: COLORS.BLACK_PRIMARY_ALT },
     headerPressColorAndroid: COLORS.PRIMARY,
-    headerBackground: <View style={{ flex: 1, backgroundColor: COLORS.NAV_BAR.background }} />,
+    headerBackground: (
+      <View style={{ flex: 1, backgroundColor: COLORS.NAV_BAR.background }} />
+    ),
     headerStyle: {
       ...Platform.select({
         android: {
@@ -54,44 +61,48 @@ const NAV_BAR_STYLES = {
           height: METRICS.NAV_BAR_HEIGHT
         }
       })
-    },
+    }
   },
   primaryWithTab: {
     headerTintColor: COLORS.NAV_BAR.tint,
     headerTitleStyle: { color: COLORS.BLACK_PRIMARY_ALT },
     headerPressColorAndroid: COLORS.PRIMARY,
-    headerBackground: <View style={{ flex: 1, backgroundColor: COLORS.NAV_BAR.background }} />,
+    headerBackground: (
+      <View style={{ flex: 1, backgroundColor: COLORS.NAV_BAR.background }} />
+    ),
     headerStyle: {
       ...Platform.select({
         android: {
           height: METRICS.NAV_BAR_HEIGHT,
           paddingTop: METRICS.STATUS_BAR_HEIGHT,
-          elevation: 0,
+          elevation: 0
         },
         ios: {
-          borderBottomWidth: 0,
+          borderBottomWidth: 0
         }
       })
-    },
+    }
   },
   dark: {
     headerTintColor: COLORS.WHITE,
     headerTitleStyle: { color: COLORS.WHITE },
     headerPressColorAndroid: COLORS.PRIMARY,
-    headerBackground: <View style={{ flex: 1, backgroundColor: COLORS.PURE_BLACK }} />,
+    headerBackground: (
+      <View style={{ flex: 1, backgroundColor: COLORS.PURE_BLACK }} />
+    ),
     headerStyle: {
       ...Platform.select({
         android: {
           height: METRICS.NAV_BAR_HEIGHT,
           paddingTop: METRICS.STATUS_BAR_HEIGHT,
-          elevation: 0,
+          elevation: 0
         },
         ios: {
-          borderBottomWidth: 0,
+          borderBottomWidth: 0
         }
       })
-    },
-  },
+    }
+  }
 }
 
 export const Values = {

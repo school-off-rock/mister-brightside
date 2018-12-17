@@ -1,52 +1,54 @@
-import { verifyResponse } from '../../config/functions'
+import { verifyResponse } from "../../config/functions"
 import {
   VERIFY_EMPLOYEE_REGISTRATION,
   VERIFY_IP_ADDRESS,
   VERIFY_EMPLOYEE_PHOTO
-} from '../../constants/routes'
-import { Values } from '../../constants/values'
-import { getIpAddress } from '../shared'
-import { Employee } from '../../domain/Employee'
+} from "../../constants/routes"
+import { Values } from "../../constants/values"
+import { getIpAddress } from "../shared"
+import { Employee } from "../../domain/Employee"
 import {
   ERROR_NO_PERSON_ON_IMAGE,
   ERROR_ID_MISMATCH_IMAGE,
   ERROR_TOO_MUCH_PERSON_ON_IMAGE,
-  ERROR_IMAGE_MISMATCH_IDS,
-} from '../../constants/strings'
+  ERROR_IMAGE_MISMATCH_IDS
+} from "../../constants/strings"
 
 const { FRAPI_API_KEY } = Values
 
-export const verifyEmployee = async (registration) => {
+export const verifyEmployee = async registration => {
   return fetch(VERIFY_EMPLOYEE_REGISTRATION(registration), {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  }).then(resp => verifyResponse(resp))
-    .then((response) => {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  })
+    .then(resp => verifyResponse(resp))
+    .then(response => {
       const employeeVerified = new Employee(response)
       return employeeVerified
     })
-    .catch((error) => {
+    .catch(error => {
       throw error
     })
 }
 
 export const registerEmployeePhoto = async ({ registration }, imageB64) => {
   return fetch(VERIFY_EMPLOYEE_PHOTO, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       app_key: FRAPI_API_KEY
     },
     body: JSON.stringify({
       label: registration,
-      imageB64,
+      imageB64
     })
-  }).then(resp => verifyResponse(resp))
-    .then((response) => {
+  })
+    .then(resp => verifyResponse(resp))
+    .then(response => {
       const { people = [] } = response
       if (people.length === 0) {
         throw { message: ERROR_NO_PERSON_ON_IMAGE, status: 404 }
@@ -62,24 +64,25 @@ export const registerEmployeePhoto = async ({ registration }, imageB64) => {
       }
       throw { message: ERROR_ID_MISMATCH_IMAGE, status: 404 }
     })
-    .catch((err) => {
+    .catch(err => {
       throw err
     })
 }
 
-export const findEmployeeOnPhoto = async (imageB64) => {
+export const findEmployeeOnPhoto = async imageB64 => {
   return fetch(VERIFY_EMPLOYEE_PHOTO, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       app_key: FRAPI_API_KEY
     },
     body: JSON.stringify({
-      imageB64,
+      imageB64
     })
-  }).then(resp => verifyResponse(resp))
-    .then((response) => {
+  })
+    .then(resp => verifyResponse(resp))
+    .then(response => {
       const { people = [] } = response
       if (people.length === 0) {
         throw { message: ERROR_NO_PERSON_ON_IMAGE, status: 404 }
@@ -95,7 +98,7 @@ export const findEmployeeOnPhoto = async (imageB64) => {
       }
       throw { message: ERROR_IMAGE_MISMATCH_IDS, status: 404 }
     })
-    .catch((err) => {
+    .catch(err => {
       throw err
     })
 }
@@ -103,19 +106,25 @@ export const findEmployeeOnPhoto = async (imageB64) => {
 export const verifyIpAddress = async () => {
   const { ip } = await getIpAddress()
   return fetch(VERIFY_IP_ADDRESS(ip), {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  }).then(resp => verifyResponse(resp))
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  })
+    .then(resp => verifyResponse(resp))
     .then(({ valid }) => {
-      if (valid === 'true') {
+      if (valid === "true") {
         return valid
       }
-      throw { ipError: true, valid, message: 'Seu endereço de IP não possui permissão de acesso ao aplicativo' }
+      throw {
+        ipError: true,
+        valid,
+        message:
+          "Seu endereço de IP não possui permissão de acesso ao aplicativo"
+      }
     })
-    .catch((error) => {
+    .catch(error => {
       throw error
     })
 }

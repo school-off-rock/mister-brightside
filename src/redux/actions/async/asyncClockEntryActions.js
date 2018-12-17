@@ -1,8 +1,9 @@
 import { registerEmployeeEntry, getEmployeeClockEntries } from '../../../services/user'
 import { loadingEmployee, loadingClockEntries, saveClockEntries } from '../sync/syncClockEntryActions'
 import { verifyIpAddress } from '../../../services/auth'
-import { setModalAction } from '../sync/syncModalAction'
+import { setModalAction, setOnDismissModal } from '../sync/syncModalAction'
 import { MODAL } from '../../../constants/modals'
+import { setFaceDetectionEnabled } from '../sync/syncAuthActions';
 
 export function registerEmployeeEntryAction() {
   return async (dispatch) => {

@@ -84,7 +84,9 @@ export const openPhonePad = number => {
     args
   )
 
-  const url = `${Platform.OS === "ios" && settings.prompt ? "telprompt:" : "tel:"}${settings.number}`
+  const url = `${
+    Platform.OS === "ios" && settings.prompt ? "telprompt:" : "tel:"
+  }${settings.number}`
 
   return Linking.canOpenURL(url).then(canOpen => {
     if (!canOpen) {
@@ -100,14 +102,17 @@ export const getFaceClassifications = (face, method) => {
   const classifications = {}
 
   if (isMethodSetToSmile && "smilingProbability" in face) {
-    classifications.isSmiling = face.smilingProbability > livenessThreshold.SMILING
+    classifications.isSmiling =
+      face.smilingProbability > livenessThreshold.SMILING
   }
   if (isMethodSetToBlink) {
     if ("leftEyeOpenProbability" in face) {
-      classifications.isLeftEyeOpen = face.leftEyeOpenProbability > livenessThreshold.OPEN_EYE
+      classifications.isLeftEyeOpen =
+        face.leftEyeOpenProbability > livenessThreshold.OPEN_EYE
     }
     if ("rightEyeOpenProbability" in face) {
-      classifications.isRightEyeOpen = face.rightEyeOpenProbability > livenessThreshold.OPEN_EYE
+      classifications.isRightEyeOpen =
+        face.rightEyeOpenProbability > livenessThreshold.OPEN_EYE
     }
   }
   return classifications

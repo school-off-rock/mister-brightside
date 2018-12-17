@@ -18,7 +18,7 @@ const HELP_PHONE = {
 }
 
 export const livenessThreshold = {
-  OPEN_EYE: Platform.OS === "ios" ? 0.3 : 0.35,
+  OPEN_EYE: Platform.OS === "ios" ? 0.2 : 0.35,
   SMILING: Platform.OS === "ios" ? 0.6 : 0.4
 }
 

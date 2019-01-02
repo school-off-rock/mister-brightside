@@ -45,6 +45,12 @@ export async function getUserRegistration() {
 export const isFunctionEmpty = f => /^function[^{]+\{\s*\}/m.test(f.toString())
 export const hasText = prop => typeof prop === "string" && prop !== ""
 
+export function toSentenceCase(name) {
+  return `${name.charAt(0).toUpperCase()}${name
+    .slice(1, name.length)
+    .toLowerCase()}`
+}
+
 export function mapClockHistory(historyList) {
   const obj = _.groupBy(historyList, "date")
   const keys = Object.keys(obj)

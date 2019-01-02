@@ -30,51 +30,14 @@ import { setOnDismissModal } from "../../../redux/actions/sync/syncModalAction"
 import { Home } from "../components/Home"
 import { NavBar } from "../../shared/containers/NavBar"
 
-import { hasText } from "../../../config/functions"
+import { hasText, toSentenceCase } from "../../../config/functions"
 
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
     const userName = navigation.getParam("userName", "")
-    // const hasFaceDetection = navigation.getParam('hasFaceDetection', true)
-    // const onToggleFaceDetect = navigation.getParam('onToggleFaceDetect', () => {})
-    // const isDisabledOnLoading = navigation.getParam('isDisabledOnLoading', false)
-    // const exitApp = navigation.getParam('exitApp', () => {})
-
-    const firstName = hasText(userName)
-      ? `${userName.charAt(0)}${userName
-          .slice(1, userName.length)
-          .toLowerCase()}`
-      : ""
-    // const welcomeText = hasText(firstName) ? `Olá, ${firstName}` : ''
+    const firstName = hasText(userName) ? toSentenceCase(userName) : ""
     const title = hasText(userName) ? `Olá, ${firstName}` : "Tirar foto"
-    // const rightButton = [
-    //   {
-    //     name: 'exit-to-app',
-    //     onPress: exitApp,
-    //     disabled: isDisabledOnLoading
-    //   }
-    // ]
-    // const faceDetectionButton = hasFaceDetection
-    //   ? {
-    //     name: 'face',
-    //     onPress: onToggleFaceDetect,
-    //     color: COLORS.BLACK_SECONDARY_ALT
-    //   }
-    //   : {
-    //     name: 'face',
-    //     onPress: onToggleFaceDetect,
-    //     color: COLORS.BLACK_DEACTIVATED_ALT
-    //   }
-    return {
-      header: (
-        <NavBar
-          navigation={navigation}
-          // rightButtons={rightButton}
-          title={title}
-          // titleRowButton={faceDetectionButton}
-        />
-      )
-    }
+    return { header: <NavBar navigation={navigation} title={title} /> }
   }
 
   static propTypes = {
@@ -112,38 +75,7 @@ class HomeScreenContainer extends Component {
     InteractionManager.runAfterInteractions(async () => {
       clearUser()
       verifyIpAddress()
-      navigation.setParams({
-        exitApp: this.handleExitApp,
-        isDisabledOnLoading: isLoading
-      })
     })
-  }
-
-  componentDidUpdate = prevProps => {
-    const { isLoading, navigation } = this.props
-    if (prevProps.isLoading !== isLoading)
-      navigation.setParams({ isDisabledOnLoading: isLoading })
-  }
-
-  handleExitApp = () => {
-    const { setFaceDetectionDisabled, setFaceDetectionEnabled } = this.props
-    setFaceDetectionDisabled()
-    Alert.alert(
-      "Sair do aplicativo",
-      "Você realmente deseja sair do MagnoRH?",
-      [
-        {
-          text: "Continuar",
-          onPress: () => setFaceDetectionEnabled(),
-          style: "cancel"
-        },
-        {
-          text: "Sair",
-          onPress: () => BackHandler.exitApp(),
-          style: "destructive"
-        }
-      ]
-    )
   }
 
   navigateToHistory = () => {

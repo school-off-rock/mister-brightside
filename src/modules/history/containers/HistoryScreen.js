@@ -1,23 +1,24 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
+import { InteractionManager } from "react-native"
+
+import { connect } from "react-redux"
+import { func, bool, array } from "prop-types"
+import moment from "moment"
+
+import { fetchEmployeeEntriesAction } from "../../../redux/actions/async/asyncClockEntryActions"
 import {
-  InteractionManager,
-} from 'react-native'
+  getLoadingEntries,
+  getClockEntries
+} from "../../../redux/reducers/clockEntry/selectors"
 
-import { connect } from 'react-redux'
-import { func, bool, array } from 'prop-types'
-import moment from 'moment'
-
-import { fetchEmployeeEntriesAction } from '../../../redux/actions/async/asyncClockEntryActions'
-import { getLoadingEntries, getClockEntries } from '../../../redux/reducers/clockEntry/selectors'
-
-import { History } from '../components/history'
-import { NavBar } from '../../shared/containers/NavBar'
+import { History } from "../components/history"
+import { NavBar } from "../../shared/containers/NavBar"
 
 class HistoryScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
-    return ({
+    return {
       header: <NavBar navigation={navigation} title="Histórico" />
-    })
+    }
   }
 
   static propTypes = {
@@ -29,12 +30,11 @@ class HistoryScreenContainer extends Component {
   componentDidMount = () => {
     InteractionManager.runAfterInteractions(() => {
       const { fetchHistory } = this.props
-      const initialDate = moment().format('YYYY-MM-DD')
-      const endDate = moment().format('YYYY-MM-DD')
+      const initialDate = moment().format("YYYY-MM-DD")
+      const endDate = moment().format("YYYY-MM-DD")
       fetchHistory(initialDate, endDate)
     })
   }
-
 
   render() {
     const { isLoading, historyList, fetchHistory } = this.props
@@ -54,7 +54,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  fetchHistory: (initDate, endDate) => fetchEmployeeEntriesAction(initDate, endDate)
+  fetchHistory: (initDate, endDate) =>
+    fetchEmployeeEntriesAction(initDate, endDate)
 }
 
-export const HistoryScreen = connect(mapStateToProps, mapDispatchToProps)(HistoryScreenContainer)
+export const HistoryScreen = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HistoryScreenContainer)

@@ -8,15 +8,15 @@ import { NavBarRight } from "../modules/shared/components/NavBarRight"
 export async function verifyResponse(response) {
   if (response.status !== 200 && response.status !== 201) {
     if (response.status === 401) {
-      response.message = "Usuário não encontrado!"
+      response.message = "Usuário não encontrado"
       throw await response.json()
     }
     if (response.status === 403) {
-      response.message = "Erro de autenticação!"
+      response.message = "Erro de autenticação"
       throw await response
     }
     if (response.status === 404) {
-      response.message = "Não encontrado!"
+      response.message = "Não encontrado"
       throw await response
     }
     throw await response.json()

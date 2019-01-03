@@ -10,7 +10,10 @@ import {
   checkEmployeeOnImageAction,
   verifyIpAddressAction
 } from "../../../redux/actions/async/asyncAuthActions"
-import { registerEmployeeEntryAction } from "../../../redux/actions/async/asyncClockEntryActions"
+import {
+  registerEmployeeEntryAction,
+  checkEmployeeEntryTimeAction
+} from "../../../redux/actions/async/asyncClockEntryActions"
 import {
   showLoading,
   setFaceDetectionEnabled,
@@ -25,7 +28,10 @@ import {
 } from "../../../redux/reducers/auth/selectors"
 import { getLoadingClockIn } from "../../../redux/reducers/clockEntry/selectors"
 import { getModalState } from "../../../redux/reducers/modal/selectors"
-import { setOnDismissModal } from "../../../redux/actions/sync/syncModalAction"
+import {
+  setOnDismissModal,
+  setModalAction
+} from "../../../redux/actions/sync/syncModalAction"
 
 import { Home } from "../components/Home"
 import { NavBar } from "../../shared/containers/NavBar"
@@ -122,14 +128,16 @@ class HomeScreenContainer extends Component {
       isLoading,
       isLoadingClockIn,
       isSignUp,
-      registerEmployeeEntry,
       trainEmployeePhoto,
       verifyEmployeePhoto,
       showLoading,
       ipStatus,
       setFaceDetectionDisabled,
       hasFaceDetection,
-      setFaceDetectionEnabled
+      setFaceDetectionEnabled,
+      checkEmployeeEntryTime,
+      registerEmployeeEntry,
+      setModal
     } = this.props
     const isLoadingPhoto = isLoading || isLoadingClockIn
     return (
@@ -139,6 +147,7 @@ class HomeScreenContainer extends Component {
         isSignUp={isSignUp}
         onHistoryPress={this.navigateToHistory}
         onRegisterEmployee={this.onRegisterEmployee}
+        checkEmployeeEntryTime={checkEmployeeEntryTime}
         onRegisterEmployeeEntryPress={registerEmployeeEntry}
         onTrainEmployeePhotoPress={trainEmployeePhoto}
         verifyEmployeePhoto={verifyEmployeePhoto}
@@ -148,6 +157,7 @@ class HomeScreenContainer extends Component {
         onEnableFaceDetection={setFaceDetectionEnabled}
         onDisableFaceDetection={setFaceDetectionDisabled}
         hasFaceDetection={hasFaceDetection}
+        setModal={setModal}
       />
     )
   }
@@ -175,7 +185,9 @@ const mapDispatchToProps = {
   showLoading,
   setFaceDetectionEnabled,
   setFaceDetectionDisabled,
-  setOnDismissModal: onDismiss => setOnDismissModal(onDismiss)
+  setOnDismissModal: onDismiss => setOnDismissModal(onDismiss),
+  checkEmployeeEntryTime: () => checkEmployeeEntryTimeAction(),
+  setModal: modal => setModalAction(modal)
 }
 
 export const HomeScreen = connect(

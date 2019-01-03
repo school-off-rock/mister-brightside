@@ -1,15 +1,31 @@
-import { registerEmployeeEntry, getEmployeeClockEntries } from '../../../services/user'
-import { loadingEmployee, loadingClockEntries, saveClockEntries } from '../sync/syncClockEntryActions'
-import { verifyIpAddress } from '../../../services/auth'
-import { setModalAction, setOnDismissModal } from '../sync/syncModalAction'
-import { MODAL } from '../../../constants/modals'
-import { setFaceDetectionEnabled } from '../sync/syncAuthActions';
+import {
+  registerEmployeeEntry,
+  getEmployeeClockEntries,
+  checkEmployeeEntryTime
+} from "../../../services/user"
+import {
+  loadingEmployee,
+  loadingClockEntries,
+  saveClockEntries
+} from "../sync/syncClockEntryActions"
+import { setModalAction } from "../sync/syncModalAction"
+import { MODAL } from "../../../constants/modals"
+
+export function checkEmployeeEntryTimeAction() {
+  return async dispatch => {
+    try {
+      const clockInTimeStatus = await checkEmployeeEntryTime()
+      return clockInTimeStatus
+    } catch (err) {
+      throw err
+    }
+  }
+}
 
 export function registerEmployeeEntryAction() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       dispatch(loadingEmployee(true))
-      await verifyIpAddress()
       await registerEmployeeEntry()
       dispatch(loadingEmployee(false))
       dispatch(setModalAction(MODAL.CLOCK_IN_SUCCESS))
@@ -25,9 +41,8 @@ export function registerEmployeeEntryAction() {
   }
 }
 
-
 export function fetchEmployeeEntriesAction(initDate, endDate) {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       dispatch(loadingClockEntries(true))
       // await verifyIpAddress()

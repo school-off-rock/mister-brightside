@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from "react"
+import { connect } from "react-redux"
 
-import { shape, func } from 'prop-types'
+import { shape, func } from "prop-types"
 
-import { setModalAction } from '../../../redux/actions/sync/syncModalAction'
-import { getModalState } from '../../../redux/reducers/modal/selectors'
+import { setModalAction } from "../../../redux/actions/sync/syncModalAction"
+import { getModalState } from "../../../redux/reducers/modal/selectors"
 
-import { ModalWithIcon } from '../components/modals/ModalWithIcon'
+import { ModalWithIcon } from "../components/modals/ModalWithIcon"
 
-import { COLORS } from '../../../constants/theme'
-import { MODAL } from '../../../constants/modals'
+import { COLORS } from "../../../constants/theme"
+import { MODAL } from "../../../constants/modals"
 
-import { modalPropTypes } from '../propTypes'
-import { MODAL_INITIAL_STATE } from '../../../redux/reducers/modal/constants'
+import { modalPropTypes } from "../propTypes"
+import { MODAL_INITIAL_STATE } from "../../../redux/reducers/modal/constants"
 
 class ModalContainer extends Component {
   static propTypes = {
@@ -24,13 +24,13 @@ class ModalContainer extends Component {
     modal: MODAL_INITIAL_STATE
   }
 
-  setColor = (theme) => {
+  setColor = theme => {
     switch (theme) {
-      case 'SUCCESS':
+      case "SUCCESS":
         return COLORS.POSITIVE
-      case 'PRIMARY':
+      case "PRIMARY":
         return COLORS.PRIMARY
-      case 'ALERT':
+      case "ALERT":
         return COLORS.ALERT
       default:
         return COLORS.SUCCESS
@@ -45,7 +45,14 @@ class ModalContainer extends Component {
   render() {
     const { modal } = this.props
     const {
-      buttonLabel, description, iconName, isVisible, theme, title, onAction, actionButtonLabel
+      buttonLabel,
+      description,
+      iconName,
+      isVisible,
+      theme,
+      title,
+      onAction,
+      actionButtonLabel
     } = modal
     return (
       <ModalWithIcon

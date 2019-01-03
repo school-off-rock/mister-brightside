@@ -19,8 +19,10 @@ import {
   IP_VALIDATION_FAIL_DESCRIPTION
 } from "../../../constants/strings"
 
-import { styles } from "../styles/styles.home"
+import { MODAL } from "../../../constants/modals"
 import { getFaceClassifications } from "../../../config/functions"
+
+import { styles } from "../styles/styles.home"
 
 class HomeComponent extends Component {
   static propTypes = {
@@ -116,10 +118,29 @@ class HomeComponent extends Component {
   }
 
   registerEmployeeEntry = async () => {
-    const { onRegisterEmployeeEntryPress, clearUser } = this.props
+    const {
+      onRegisterEmployeeEntryPress,
+      clearUser,
+      checkEmployeeEntryTime,
+      setModal
+    } = this.props
     this.hideModal()
-    await onRegisterEmployeeEntryPress()
-    clearUser()
+    const clockInTimeStatus = await checkEmployeeEntryTime()
+    console.log(
+      "​registerEmployeeEntry -> clockInTimeStatus",
+      clockInTimeStatus
+    )
+    if (clockInTimeStatus === "EARLY") {
+      setModal(
+        MODAL.CLOCK_IN_IS_EARLY(async () => {
+          await onRegisterEmployeeEntryPress()
+          clearUser()
+        })
+      )
+    } else {
+      await onRegisterEmployeeEntryPress()
+      clearUser()
+    }
   }
 
   trainEmployeePhoto = async () => {

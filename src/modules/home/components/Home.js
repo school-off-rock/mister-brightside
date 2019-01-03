@@ -10,9 +10,7 @@ import { Flash } from "../../shared/components/animations/Flash"
 import { OptionsModal } from "./OptionsModal"
 import { PendingAuthView } from "./PendingAuthView"
 import { StatusBarLight } from "../../shared/components/StatusBarLight"
-// import { AutoShotMechanism } from './AutoShotMechanism'
 import { DisabledFaceDetection } from "./DisabledFaceDetection"
-// import { CaptureButton } from './CaptureButton'
 import { FaceDetectionShelter } from "./FaceDetectionShelter"
 
 import {
@@ -45,7 +43,7 @@ class HomeComponent extends Component {
 
   static defaultProps = {
     hasAutoShot: false,
-    hasFaceDetection: true,
+    hasFaceDetection: false,
     isLoading: false,
     isSignUp: false
   }
@@ -72,6 +70,11 @@ class HomeComponent extends Component {
     this.blurSubscription = navigation.addListener(blurType, () =>
       this.setState({ hasAutoShot: false })
     )
+  }
+
+  componentWillUnmount = () => {
+    this.focusSubscription.remove()
+    this.blurSubscription.remove()
   }
 
   onFocus = () => {
@@ -198,7 +201,7 @@ class HomeComponent extends Component {
 
   renderFooter = () => {
     const { isLoading, hasFaceDetection } = this.props
-    const { isTakingPicture, hasAutoShot, faceClassifications } = this.state
+    const { isTakingPicture, faceClassifications } = this.state
     // const isDisabled = isTakingPicture
 
     return hasFaceDetection && !isTakingPicture && !isLoading ? (

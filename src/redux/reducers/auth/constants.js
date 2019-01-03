@@ -1,4 +1,4 @@
-export const NO_ALERTS = { showAlert: false, message: '' }
+export const NO_ALERTS = { showAlert: false, message: "" }
 
 export const NOT_LOGGED_IN = {
   name: undefined,
@@ -10,7 +10,7 @@ export const AUTH_INITIAL_STATE = {
   registration: undefined,
   isLoading: false,
   alert: NO_ALERTS,
-  ipStatus: 'NOT_SET',
+  ipStatus: "NOT_SET",
   networkType: undefined,
-  hasFaceDetection: true
+  hasFaceDetection: false
 }

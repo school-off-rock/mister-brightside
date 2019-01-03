@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { InteractionManager, Alert, BackHandler } from "react-native"
+import { InteractionManager, Alert } from "react-native"
 import { func, shape, bool, oneOf } from "prop-types"
 
 import {
@@ -62,7 +62,7 @@ class HomeScreenContainer extends Component {
 
   static defaultProps = {
     ipStatus: "NOT_SET",
-    hasFaceDetection: true,
+    hasFaceDetection: false,
     isLoading: false,
     isLoadingClockIn: false,
     isSignUp: false,
@@ -71,7 +71,7 @@ class HomeScreenContainer extends Component {
   }
 
   componentDidMount = () => {
-    const { clearUser, verifyIpAddress, navigation, isLoading } = this.props
+    const { clearUser, verifyIpAddress } = this.props
     InteractionManager.runAfterInteractions(async () => {
       clearUser()
       verifyIpAddress()
@@ -89,42 +89,31 @@ class HomeScreenContainer extends Component {
   }
 
   clearUser = () => {
-    const {
-      navigation,
-      clearUser,
-      setFaceDetectionEnabled,
-      modalAlert,
-      setOnDismissModal
-    } = this.props
+    const { navigation, clearUser, modalAlert, setOnDismissModal } = this.props
     navigation.setParams({
       userName: undefined
     })
     clearUser()
     if (modalAlert.isVisible) {
-      return setOnDismissModal(setFaceDetectionEnabled)
+      return setOnDismissModal(this.showReadyModal)
     }
-    return setFaceDetectionEnabled()
+    return this.showReadyModal()
   }
 
-  toggleFaceDetection = () => {
-    const {
-      hasFaceDetection,
-      setFaceDetectionEnabled,
-      setFaceDetectionDisabled
-    } = this.props
-    return hasFaceDetection
-      ? setFaceDetectionDisabled()
-      : setFaceDetectionEnabled()
+  showReadyModal = () => {
+    const { setFaceDetectionEnabled } = this.props
+    Alert.alert("Tudo preparado", "Está pronto para começar?", [
+      {
+        text: "Estou pronto",
+        onPress: setFaceDetectionEnabled
+      }
+    ])
   }
 
   onCleanPreview = () => {
-    const {
-      modalAlert,
-      setOnDismissModal,
-      setFaceDetectionEnabled
-    } = this.props
+    const { modalAlert, setOnDismissModal } = this.props
     if (modalAlert.isVisible) {
-      return setOnDismissModal(setFaceDetectionEnabled)
+      return setOnDismissModal(this.showReadyModal)
     }
   }
 

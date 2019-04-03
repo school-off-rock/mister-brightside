@@ -1,23 +1,28 @@
 import { createStackNavigator as Navigator } from 'react-navigation'
-import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
+import {
+  reduxifyNavigator,
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers'
 
-// import { SignInScreen } from '../modules/auth/containers/SignUpScreen'
-import { HomeScreen } from '../modules/home/containers/HomeScreen'
 import { HistoryScreen } from '../modules/history/containers/HistoryScreen'
+import { mainStack } from './mainStack'
 
 export const navMiddleware = createReactNavigationReduxMiddleware(
   'root',
-  state => state.nav,
+  state => state.nav
 )
 
-export const initialRouteName = 'home'
+export const initialRouteName = 'main'
 
-export const Stack = Navigator({
-  // signIn: { screen: SignInScreen },
-  home: { screen: HomeScreen },
-  history: { screen: HistoryScreen },
-}, {
-  initialRouteName,
-})
+export const Stack = Navigator(
+  {
+    main: { screen: mainStack },
+    history: { screen: HistoryScreen },
+  },
+  {
+    initialRouteName,
+    headerMode: 'none',
+  }
+)
 
 export const StackNavigator = reduxifyNavigator(Stack, 'root')

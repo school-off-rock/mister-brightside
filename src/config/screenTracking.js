@@ -1,7 +1,7 @@
 import { StatusBar, Platform } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 
-const getCurrentRouteName = (navigationState) => {
+const getCurrentRouteName = navigationState => {
   if (!navigationState) {
     return null
   }
@@ -12,19 +12,21 @@ const getCurrentRouteName = (navigationState) => {
   return route.routeName
 }
 
-const setStyleByScreen = (nextScreen) => {
+const setStyleByScreen = nextScreen => {
   switch (nextScreen) {
     case 'home':
       return Platform.OS === 'ios' ? 'dark-content' : 'light-content'
+    case 'registerCamera':
+      return 'light-content'
     default:
       return 'dark-content'
   }
 }
 
-const screenTracking = ({ getState }) => next => (action) => {
+const screenTracking = ({ getState }) => next => action => {
   if (
-    action.type !== NavigationActions.NAVIGATE
-    && action.type !== NavigationActions.BACK
+    action.type !== NavigationActions.NAVIGATE &&
+    action.type !== NavigationActions.BACK
   ) {
     return next(action)
   }

@@ -3,7 +3,7 @@ import { Platform } from 'react-native'
 const isIOS = Platform.OS === 'ios'
 
 export const COLORS = {
-  PRIMARY: '#ED323D',
+  PRIMARY: '#0042E2',
   PRIMARY_OPACITY: 'rgba(237, 50, 61, 0.3)',
   ALERT: '#FF9F1C',
   SUCCESS: '#256EFF',
@@ -12,7 +12,9 @@ export const COLORS = {
   SCREEN: '#F3F5F7',
   SURFACE: '#FFFFFF',
   ON_SUCCESS: '#FFFFFF',
-  SURFACE_OPACITY: isIOS ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.9)',
+  SURFACE_OPACITY: isIOS
+    ? 'rgba(255, 255, 255, 0.7)'
+    : 'rgba(255, 255, 255, 0.9)',
   LIGHT_OVERLAY: 'rgba(255, 255, 255, 0.4)',
 
   DARK: '#261C15',
@@ -35,6 +37,6 @@ export const COLORS = {
   NAV_BAR: {
     background: isIOS ? '#f3f5f7' : '#F6F8FA',
     tint: isIOS ? '#00973A' : '#00000089',
-    iosBorderColor: 'rgba(167, 167, 164, 0.25)'
-  }
+    iosBorderColor: 'rgba(167, 167, 164, 0.25)',
+  },
 }

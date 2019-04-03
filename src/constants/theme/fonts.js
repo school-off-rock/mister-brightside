@@ -29,13 +29,13 @@ const size = {
   h4: 22,
   h5: 20,
   h6: 17,
-  input: (Platform.OS === 'ios') ? 17 : 15,
+  input: Platform.OS === 'ios' ? 17 : 15,
   regular: 17,
-  button: (Platform.OS === 'ios') ? 17 : 14,
-  secondaryButton: (Platform.OS === 'ios') ? 15 : 12,
+  button: Platform.OS === 'ios' ? 17 : 14,
+  secondaryButton: Platform.OS === 'ios' ? 15 : 12,
   medium: 15,
   small: 13,
-  tiny: 11
+  tiny: 11,
 }
 
 const lineHeight = {
@@ -47,11 +47,12 @@ const lineHeight = {
 const style = {
   title: {
     ...type.medium,
-    fontSize: size.medium
+    fontSize: size.medium,
   },
   primaryButton: {
     ...type.medium,
-    fontSize: size.medium
+    fontSize: size.medium,
+    lineHeight: Platform.OS === 'ios' ? lineHeight.regular : lineHeight.small,
   },
   secondaryButton: {
     ...type.medium,
@@ -59,7 +60,7 @@ const style = {
   },
   footNote: {
     ...type.regular,
-    fontSize: size.small
+    fontSize: size.small,
   },
 }
 
@@ -67,48 +68,53 @@ const standardStyle = {
   h2: {
     fontSize: size.h2,
     color: COLORS.BLACK_PRIMARY_ALT,
-    ...type.medium
+    ...type.medium,
+  },
+  h5: {
+    fontSize: size.h5,
+    color: COLORS.BLACK_PRIMARY_ALT,
+    ...type.medium,
   },
   h6: {
     fontSize: size.h6,
     color: COLORS.BLACK_PRIMARY_ALT,
-    ...type.medium
+    ...type.medium,
   },
   p: {
     fontSize: size.regular,
     lineHeight: lineHeight.boost,
     color: COLORS.BLACK_SECONDARY_ALT,
-    ...type.regular
+    ...type.regular,
   },
   pEmphasis: {
     fontSize: size.regular,
     lineHeight: lineHeight.boost,
     color: COLORS.BLACK_PRIMARY_ALT,
-    ...type.regular
+    ...type.regular,
   },
   description: {
     fontSize: size.medium,
     lineHeight: lineHeight.regular,
     color: COLORS.BLACK_SECONDARY_ALT,
-    ...type.regular
+    ...type.regular,
   },
   descriptionEmphasis: {
     fontSize: size.medium,
     lineHeight: lineHeight.regular,
     color: COLORS.BLACK_PRIMARY_ALT,
-    ...type.regular
+    ...type.regular,
   },
   caption: {
     fontSize: size.small,
     lineHeight: lineHeight.small,
     color: COLORS.BLACK_SECONDARY_ALT,
-    ...type.regular
+    ...type.regular,
   },
   captionEmphasis: {
     fontSize: size.small,
     lineHeight: lineHeight.small,
     color: COLORS.BLACK_PRIMARY_ALT,
-    ...type.regular
+    ...type.regular,
   },
 }
 

@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "extends": ["react-app", "plugin:jsx-a11y/recommended"],
+  "extends": ["react-app", "plugin:jsx-a11y/recommended", "prettier"],
   "settings": {
     "import/resolver": {
       "node": {
@@ -24,6 +24,7 @@
     "no-alert": 0,
     "no-shadow": 0,
     "no-throw-literal": 0,
+    "no-undef": "error",
     "no-underscore-dangle": 0,
     "no-use-before-define": 0,
     "padded-blocks": 0,
@@ -35,8 +36,8 @@
         "extensions": [".js", ".jsx"]
       }
     ],
+    "react/jsx-no-undef": "error",
     "react/sort-comp": 0,
-    "semi": [2, "never"],
     "strict": 0,
     "react/destructuring-assignment": [0, "never"]
   },

@@ -1,7 +1,7 @@
-import React from "react"
-import { Platform, View } from "react-native"
-import Config from "react-native-config"
-import { COLORS, METRICS } from "./theme"
+import React from 'react'
+import { Platform, View } from 'react-native'
+import Config from 'react-native-config'
+import { COLORS, METRICS } from './theme'
 
 const {
   BASE_URL,
@@ -9,17 +9,17 @@ const {
   FRAPI_API_ID,
   FRAPI_KEY,
   FRAPI_SCHOOL_GALLERY_NAME,
-  IP_ADDRESS_API
+  IP_ADDRESS_API,
 } = Config
 
 const HELP_PHONE = {
-  STRING: "4003-5159",
-  NUMBER: 40035159
+  STRING: '4003-5159',
+  NUMBER: 40035159,
 }
 
 export const livenessThreshold = {
-  OPEN_EYE: Platform.OS === "ios" ? 0.2 : 0.35,
-  SMILING: Platform.OS === "ios" ? 0.6 : 0.4
+  OPEN_EYE: Platform.OS === 'ios' ? 0.2 : 0.35,
+  SMILING: Platform.OS === 'ios' ? 0.6 : 0.4,
 }
 
 const NAV_BAR_STYLES = {
@@ -30,10 +30,10 @@ const NAV_BAR_STYLES = {
       ...Platform.select({
         android: {
           paddingTop: METRICS.STATUS_BAR_HEIGHT,
-          height: METRICS.NAV_BAR_HEIGHT
-        }
-      })
-    }
+          height: METRICS.NAV_BAR_HEIGHT,
+        },
+      }),
+    },
   },
   twoLines: {
     headerTransparent: true,
@@ -42,10 +42,10 @@ const NAV_BAR_STYLES = {
       ...Platform.select({
         android: {
           paddingTop: METRICS.STATUS_BAR_HEIGHT,
-          height: METRICS.NAV_BAR_HEIGHT_LARGE
-        }
-      })
-    }
+          height: METRICS.NAV_BAR_HEIGHT_LARGE,
+        },
+      }),
+    },
   },
   primary: {
     headerTintColor: COLORS.NAV_BAR.tint,
@@ -58,10 +58,10 @@ const NAV_BAR_STYLES = {
       ...Platform.select({
         android: {
           paddingTop: METRICS.STATUS_BAR_HEIGHT,
-          height: METRICS.NAV_BAR_HEIGHT
-        }
-      })
-    }
+          height: METRICS.NAV_BAR_HEIGHT,
+        },
+      }),
+    },
   },
   primaryWithTab: {
     headerTintColor: COLORS.NAV_BAR.tint,
@@ -75,13 +75,13 @@ const NAV_BAR_STYLES = {
         android: {
           height: METRICS.NAV_BAR_HEIGHT,
           paddingTop: METRICS.STATUS_BAR_HEIGHT,
-          elevation: 0
+          elevation: 0,
         },
         ios: {
-          borderBottomWidth: 0
-        }
-      })
-    }
+          borderBottomWidth: 0,
+        },
+      }),
+    },
   },
   dark: {
     headerTintColor: COLORS.WHITE,
@@ -95,14 +95,24 @@ const NAV_BAR_STYLES = {
         android: {
           height: METRICS.NAV_BAR_HEIGHT,
           paddingTop: METRICS.STATUS_BAR_HEIGHT,
-          elevation: 0
+          elevation: 0,
         },
         ios: {
-          borderBottomWidth: 0
-        }
-      })
-    }
-  }
+          borderBottomWidth: 0,
+        },
+      }),
+    },
+  },
+}
+
+const PICTURE_LOW_QUALITY = {
+  quality: 0.2,
+  base64: true,
+  forceUpOrientation: true,
+  fixOrientation: true,
+  mirrorImage: true,
+  doNotSave: true,
+  width: 720,
 }
 
 export const Values = {
@@ -113,5 +123,6 @@ export const Values = {
   FRAPI_SCHOOL_GALLERY_NAME,
   IP_ADDRESS_API,
   NAV_BAR_STYLES,
-  HELP_PHONE
+  HELP_PHONE,
+  PICTURE_LOW_QUALITY,
 }

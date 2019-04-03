@@ -6,21 +6,19 @@ import {
 } from '../../../../constants/strings'
 import { PendingAuthView } from '../../../home/components/PendingAuthView'
 
-export function Camera({ onCameraReady, onPictureTaken }) {
-  return (
-    <RNCamera
-      ref={ref => {
-        this.camera = ref
-      }}
-      style={{
-        flex: 1,
-      }}
-      type={RNCamera.Constants.Type.front}
-      permissionDialogTitle={CAMERA_PERMISSION_TITLE}
-      permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
-      notAuthorizedView={<PendingAuthView />}
-      onCameraReady={onCameraReady}
-      onPictureTaken={onPictureTaken}
-    />
-  )
-}
+export const Camera = React.forwardRef(
+  ({ onCameraReady, onPictureTaken }, ref) => {
+    return (
+      <RNCamera
+        ref={ref}
+        style={{ flex: 1 }}
+        type={RNCamera.Constants.Type.front}
+        permissionDialogTitle={CAMERA_PERMISSION_TITLE}
+        permissionDialogMessage={CAMERA_PERMISSION_MESSAGE}
+        notAuthorizedView={<PendingAuthView />}
+        onCameraReady={onCameraReady}
+        onPictureTaken={onPictureTaken}
+      />
+    )
+  }
+)

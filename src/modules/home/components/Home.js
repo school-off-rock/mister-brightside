@@ -1,35 +1,35 @@
-import React, { Component } from "react"
-import { View, Image, StyleSheet, Platform } from "react-native"
+import React, { Component } from 'react'
+import { View, Image, StyleSheet, Platform } from 'react-native'
 
-import { func, bool, object, oneOf } from "prop-types"
-import { withNavigation } from "react-navigation"
+import { func, bool, object, oneOf } from 'prop-types'
+import { withNavigation } from 'react-navigation'
 
-import { RNCamera } from "react-native-camera"
+import { RNCamera } from 'react-native-camera'
 
-import { Flash } from "../../shared/components/animations/Flash"
-import { OptionsModal } from "./OptionsModal"
-import { PendingAuthView } from "./PendingAuthView"
-import { StatusBarLight } from "../../shared/components/StatusBarLight"
-import { DisabledFaceDetection } from "./DisabledFaceDetection"
-import { FaceDetectionShelter } from "./FaceDetectionShelter"
+import { Flash } from '../../shared/components/animations/Flash'
+import { OptionsModal } from './OptionsModal'
+import { PendingAuthView } from './PendingAuthView'
+import { StatusBarLight } from '../../shared/components/StatusBarLight'
+import { DisabledFaceDetection } from './DisabledFaceDetection'
+import { FaceDetectionShelter } from './FaceDetectionShelter'
 
 import {
   CAMERA_PERMISSION_MESSAGE,
   CAMERA_PERMISSION_TITLE,
-  IP_VALIDATION_FAIL_DESCRIPTION
-} from "../../../constants/strings"
+  IP_VALIDATION_FAIL_DESCRIPTION,
+} from '../../../constants/strings'
 
-import { MODAL } from "../../../constants/modals"
-import { getFaceClassifications } from "../../../config/functions"
+import { MODAL } from '../../../constants/modals'
+import { getFaceClassifications } from '../../../config/functions'
 
-import { styles } from "../styles/styles.home"
+import { styles } from '../styles/styles.home'
 
 class HomeComponent extends Component {
   static propTypes = {
     clearUser: func.isRequired,
     hasAutoShot: bool,
     hasFaceDetection: bool,
-    ipStatus: oneOf(["NOT_SET", "VALID", "INVALID"]).isRequired,
+    ipStatus: oneOf(['NOT_SET', 'VALID', 'INVALID']).isRequired,
     isLoading: bool,
     isSignUp: bool,
     navigation: object.isRequired,
@@ -40,14 +40,14 @@ class HomeComponent extends Component {
     onRegisterEmployee: func.isRequired,
     onRegisterEmployeeEntryPress: func.isRequired,
     onTakePicture: func.isRequired,
-    onTrainEmployeePhotoPress: func.isRequired
+    onTrainEmployeePhotoPress: func.isRequired,
   }
 
   static defaultProps = {
     hasAutoShot: false,
     hasFaceDetection: false,
     isLoading: false,
-    isSignUp: false
+    isSignUp: false,
   }
 
   face = undefined
@@ -60,14 +60,14 @@ class HomeComponent extends Component {
     hasAutoShot: this.props.hasAutoShot,
     // isFirstView: true,
 
-    method: "BOTH",
-    faceClassifications: {}
+    method: 'BOTH',
+    faceClassifications: {},
   }
 
   componentDidMount = () => {
     const { navigation } = this.props
-    const focusType = Platform.OS === "ios" ? "willFocus" : "didFocus"
-    const blurType = Platform.OS === "ios" ? "willBlur" : "didBlur"
+    const focusType = Platform.OS === 'ios' ? 'willFocus' : 'didFocus'
+    const blurType = Platform.OS === 'ios' ? 'willBlur' : 'didBlur'
     this.focusSubscription = navigation.addListener(focusType, this.onFocus)
     this.blurSubscription = navigation.addListener(blurType, () =>
       this.setState({ hasAutoShot: false })
@@ -90,7 +90,7 @@ class HomeComponent extends Component {
 
   hideModal = () => {
     this.setState({ modalVisible: false, imageSnap: undefined })
-    if (Platform.OS === "android") this.camera.resumePreview()
+    if (Platform.OS === 'android') this.camera.resumePreview()
   }
 
   onCancelOptionsModal = () => {
@@ -106,7 +106,7 @@ class HomeComponent extends Component {
       const [face] = faces
       const classifications = getFaceClassifications(face, this.state.method)
       this.setState(({ faceClassifications }) => ({
-        faceClassifications: { faceClassifications, ...classifications }
+        faceClassifications: { faceClassifications, ...classifications },
       }))
     }
   }
@@ -122,15 +122,15 @@ class HomeComponent extends Component {
       onRegisterEmployeeEntryPress,
       clearUser,
       checkEmployeeEntryTime,
-      setModal
+      setModal,
     } = this.props
     this.hideModal()
     const clockInTimeStatus = await checkEmployeeEntryTime()
     console.log(
-      "​registerEmployeeEntry -> clockInTimeStatus",
+      '​registerEmployeeEntry -> clockInTimeStatus',
       clockInTimeStatus
     )
-    if (clockInTimeStatus === "EARLY") {
+    if (clockInTimeStatus === 'EARLY') {
       setModal(
         MODAL.CLOCK_IN_IS_EARLY(async () => {
           await onRegisterEmployeeEntryPress()
@@ -155,7 +155,7 @@ class HomeComponent extends Component {
     this.setState({
       imageB64: image.base64,
       modalVisible: true,
-      isTakingPicture: false
+      isTakingPicture: false,
     })
   }
 
@@ -190,7 +190,7 @@ class HomeComponent extends Component {
         fixOrientation: true,
         mirrorImage: true,
         doNotSave: true,
-        width: 720
+        width: 720,
       }
       try {
         onTakePicture()
@@ -198,7 +198,7 @@ class HomeComponent extends Component {
         const data = await this.camera.takePictureAsync(options)
         this.setState({
           isTakingPicture: false,
-          imageSnap: data && data.base64 ? data.base64 : undefined
+          imageSnap: data && data.base64 ? data.base64 : undefined,
         })
         await this.registerEmployee(data)
       } catch (error) {
@@ -210,12 +210,12 @@ class HomeComponent extends Component {
   }
 
   onPictureTaken = () => {
-    if (Platform.OS === "android") this.camera.pausePreview()
+    if (Platform.OS === 'android') this.camera.pausePreview()
   }
 
   cleanPreview = () => {
     const { onCleanPreview } = this.props
-    if (Platform.OS === "android") this.camera.resumePreview()
+    if (Platform.OS === 'android') this.camera.resumePreview()
     this.setState({ imageSnap: undefined })
     onCleanPreview()
   }
@@ -243,29 +243,29 @@ class HomeComponent extends Component {
       modalVisible,
       isTakingPicture,
       isCameraReady,
-      imageSnap
+      imageSnap,
     } = this.state
-    const ipIsNotValid = ipStatus !== "VALID"
+    const ipIsNotValid = ipStatus !== 'VALID'
     const modalOptions = [
       {
-        label: "Bater ponto",
-        iconName: "map-marker-radius",
+        label: 'Bater ponto',
+        iconName: 'map-marker-radius',
         onPress: this.registerEmployeeEntry,
         isDisabled: ipIsNotValid,
-        subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : ""
+        subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : '',
       },
       {
-        label: "Ver histórico",
-        iconName: "clock-outline",
-        onPress: this.navigateToHistory
+        label: 'Ver histórico',
+        iconName: 'clock-outline',
+        onPress: this.navigateToHistory,
       },
       {
-        label: "Melhorar identificação",
-        iconName: "creation",
+        label: 'Melhorar identificação',
+        iconName: 'creation',
         onPress: this.trainEmployeePhoto,
         isDisabled: ipIsNotValid,
-        subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : ""
-      }
+        subtitle: ipIsNotValid ? IP_VALIDATION_FAIL_DESCRIPTION : '',
+      },
     ]
     return (
       <View style={styles.container}>
@@ -284,7 +284,7 @@ class HomeComponent extends Component {
             onCameraReady={this.onCameraReady}
             onPictureTaken={this.onPictureTaken}
             onFacesDetected={this.onFaceDetected}
-            onFaceDetectionError={e => console.log("FACE ERROR", e)}
+            onFaceDetectionError={e => console.log('FACE ERROR', e)}
             faceDetectionMode={RNCamera.Constants.FaceDetection.Mode.fast}
             faceDetectionLandmarks={
               RNCamera.Constants.FaceDetection.Landmarks.none
@@ -292,8 +292,9 @@ class HomeComponent extends Component {
             faceDetectionClassifications={
               RNCamera.Constants.FaceDetection.Classifications.all
             }
+            defaultVideoQuality={RNCamera.Constants.VideoQuality['720p']}
           />
-          {(Platform.OS === "android" || imageSnap) && (
+          {(Platform.OS === 'android' || imageSnap) && (
             <Image
               source={{ uri: `data:image/gif;base64,${imageSnap}` }}
               style={{ ...StyleSheet.absoluteFillObject }}

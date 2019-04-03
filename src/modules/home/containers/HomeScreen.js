@@ -1,48 +1,48 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import { InteractionManager, Alert } from "react-native"
-import { func, shape, bool, oneOf } from "prop-types"
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { InteractionManager, Alert } from 'react-native'
+import { func, shape, bool, oneOf } from 'prop-types'
 
 import {
   verifyEmployeePhotoAction,
   trainEmployeePhotoAction,
   clearUserAction,
   checkEmployeeOnImageAction,
-  verifyIpAddressAction
-} from "../../../redux/actions/async/asyncAuthActions"
+  verifyIpAddressAction,
+} from '../../../redux/actions/async/asyncAuthActions'
 import {
   registerEmployeeEntryAction,
-  checkEmployeeEntryTimeAction
-} from "../../../redux/actions/async/asyncClockEntryActions"
+  checkEmployeeEntryTimeAction,
+} from '../../../redux/actions/async/asyncClockEntryActions'
 import {
   showLoading,
   setFaceDetectionEnabled,
-  setFaceDetectionDisabled
-} from "../../../redux/actions/sync/syncAuthActions"
+  setFaceDetectionDisabled,
+} from '../../../redux/actions/sync/syncAuthActions'
 import {
   getLoading,
   getUser,
   getIpStatus,
   getNetworkType,
-  getFaceDetection
-} from "../../../redux/reducers/auth/selectors"
-import { getLoadingClockIn } from "../../../redux/reducers/clockEntry/selectors"
-import { getModalState } from "../../../redux/reducers/modal/selectors"
+  getFaceDetection,
+} from '../../../redux/reducers/auth/selectors'
+import { getLoadingClockIn } from '../../../redux/reducers/clockEntry/selectors'
+import { getModalState } from '../../../redux/reducers/modal/selectors'
 import {
   setOnDismissModal,
-  setModalAction
-} from "../../../redux/actions/sync/syncModalAction"
+  setModalAction,
+} from '../../../redux/actions/sync/syncModalAction'
 
-import { Home } from "../components/Home"
-import { NavBar } from "../../shared/containers/NavBar"
+import { Home } from '../components/Home'
+import { NavBar } from '../../shared/containers/NavBar'
 
-import { hasText, toSentenceCase } from "../../../config/functions"
+import { hasText, toSentenceCase } from '../../../config/functions'
 
 class HomeScreenContainer extends Component {
   static navigationOptions = ({ navigation }) => {
-    const userName = navigation.getParam("userName", "")
-    const firstName = hasText(userName) ? toSentenceCase(userName) : ""
-    const title = hasText(userName) ? `Olá, ${firstName}` : "Tirar foto"
+    const userName = navigation.getParam('userName', '')
+    const firstName = hasText(userName) ? toSentenceCase(userName) : ''
+    const title = hasText(userName) ? `Olá, ${firstName}` : 'Tirar foto'
     return { header: <NavBar navigation={navigation} title={title} /> }
   }
 
@@ -50,7 +50,7 @@ class HomeScreenContainer extends Component {
     checkEmployeeOnImage: func.isRequired,
     clearUser: func.isRequired,
     hasFaceDetection: bool,
-    ipStatus: oneOf(["NOT_SET", "VALID", "INVALID"]),
+    ipStatus: oneOf(['NOT_SET', 'VALID', 'INVALID']),
     isLoading: bool,
     isLoadingClockIn: bool,
     isSignUp: bool,
@@ -63,17 +63,17 @@ class HomeScreenContainer extends Component {
     verifyEmployeePhoto: func.isRequired,
     verifyIpAddress: func.isRequired,
     setOnDismissModal: func.isRequired,
-    modalAlert: shape({ isVisible: bool })
+    modalAlert: shape({ isVisible: bool }),
   }
 
   static defaultProps = {
-    ipStatus: "NOT_SET",
+    ipStatus: 'NOT_SET',
     hasFaceDetection: false,
     isLoading: false,
     isLoadingClockIn: false,
     isSignUp: false,
     navigation: { navigate: () => {} },
-    modalAlert: { isVisible: false }
+    modalAlert: { isVisible: false },
   }
 
   componentDidMount = () => {
@@ -86,7 +86,7 @@ class HomeScreenContainer extends Component {
 
   navigateToHistory = () => {
     const { navigation } = this.props
-    navigation.navigate("history")
+    navigation.navigate('history')
   }
 
   onRegisterEmployee = async image => {
@@ -97,7 +97,7 @@ class HomeScreenContainer extends Component {
   clearUser = () => {
     const { navigation, clearUser, modalAlert, setOnDismissModal } = this.props
     navigation.setParams({
-      userName: undefined
+      userName: undefined,
     })
     clearUser()
     if (modalAlert.isVisible) {
@@ -108,11 +108,11 @@ class HomeScreenContainer extends Component {
 
   showReadyModal = () => {
     const { setFaceDetectionEnabled } = this.props
-    Alert.alert("Tudo preparado", "Está pronto para começar?", [
+    Alert.alert('Tudo preparado', 'Está pronto para começar?', [
       {
-        text: "Estou pronto",
-        onPress: setFaceDetectionEnabled
-      }
+        text: 'Estou pronto',
+        onPress: setFaceDetectionEnabled,
+      },
     ])
   }
 
@@ -137,7 +137,7 @@ class HomeScreenContainer extends Component {
       setFaceDetectionEnabled,
       checkEmployeeEntryTime,
       registerEmployeeEntry,
-      setModal
+      setModal,
     } = this.props
     const isLoadingPhoto = isLoading || isLoadingClockIn
     return (
@@ -166,12 +166,12 @@ class HomeScreenContainer extends Component {
 const mapStateToProps = (state, props) => ({
   isLoading: getLoading(state),
   isLoadingClockIn: getLoadingClockIn(state),
-  isSignUp: props.navigation.getParam("signUp", false),
+  isSignUp: props.navigation.getParam('signUp', false),
   modalAlert: getModalState(state),
   user: getUser(state),
   ipStatus: getIpStatus(state),
   networkType: getNetworkType(state),
-  hasFaceDetection: getFaceDetection(state)
+  hasFaceDetection: getFaceDetection(state),
 })
 
 const mapDispatchToProps = {
@@ -187,7 +187,7 @@ const mapDispatchToProps = {
   setFaceDetectionDisabled,
   setOnDismissModal: onDismiss => setOnDismissModal(onDismiss),
   checkEmployeeEntryTime: () => checkEmployeeEntryTimeAction(),
-  setModal: modal => setModalAction(modal)
+  setModal: modal => setModalAction(modal),
 }
 
 export const HomeScreen = connect(

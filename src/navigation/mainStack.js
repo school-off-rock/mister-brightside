@@ -1,5 +1,3 @@
-// @flow
-
 import { createStackNavigator } from 'react-navigation'
 
 import { HomeScreen } from '../modules/home/containers/HomeScreen'

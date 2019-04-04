@@ -21,6 +21,7 @@ export class RegisterInput extends Component {
   setID = userID => this.setState({ userID })
 
   render() {
+    const { onSubmit } = this.props
     const { userID } = this.state
     return (
       <Fragment>
@@ -49,6 +50,7 @@ export class RegisterInput extends Component {
                 />
               </View>
               <Icon
+                onPress={() => onSubmit(userID)}
                 name="chevron-right"
                 disabled={!hasText(userID) || userID.length < 4}
                 color={COLORS.PRIMARY}

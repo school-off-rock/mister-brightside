@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RegisterCamera } from '../components/RegisterCamera'
+import { submitNewUser } from '../../../services/auth'
+import { setModalAction } from '../../../redux/actions/sync/syncModalAction'
 
 class RegisterCameraContainer extends Component {
   static navigationOptions = {
@@ -12,9 +14,33 @@ class RegisterCameraContainer extends Component {
     navigation.goBack()
   }
 
+  submitNewUser = (userId, userImage) => {
+    const newUser = submitNewUser(userId, userImage)
+    console.log(
+      'TCL: RegisterCameraContainer -> submitNewUser -> newUser',
+      newUser
+    )
+  }
+
   render() {
-    return <RegisterCamera onBackPress={this.goBack} />
+    const { setModal } = this.props
+    return (
+      <RegisterCamera
+        onBackPress={this.goBack}
+        onSubmitUser={this.submitNewUser}
+        setModal={setModal}
+      />
+    )
   }
 }
 
-export const RegisterCameraScreen = connect()(RegisterCameraContainer)
+const mapStateToProps = () => ({})
+
+const mapDispatchToProps = {
+  setModal: modal => setModalAction(modal),
+}
+
+export const RegisterCameraScreen = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RegisterCameraContainer)

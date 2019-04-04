@@ -22,7 +22,7 @@ export const COLORS = {
   BLACK_DEACTIVATED_ALT: 'rgba(0, 0, 0, 0.24)',
   BLACK_SECONDARY: '#757575',
   BLACK_PRIMARY_ALT: 'rgba(0, 0, 0, 0.87)',
-  DARK_OVERLAY: 'rgba(0, 0, 0, 0.80)',
+  DARK_OVERLAY: 'rgba(0, 0, 0, 0.60)',
 
   PURE_BLACK: '#000',
 

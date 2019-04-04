@@ -1,17 +1,10 @@
 import React, { PureComponent } from 'react'
-import {
-  Animated, StyleSheet, View, Platform
-} from 'react-native'
-import {
-  bool,
-  string,
-  shape,
-  func
-} from 'prop-types'
+import { Animated, StyleSheet, View, Platform } from 'react-native'
+import { bool, string, shape, func } from 'prop-types'
 
 import CustomIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { Touchable } from './Touchable'
+import Touchable from 'react-native-platform-touchable'
 
 import { METRICS, COLORS } from '../../../constants/theme'
 import { viewPropTypes } from '../propTypes'
@@ -48,9 +41,10 @@ export class Icon extends PureComponent {
   }
 
   componentDidMount = () => {
-    // const { badgeScale } = this.state
-    // const { hasBadge } = this.props
-    // if (hasBadge) animationTiming(badgeScale, 1)
+    const { disabled } = this.props
+    if (disabled) {
+      this.setOpacity(disabled)
+    }
   }
 
   componentDidUpdate = () => {
@@ -65,47 +59,64 @@ export class Icon extends PureComponent {
     // }
   }
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = prevProps => {
     const { disabled } = this.props
     if (prevProps.disabled !== disabled) {
-      Animated.timing(this.state.opacity, {
-        toValue: disabled ? 0.2 : 1
-      }).start()
+      this.setOpacity(disabled)
     }
   }
 
+  setOpacity = isDisabled => {
+    Animated.timing(this.state.opacity, {
+      toValue: isDisabled ? 0.2 : 1,
+    }).start()
+  }
 
   setWrapStyle = () => {
     const staticOpacity = this.props.disabled ? 0.2 : 1
-    const opacityToUse = Platform.OS === 'ios'
-      ? staticOpacity
-      : this.state.opacity
-    return (this.props.dense
-      ? StyleSheet.flatten([styles.wrap, styles.denseWidth, { opacity: opacityToUse }, this.props.containerStyle])
-      : StyleSheet.flatten([styles.wrap, styles.standardWidth, { opacity: opacityToUse }, this.props.containerStyle])
-    )
+    const opacityToUse =
+      Platform.OS === 'ios' ? staticOpacity : this.state.opacity
+    return this.props.dense
+      ? StyleSheet.flatten([
+          styles.wrap,
+          styles.denseWidth,
+          { opacity: opacityToUse },
+          this.props.containerStyle,
+        ])
+      : StyleSheet.flatten([
+          styles.wrap,
+          styles.standardWidth,
+          { opacity: opacityToUse },
+          this.props.containerStyle,
+        ])
   }
 
-  setIconSize = () => (this.props.dense ? METRICS.ICONS.small : METRICS.ICONS.medium)
+  setIconSize = () =>
+    this.props.dense ? METRICS.ICONS.small : METRICS.ICONS.medium
 
-  setBadgeOpacity = () => (
+  setBadgeOpacity = () =>
     Platform.OS === 'android'
       ? this.state.badgeScale.interpolate({
-        inputRange: [0.01, 0.1],
-        outputRange: [0, 1],
-        extrapolate: 'clamp'
-      })
+          inputRange: [0.01, 0.1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
       : 1
-  )
 
   renderBadge = () => (
     <View style={styles.badgeContainer}>
       <Animated.View
-        style={[styles.badgeCircle, {
-          transform: [{ scale: this.state.badgeScale }, { perspective: 1000 }],
-          opacity: this.setBadgeOpacity(),
-          backgroundColor: this.props.badge.color || COLORS.PRIMARY
-        }]}
+        style={[
+          styles.badgeCircle,
+          {
+            transform: [
+              { scale: this.state.badgeScale },
+              { perspective: 1000 },
+            ],
+            opacity: this.setBadgeOpacity(),
+            backgroundColor: this.props.badge.color || COLORS.PRIMARY,
+          },
+        ]}
       >
         <CustomIcon
           size={10}
@@ -117,21 +128,22 @@ export class Icon extends PureComponent {
   )
 
   render() {
-    const {
-      color,
-      hasBadge,
-      onPress,
-      disabled,
-      ...props
-    } = this.props
+    const { color, hasBadge, onPress, disabled, ...props } = this.props
     return (
-      <AnimatedTouchable disabled={disabled} style={this.setWrapStyle()} onPress={onPress} borderless>
-        <CustomIcon
-          size={this.setIconSize()}
-          color={color || COLORS.BLACK_SECONDARY_ALT}
-          {...props}
-        />
-        {this.renderBadge()}
+      <AnimatedTouchable
+        disabled={disabled}
+        style={this.setWrapStyle()}
+        onPress={onPress}
+        background={Touchable.SelectableBackgroundBorderless()}
+      >
+        <View>
+          <CustomIcon
+            size={this.setIconSize()}
+            color={color || COLORS.BLACK_SECONDARY_ALT}
+            {...props}
+          />
+          {this.renderBadge()}
+        </View>
       </AnimatedTouchable>
     )
   }
@@ -141,7 +153,7 @@ const styles = StyleSheet.create({
   wrap: {
     aspectRatio: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   standardWidth: {
     width: METRICS.ICON_TOUCHABLE_AREA,
@@ -167,5 +179,5 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     backgroundColor: COLORS.PRIMARY,
     borderRadius: METRICS.BIT,
-  }
+  },
 })

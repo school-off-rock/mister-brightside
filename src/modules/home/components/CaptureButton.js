@@ -9,7 +9,11 @@ import { styles } from '../styles/styles.home'
 export const CaptureButton = ({ onPress, disabled, isLoading }) => (
   <View style={styles.bottomOverlay}>
     <View style={styles.captureWrap}>
-      <TouchableOpacity style={styles.capture} onPress={onPress} disabled={disabled}>
+      <TouchableOpacity
+        style={[styles.capture, { opacity: disabled && !isLoading ? 0.2 : 1 }]}
+        onPress={onPress}
+        disabled={disabled}
+      >
         {isLoading && (
           <View style={styles.spinnerAbsoluteCentered}>
             <LoadingSpinner />
@@ -23,11 +27,11 @@ export const CaptureButton = ({ onPress, disabled, isLoading }) => (
 CaptureButton.propTypes = {
   onPress: PropTypes.func,
   disabled: PropTypes.bool,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
 }
 
 CaptureButton.defaultProps = {
   onPress: () => {},
   disabled: false,
-  isLoading: false
+  isLoading: false,
 }

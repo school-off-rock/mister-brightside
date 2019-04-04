@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import {
-  View,
-} from 'react-native'
+import { View } from 'react-native'
 import { func, string } from 'prop-types'
 import { TextField } from 'react-native-material-textfield'
 
@@ -17,12 +15,12 @@ export class InputWithLabel extends Component {
   }
 
   static defaultProps = {
-    style: {}
+    style: {},
   }
 
-  state={ value: '' }
+  state = { value: '' }
 
-  setValue = (value) => {
+  setValue = value => {
     const { onChangeText } = this.props
     this.setState({ value })
     onChangeText(value)
@@ -30,7 +28,7 @@ export class InputWithLabel extends Component {
 
   render() {
     const { value } = this.state
-    const { label, style } = this.props
+    const { label, style, onChangeText, ...props } = this.props
     return (
       <View style={style}>
         <TextField
@@ -39,6 +37,7 @@ export class InputWithLabel extends Component {
           onChangeText={this.setValue}
           tintColor={COLORS.PRIMARY}
           keyboardType="numeric"
+          {...props}
         />
       </View>
     )

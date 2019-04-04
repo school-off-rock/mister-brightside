@@ -14,8 +14,8 @@ class RegisterCameraContainer extends Component {
     navigation.goBack()
   }
 
-  submitNewUser = (userId, userImage) => {
-    const newUser = submitNewUser(userId, userImage)
+  submitNewUser = async (userId, userImage) => {
+    const newUser = await submitNewUser(userId, userImage)
     console.log(
       'TCL: RegisterCameraContainer -> submitNewUser -> newUser',
       newUser

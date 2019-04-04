@@ -13,6 +13,9 @@ import { CameraWithFaceDetection } from '../../shared/components/camera/CameraWi
 
 import { styles } from '../../home/styles/styles.home'
 import { Values } from '../../../constants/values'
+import { findPerson } from '../../../services/auth'
+import { ERROR_USER_NOT_FOUND } from '../../../constants/strings'
+import { MODAL } from '../../../constants/modals'
 
 export class RegisterCamera extends Component {
   componentDidMount() {
@@ -70,20 +73,33 @@ export class RegisterCamera extends Component {
         const picture = await this.cameraRef.current.takePictureAsync(
           Values.PICTURE_LOW_QUALITY
         )
-        this.setState(
-          {
-            isTakingPicture: false,
-            imageSnap: picture && picture.base64 ? picture.base64 : undefined,
-          },
-          this.goToNextStage
-        )
+        const imageSnap = picture && picture.base64 ? picture.base64 : undefined
+        this.setState({ imageSnap }, this.checkUserOnPhoto)
       } catch (error) {}
     }
   }
 
+  checkUserOnPhoto = async () => {
+    const { setModal } = this.props
+    const { imageSnap } = this.state
+    try {
+      await findPerson(imageSnap)
+      this.setState({ imageSnap: undefined, isTakingPicture: false })
+      setModal(MODAL.USER_ALREADY_REGISTERED)
+    } catch ({ message }) {
+      if (message && message === ERROR_USER_NOT_FOUND) {
+        this.setState({ isTakingPicture: false })
+        this.goToNextStage()
+      } else {
+        this.setState({ imageSnap: undefined, isTakingPicture: false })
+        setModal(MODAL.NO_PERSON_ON_IMAGE)
+      }
+    }
+  }
+
   renderStages = () => {
-    const { onBackPress } = this.props
-    const { stage, hasFace, isTakingPicture } = this.state
+    const { onBackPress, onSubmitUser } = this.props
+    const { stage, hasFace, isTakingPicture, imageSnap } = this.state
     switch (stage) {
       case 1:
         return (
@@ -103,7 +119,9 @@ export class RegisterCamera extends Component {
           />
         )
       case 3:
-        return <RegisterInput />
+        return (
+          <RegisterInput onSubmit={userId => onSubmitUser(userId, imageSnap)} />
+        )
       default:
         return <CaptureButton onPress={this.takePicture} />
     }

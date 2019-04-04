@@ -1,4 +1,4 @@
-import { Values } from "./values"
+import { Values } from './values'
 
 const { API_URL, FRAPI_API_URL, IP_ADDRESS_API } = Values
 
@@ -19,3 +19,7 @@ export const GET_EMPLOYEE_CLOCK_ENTRIES = (reg, initDate, endDate) =>
 export const TRAIN_EMPLOYEE_PHOTO = `${FRAPI_API_URL}train/person`
 export const REGISTER_EMPLOYEE_PHOTO = `${FRAPI_API_URL}train/person`
 export const VERIFY_EMPLOYEE_PHOTO = `${FRAPI_API_URL}recognize/people`
+
+//SORRIA
+export const SUBMIT_NEW_USER = `${FRAPI_API_URL}faces`
+export const FIND_USER_ON_IMAGE = `${FRAPI_API_URL}recognition`

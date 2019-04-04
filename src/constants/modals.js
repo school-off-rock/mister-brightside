@@ -1,4 +1,4 @@
-import { MODAL_INITIAL_STATE } from "../redux/reducers/modal/constants"
+import { MODAL_INITIAL_STATE } from '../redux/reducers/modal/constants'
 
 import {
   SIGN_UP_PHOTO_FAIL_TITLE,
@@ -28,25 +28,27 @@ import {
   CLOCK_IN_IS_EARLY_TITLE,
   CONFIRM_LABEL,
   READY_TITLE,
-  READY_DESCRIPTION
-} from "./strings"
+  READY_DESCRIPTION,
+  USER_ALREADY_REGISTERED_TITLE,
+  USER_ALREADY_REGISTERED_DESCRIPTION,
+} from './strings'
 
 const success = {
   isVisible: true,
-  theme: "SUCCESS",
-  buttonLabel: "Fechar"
+  theme: 'SUCCESS',
+  buttonLabel: 'Fechar',
 }
 
 const fail = {
   isVisible: true,
-  theme: "ALERT",
-  buttonLabel: "Fechar"
+  theme: 'ALERT',
+  buttonLabel: 'Fechar',
 }
 
 const primary = {
   isVisible: true,
-  theme: "PRIMARY",
-  buttonLabel: "Fechar"
+  theme: 'PRIMARY',
+  buttonLabel: 'Fechar',
 }
 
 const DISMISS = MODAL_INITIAL_STATE
@@ -56,104 +58,113 @@ const HELP = onAction => ({
   onAction,
   title: HELP_MODAL_TITLE,
   description: HELP_MODAL_DESCRIPTION,
-  iconName: "phone-in-talk",
-  actionButtonLabel: HELP_MODAL_ACTION_LABEL
+  iconName: 'phone-in-talk',
+  actionButtonLabel: HELP_MODAL_ACTION_LABEL,
 })
 
 const SIGN_UP_PHOTO_FAIL = {
   ...fail,
   title: SIGN_UP_PHOTO_FAIL_TITLE,
   description: SIGN_UP_PHOTO_FAIL_DESCRIPTION,
-  iconName: "alert-circle",
-  buttonLabel: "Tentar novamente"
+  iconName: 'alert-circle',
+  buttonLabel: 'Tentar novamente',
 }
 
 const CLOCK_IN_SUCCESS = {
   ...success,
   title: CLOCK_IN_SUCCESS_TITLE,
   description: CLOCK_IN_SUCCESS_DESCRIPTION,
-  iconName: "map-marker-radius"
+  iconName: 'map-marker-radius',
 }
 
 const CLOCK_IN_FAIL = {
   ...fail,
   title: CLOCK_IN_FAIL_TITLE,
   description: CLOCK_IN_FAIL_DESCRIPTION,
-  iconName: "alert-circle",
-  buttonLabel: "Tentar novamente"
+  iconName: 'alert-circle',
+  buttonLabel: 'Tentar novamente',
 }
 
 const NO_PERSON_ON_IMAGE = {
   ...fail,
   title: NO_PERSON_ON_IMAGE_TITLE,
   description: NO_PERSON_ON_IMAGE_DESCRIPTION,
-  iconName: "face",
-  buttonLabel: "Tentar novamente"
+  iconName: 'face',
+  buttonLabel: 'Tentar novamente',
 }
 
 const TOO_MUCH_PERSON_ON_IMAGE = {
   ...fail,
   title: TOO_MUCH_PERSON_ON_IMAGE_TITLE,
   description: TOO_MUCH_PERSON_ON_IMAGE_DESCRIPTION,
-  iconName: "account-multiple",
-  buttonLabel: "Tentar novamente"
+  iconName: 'account-multiple',
+  buttonLabel: 'Tentar novamente',
 }
 
 const ID_MISMATCH_IMAGE = {
   ...fail,
   title: SIGN_ID_MISMATCH_IMAGE_TITLE,
   description: SIGN_ID_MISMATCH_IMAGE_DESCRIPTION,
-  iconName: "face"
+  iconName: 'face',
 }
 
 const IMAGE_MISMATCH_IDS = {
   ...fail,
   title: IMAGE_MISMATCH_IDS_TITLE,
   description: IMAGE_MISMATCH_IDS_DESCRIPTION,
-  iconName: "face"
+  iconName: 'face',
 }
 
 const USER_RECOGNITION_FAIL = {
   ...fail,
   title: USER_RECOGNITION_FAIL_TITLE,
   description: USER_RECOGNITION_FAIL_DESCRIPTION,
-  iconName: "alert-circle",
-  buttonLabel: "Tentar novamente"
+  iconName: 'alert-circle',
+  buttonLabel: 'Tentar novamente',
 }
 
 const TRAIN_PHOTO_SUCCESS = {
   ...success,
   title: TRAIN_PHOTO_SUCCESS_TITLE,
   description: TRAIN_PHOTO_SUCCESS_DESCRIPTION,
-  iconName: "creation"
+  iconName: 'creation',
 }
 
 const IP_VALIDATION_FAIL = {
   ...fail,
   title: IP_VALIDATION_FAIL_TITLE,
   description: IP_VALIDATION_FAIL_DESCRIPTION,
-  iconName: "map-marker-outline",
-  buttonLabel: "Tentar novamente"
+  iconName: 'map-marker-outline',
+  buttonLabel: 'Tentar novamente',
 }
 
 const READY = onDismiss => ({
-  buttonLabel: "Iniciar",
+  buttonLabel: 'Iniciar',
   description: READY_DESCRIPTION,
-  iconName: "camera",
+  iconName: 'camera',
   isVisible: true,
   onDismiss,
-  title: READY_TITLE
+  title: READY_TITLE,
 })
 
 const CLOCK_IN_IS_EARLY = onAction => ({
   ...fail,
   title: CLOCK_IN_IS_EARLY_TITLE,
   description: CLOCK_IN_IS_EARLY_DESCRIPTION,
-  iconName: "clock-alert-outline",
-  buttonLabel: "Cancelar",
+  iconName: 'clock-alert-outline',
+  buttonLabel: 'Cancelar',
   actionButtonLabel: CONFIRM_LABEL,
-  onAction
+  onAction,
 })
+
+//SORRIA
+const USER_ALREADY_REGISTERED = {
+  ...fail,
+  title: USER_ALREADY_REGISTERED_TITLE,
+  description: USER_ALREADY_REGISTERED_DESCRIPTION,
+  iconName: 'face',
+  buttonLabel: 'Entendi',
+}
 
 export const MODAL = {
   CLOCK_IN_FAIL,
@@ -169,5 +180,7 @@ export const MODAL = {
   TOO_MUCH_PERSON_ON_IMAGE,
   IMAGE_MISMATCH_IDS,
   CLOCK_IN_IS_EARLY,
-  READY
+  READY,
+
+  USER_ALREADY_REGISTERED,
 }

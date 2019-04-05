@@ -12,5 +12,6 @@ export const mainStack = createStackNavigator(
   },
   {
     initialRouteName,
+    headerMode: 'none',
   }
 )

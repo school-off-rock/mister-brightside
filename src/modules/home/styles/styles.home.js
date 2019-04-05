@@ -4,11 +4,23 @@ import { COLORS, METRICS, FONTS } from '../../../constants/theme'
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.PURE_BLACK,
-    flexDirection: 'column',
+    backgroundColor: COLORS.SCREEN,
   },
   preview: {
     flex: 1,
+  },
+  navbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: METRICS.STATUS_BAR_HEIGHT,
+    height: METRICS.NAV_BAR_HEIGHT,
+    paddingRight: METRICS.BIT,
+  },
+  navTitle: {
+    color: COLORS.PRIMARY,
+    flex: 1,
+    marginHorizontal: METRICS.KILO,
+    ...FONTS.type.medium,
   },
   spinnerAbsoluteCentered: {
     alignItems: 'center',
@@ -152,5 +164,21 @@ export const styles = StyleSheet.create({
     marginTop: METRICS.MEGA,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+
+  userContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  fabContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: METRICS.TERA,
+  },
+  fabCaption: {
+    marginBottom: METRICS.KILO,
+    color: COLORS.PRIMARY,
   },
 })

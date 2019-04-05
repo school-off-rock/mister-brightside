@@ -16,6 +16,7 @@ import {
   ERROR_IMAGE_MISMATCH_IDS,
   ERROR_USER_NOT_FOUND,
 } from '../../constants/strings'
+import { User } from '../../domain/User'
 
 const { FRAPI_API_KEY } = Values
 
@@ -184,8 +185,10 @@ export const submitNewUser = async (label, imageB64) => {
     }),
   })
     .then(resp => verifyResponse(resp))
-    .then(response => {
-      console.log('TCL: submitNewUser -> response', response)
+    .then(({ person_face }) => {
+      const newUser = new User(person_face)
+      console.log('TCL: submitNewUser -> newUser', newUser)
+      return newUser
     })
     .catch(err => {
       console.log('TCL: submitNewUser -> err', err)

@@ -11,3 +11,7 @@ export const SET_IP_IS_INVALID = 'set_ip_is_invalid'
 export const SET_NETWORK_TYPE = 'set_network_type'
 export const SET_FACE_DETECTION_ENABLED = 'set_face_detection_enabled'
 export const SET_FACE_DETECTION_DISABLED = 'set_face_detection_disabled'
+
+export const SUBMIT_USER_REQUEST = 'submit_user_request'
+export const SUBMIT_USER_SUCCESS = 'submit_user_success'
+export const SUBMIT_USER_FAIL = 'submit_user_fail'

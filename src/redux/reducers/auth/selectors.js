@@ -4,3 +4,6 @@ export const getUser = state => state.auth.user
 export const getIpStatus = state => state.auth.ipStatus
 export const getNetworkType = state => state.auth.networkType
 export const getFaceDetection = state => state.auth.hasFaceDetection
+
+export const getSubmittingUser = state => state.auth.isSubmittingUser
+export const getLoggedIn = state => state.auth.isLoggedIn

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RegisterCamera } from '../components/RegisterCamera'
-import { submitNewUser } from '../../../services/auth'
 import { setModalAction } from '../../../redux/actions/sync/syncModalAction'
+import { getSubmittingUser } from '../../../redux/reducers/auth/selectors'
+import { submitNewUserAction } from '../../../redux/actions/async/asyncAuthActions'
 
 class RegisterCameraContainer extends Component {
   static navigationOptions = {
@@ -15,29 +16,31 @@ class RegisterCameraContainer extends Component {
   }
 
   submitNewUser = async (userId, userImage) => {
-    const newUser = await submitNewUser(userId, userImage)
-    console.log(
-      'TCL: RegisterCameraContainer -> submitNewUser -> newUser',
-      newUser
-    )
+    const { submitNewUser } = this.props
+    await submitNewUser(userId, userImage)
+    this.goBack()
   }
 
   render() {
-    const { setModal } = this.props
+    const { setModal, isSubmitting } = this.props
     return (
       <RegisterCamera
         onBackPress={this.goBack}
         onSubmitUser={this.submitNewUser}
         setModal={setModal}
+        isSubmitting={isSubmitting}
       />
     )
   }
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = state => ({
+  isSubmitting: getSubmittingUser(state),
+})
 
 const mapDispatchToProps = {
   setModal: modal => setModalAction(modal),
+  submitNewUser: (id, image) => submitNewUserAction(id, image),
 }
 
 export const RegisterCameraScreen = connect(

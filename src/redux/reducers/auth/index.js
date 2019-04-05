@@ -12,7 +12,10 @@ import {
   SET_IP_IS_INVALID,
   SET_NETWORK_TYPE,
   SET_FACE_DETECTION_ENABLED,
-  SET_FACE_DETECTION_DISABLED
+  SET_FACE_DETECTION_DISABLED,
+  SUBMIT_USER_REQUEST,
+  SUBMIT_USER_SUCCESS,
+  SUBMIT_USER_FAIL,
 } from '../../types/authTypes'
 import {
   showLoading,
@@ -27,7 +30,10 @@ import {
   setIpIsInvalid,
   setNetworkType,
   setFaceDetectionEnabled,
-  setFaceDetectionDisabled
+  setFaceDetectionDisabled,
+  handleSubmitUserRequest,
+  handleSubmitUserSuccess,
+  handleSubmitUserFail,
 } from './handlers'
 
 export const actionHandlers = {
@@ -43,10 +49,14 @@ export const actionHandlers = {
   [CLEAR_USER]: clearUser,
   [SET_NETWORK_TYPE]: setNetworkType,
   [SET_FACE_DETECTION_ENABLED]: setFaceDetectionEnabled,
-  [SET_FACE_DETECTION_DISABLED]: setFaceDetectionDisabled
+  [SET_FACE_DETECTION_DISABLED]: setFaceDetectionDisabled,
+
+  [SUBMIT_USER_REQUEST]: handleSubmitUserRequest,
+  [SUBMIT_USER_SUCCESS]: handleSubmitUserSuccess,
+  [SUBMIT_USER_FAIL]: handleSubmitUserFail,
 }
 
 export const authReducerConfig = {
   initialState: AUTH_INITIAL_STATE,
-  actionHandlers
+  actionHandlers,
 }

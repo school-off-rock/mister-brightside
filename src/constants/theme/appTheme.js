@@ -57,4 +57,6 @@ export const appTheme = {
     wideVertical: METRICS.RATIO.wideVertical,
   },
   statusBarHeight: METRICS.STATUS_BAR_HEIGHT,
+  fabSize: 56,
+  fabRadius: 28,
 }

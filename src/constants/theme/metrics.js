@@ -1,9 +1,12 @@
 import { Platform } from 'react-native'
 
+const isIOS = Platform.OS === 'ios'
+const isAndroidAboveKitKat = Platform.OS === 'android' && Platform.Version > 19
+
 const SNAP_BUTTON = 64
 
-const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 0 : 24
-const NAV_BAR_DATA_HEIGHT = Platform.OS === 'ios' ? 44 : 56
+const STATUS_BAR_HEIGHT = isAndroidAboveKitKat ? 24 : 0
+const NAV_BAR_DATA_HEIGHT = isIOS ? 44 : 56
 const NAV_BAR_HEIGHT = STATUS_BAR_HEIGHT + NAV_BAR_DATA_HEIGHT
 const TITLE_ROW = 56
 const NAV_BAR_HEIGHT_LARGE = NAV_BAR_HEIGHT + TITLE_ROW

@@ -7,10 +7,17 @@ function setImageUrl(img) {
 }
 
 export class User {
-  constructor({ face_id, person_label, creation_date, thumb_image_url }) {
-    this.id = face_id
+  constructor({
+    face_id,
+    face_ids,
+    person_label,
+    creation_date,
+    thumb_image_url,
+    avatar_url,
+  }) {
+    this.id = face_id || face_ids[0]
     this.label = person_label
     this.createdAt = creation_date
-    this.imageUrl = setImageUrl(thumb_image_url)
+    this.imageUrl = setImageUrl(thumb_image_url || avatar_url)
   }
 }

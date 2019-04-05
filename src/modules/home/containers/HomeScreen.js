@@ -41,6 +41,11 @@ class HomeScreenContainer extends Component {
     navigation.navigate('registerCamera')
   }
 
+  navigateToRecognize = () => {
+    const { navigation } = this.props
+    navigation.navigate('recognize')
+  }
+
   render() {
     const {
       isLoading,
@@ -59,6 +64,7 @@ class HomeScreenContainer extends Component {
         setModal={setModal}
         user={user}
         onRegisterPress={this.navigateToRegister}
+        onRecognizePress={this.navigateToRecognize}
       />
     )
   }

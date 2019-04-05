@@ -5,6 +5,7 @@ import {
   verifyIpAddress,
   findEmployeeOnPhoto,
   submitNewUser,
+  getUserInfo,
 } from '../../../services/auth'
 import {
   showLoading,
@@ -218,12 +219,25 @@ export function clearUserAction() {
 }
 
 //SORRIA
-export function submitNewUserAction() {
+export function submitNewUserAction(label, imageB64) {
   return async dispatch => {
     try {
       dispatch(submitUserRequest())
-      const user = await submitNewUser()
+      const user = await submitNewUser(label, imageB64)
       dispatch(submitUserSuccess(user))
+    } catch (err) {
+      dispatch(submitUserFail())
+    }
+  }
+}
+
+export function userLoginAction(label) {
+  return async dispatch => {
+    try {
+      dispatch(submitUserRequest())
+      const user = await getUserInfo(label)
+      dispatch(submitUserSuccess(user))
+      return user
     } catch (err) {
       dispatch(submitUserFail())
     }

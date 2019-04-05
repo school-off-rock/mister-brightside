@@ -12,6 +12,7 @@ import { UserContainer } from '../containers/UserContainer'
 
 import { styles } from '../styles/styles.home'
 import { COLORS } from '../../../constants/theme'
+import { hasText } from '../../../config/functions'
 
 export class Home extends Component {
   static propTypes = {
@@ -21,6 +22,7 @@ export class Home extends Component {
     setModal: func.isRequired,
     user: shape({ label: string, id: string }),
     onRegisterPress: func.isRequired,
+    onRecognizePress: func.isRequired,
   }
 
   static defaultProps = {
@@ -30,7 +32,11 @@ export class Home extends Component {
   }
 
   render() {
-    const { onRegisterPress } = this.props
+    const { onRegisterPress, onRecognizePress, user, clearUser } = this.props
+    const [navIconName, navIconColor, navIconOnPress] = hasText(user.label)
+      ? ['exit-to-app', COLORS.BLACK_SECONDARY_ALT, clearUser]
+      : ['account-plus', COLORS.PRIMARY, onRegisterPress]
+
     return (
       <SafeAreaView style={styles.container}>
         <StatusBarDark />
@@ -38,15 +44,15 @@ export class Home extends Component {
           <View style={styles.navbar}>
             <H5 style={styles.navTitle}>SORRIA</H5>
             <Icon
-              name="account-plus"
-              color={COLORS.PRIMARY}
-              onPress={onRegisterPress}
+              name={navIconName}
+              color={navIconColor}
+              onPress={navIconOnPress}
             />
           </View>
           <View style={styles.preview}>
-            <UserContainer />
+            <UserContainer user={user} />
           </View>
-          <FabFooter onPress={onRegisterPress} />
+          <FabFooter onPress={onRecognizePress} />
         </View>
       </SafeAreaView>
     )

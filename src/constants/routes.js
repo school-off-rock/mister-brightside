@@ -23,3 +23,4 @@ export const VERIFY_EMPLOYEE_PHOTO = `${FRAPI_API_URL}recognize/people`
 //SORRIA
 export const SUBMIT_NEW_USER = `${FRAPI_API_URL}faces`
 export const FIND_USER_ON_IMAGE = `${FRAPI_API_URL}recognition`
+export const GET_USER_INFO = userLabel => `${FRAPI_API_URL}people/${userLabel}`

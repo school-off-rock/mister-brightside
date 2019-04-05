@@ -19,12 +19,18 @@ const ButtonWrap = glamorous.view(({ containerColor = 'primary' }, theme) => ({
   paddingHorizontal: theme.button.horizontalSpacing,
 }))
 
-const ButtonText = glamorous.text((props, theme) => ({
-  color: theme.colors.background.onPrimary,
+const ButtonText = glamorous.text(({ textColor }, theme) => ({
+  color: hasText(textColor) ? textColor : theme.colors.background.onPrimary,
   ...FONTS.style.primaryButton,
 }))
 
-export function ButtonContained({ children, onPress, style, color }) {
+export function ButtonContained({
+  children,
+  onPress,
+  style,
+  color,
+  textColor,
+}) {
   const upperCaseText = hasText(children) ? children.toUpperCase() : children
   return (
     <ButtonContainer containerColor={color} style={style}>
@@ -33,7 +39,7 @@ export function ButtonContained({ children, onPress, style, color }) {
         foreground={Touchable.SelectableBackground()}
       >
         <ButtonWrap containerColor={color}>
-          <ButtonText>{upperCaseText}</ButtonText>
+          <ButtonText textColor={textColor}>{upperCaseText}</ButtonText>
         </ButtonWrap>
       </Touchable>
     </ButtonContainer>

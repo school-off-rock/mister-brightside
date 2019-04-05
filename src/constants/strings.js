@@ -10,9 +10,9 @@ export const SIGN_UP_PHOTO_FAIL_DESCRIPTION =
 export const SIGN_ID_MISMATCH_IMAGE_TITLE = 'Parece que este não é você'
 export const SIGN_ID_MISMATCH_IMAGE_DESCRIPTION =
   'Sua foto não corresponde à matricula. Verifique se você inseriu sua matrícula correta. Se o problema persistir, entre em contato com o RH'
-export const IMAGE_MISMATCH_IDS_TITLE = 'Não encontramos sua matrícula'
-export const IMAGE_MISMATCH_IDS_DESCRIPTION =
-  'Sua foto não correspondeu a nenhuma matricula. Se o problema persistir, entre em contato com o RH'
+// export const IMAGE_MISMATCH_IDS_TITLE = 'Não encontramos sua matrícula'
+// export const IMAGE_MISMATCH_IDS_DESCRIPTION =
+//   'Sua foto não correspondeu a nenhuma matricula. Se o problema persistir, entre em contato com o RH'
 export const CLOCK_IN_SUCCESS_TITLE = 'Ponto registrado'
 export const CLOCK_IN_SUCCESS_DESCRIPTION =
   'Sua foto foi identificada e seu ponto foi registrado com sucesso'
@@ -62,5 +62,8 @@ export const ERROR_IMAGE_MISMATCH_IDS =
 export const USER_ALREADY_REGISTERED_TITLE = 'Usuário já registrado'
 export const USER_ALREADY_REGISTERED_DESCRIPTION =
   'Parece que você já se registrou, tente entrar ao invés de criar uma conta'
+export const IMAGE_MISMATCH_IDS_TITLE = 'Não encontramos sua conta'
+export const IMAGE_MISMATCH_IDS_DESCRIPTION =
+  'Não foi possível encontrar uma conta que com seu rosto. Tente criar uma conta antes'
 
 export const ERROR_USER_NOT_FOUND = 'Esta foto não corresponde a nunhum usuário'

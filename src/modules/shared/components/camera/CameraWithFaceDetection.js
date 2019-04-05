@@ -13,7 +13,7 @@ export const CameraWithFaceDetection = React.forwardRef(
       onPictureTaken,
       onFaceDetected,
       hasFaceLandmarks,
-      hasFaceClassifications = false,
+      hasFaceClassifications,
     },
     ref
   ) => {

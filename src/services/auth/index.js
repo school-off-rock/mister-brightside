@@ -5,6 +5,7 @@ import {
   VERIFY_EMPLOYEE_PHOTO,
   FIND_USER_ON_IMAGE,
   SUBMIT_NEW_USER,
+  GET_USER_INFO,
 } from '../../constants/routes'
 import { Values } from '../../constants/values'
 import { getIpAddress } from '../shared'
@@ -148,6 +149,7 @@ export const findPerson = async imageB64 => {
   })
     .then(resp => verifyResponse(resp))
     .then(response => {
+      console.log('TCL: response', response)
       const { people = [] } = response
       if (people.length === 0) {
         throw { message: ERROR_NO_PERSON_ON_IMAGE, status: 404 }
@@ -187,7 +189,26 @@ export const submitNewUser = async (label, imageB64) => {
     .then(resp => verifyResponse(resp))
     .then(({ person_face }) => {
       const newUser = new User(person_face)
-      console.log('TCL: submitNewUser -> newUser', newUser)
+      return newUser
+    })
+    .catch(err => {
+      console.log('TCL: submitNewUser -> err', err)
+      throw err
+    })
+}
+
+export const getUserInfo = async label => {
+  return fetch(GET_USER_INFO(label), {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      app_key: FRAPI_API_KEY,
+    },
+  })
+    .then(resp => verifyResponse(resp))
+    .then(({ person }) => {
+      const newUser = new User(person)
       return newUser
     })
     .catch(err => {

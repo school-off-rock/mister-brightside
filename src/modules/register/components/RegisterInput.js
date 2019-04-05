@@ -2,18 +2,13 @@ import React, { Component, Fragment } from 'react'
 import { View, StyleSheet } from 'react-native'
 
 import { InputWithLabel } from '../../shared/components/inputs/InputWithLabel'
-import { Card } from '../../shared/components/Card'
 import { H5, Paragraph } from '../../shared/components/text'
-import glamorous from 'glamorous-native'
 import { DarkOverlay } from '../../shared/components/overlays/DarkOverlay'
 import { Icon } from '../../shared/components/Icon'
+import { CardWithMargin } from '../../shared/components/cards/CardWithMargin'
+
 import { COLORS } from '../../../constants/theme'
 import { hasText } from '../../../config/functions'
-
-const FooterCard = glamorous(Card)((props, theme) => ({
-  borderRadius: theme.borderRadius,
-  margin: theme.module.bit,
-}))
 
 export class RegisterInput extends Component {
   state = { userID: undefined }
@@ -27,7 +22,7 @@ export class RegisterInput extends Component {
       <Fragment>
         <DarkOverlay />
         <View style={{ ...StyleSheet.absoluteFillObject, top: null }}>
-          <FooterCard>
+          <CardWithMargin>
             <H5 style={{ marginTop: 16, marginHorizontal: 16 }}>Uau!</H5>
             <Paragraph style={{ marginVertical: 8, marginHorizontal: 16 }}>
               Este realmente é o seu melhor ângulo! Agora defina um nome de
@@ -56,7 +51,7 @@ export class RegisterInput extends Component {
                 color={COLORS.PRIMARY}
               />
             </View>
-          </FooterCard>
+          </CardWithMargin>
         </View>
       </Fragment>
     )

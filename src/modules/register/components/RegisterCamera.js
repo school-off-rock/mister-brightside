@@ -14,7 +14,10 @@ import { CameraWithFaceDetection } from '../../shared/components/camera/CameraWi
 import { styles } from '../../home/styles/styles.home'
 import { Values } from '../../../constants/values'
 import { findPerson } from '../../../services/auth'
-import { ERROR_USER_NOT_FOUND } from '../../../constants/strings'
+import {
+  ERROR_USER_NOT_FOUND,
+  ERROR_IMAGE_MISMATCH_IDS,
+} from '../../../constants/strings'
 import { MODAL } from '../../../constants/modals'
 
 export class RegisterCamera extends Component {
@@ -87,7 +90,10 @@ export class RegisterCamera extends Component {
       this.setState({ imageSnap: undefined, isTakingPicture: false })
       setModal(MODAL.USER_ALREADY_REGISTERED)
     } catch ({ message }) {
-      if (message && message === ERROR_USER_NOT_FOUND) {
+      if (
+        (message && message === ERROR_USER_NOT_FOUND) ||
+        message === ERROR_IMAGE_MISMATCH_IDS
+      ) {
         this.setState({ isTakingPicture: false })
         this.goToNextStage()
       } else {
